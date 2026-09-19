@@ -553,6 +553,21 @@
 <script src="/js/pjax.min.js"></script>
 <script src="/js/topbar.min.js"></script>
 <script>
+  window.__giscusConfig = {
+    repo: "YrqSpace/Giscus",
+    repoId: "R_kgDOUhG6JA",
+    category: "Announcements",
+    categoryId: "DIC_kwDOUhG6JM4DF78m",
+    mapping: "pathname",
+    strict: 0,
+    reactionsEnabled: 1,
+    emitMetadata: 0,
+    inputPosition: "top",
+    lightTheme: "light",
+    darkTheme: "dark",
+    lang: "zh-CN"
+  };
+</script><script>
 (function () {
   
   if (typeof Pjax === "undefined") {
@@ -577,8 +592,11 @@
   pjax.handleResponse = function (responseText, request, href, options) {
     try {
       var newDom = new DOMParser().parseFromString(responseText, "text/html");
-      if (newDom && newDom.body && newDom.body.className) {
-        document.body.setAttribute("class", newDom.body.className);
+      if (newDom && newDom.body) {
+        if (newDom.body.className) {
+          document.body.setAttribute("class", newDom.body.className);
+        }
+        window.__pjaxHasComments = !!newDom.body.querySelector('script[src="https://giscus.app/client.js"]');
       }
     } catch (e) {
       console.warn("[pjax] 同步 body class 失败", e);
@@ -604,6 +622,39 @@
   document.addEventListener("pjax:complete", function () {
     if (window.Stack && typeof Stack.init === "function") Stack.init();
     if (window.topbar && typeof topbar.hide === "function") topbar.hide();
+
+    var cfg = window.__giscusConfig;
+    if (!cfg || !window.__pjaxHasComments) return;
+    var main = document.querySelector(".main-container main") || document.querySelector("main");
+    if (!main) return;
+    main.querySelectorAll(".giscus").forEach(function (el) { el.remove(); });
+    var oldScript = main.querySelector('script[src="https://giscus.app/client.js"]');
+    var script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.setAttribute("data-repo", cfg.repo);
+    script.setAttribute("data-repo-id", cfg.repoId);
+    script.setAttribute("data-category", cfg.category);
+    script.setAttribute("data-category-id", cfg.categoryId);
+    script.setAttribute("data-mapping", cfg.mapping);
+    script.setAttribute("data-strict", cfg.strict);
+    script.setAttribute("data-reactions-enabled", cfg.reactionsEnabled);
+    script.setAttribute("data-emit-metadata", cfg.emitMetadata);
+    script.setAttribute("data-input-position", cfg.inputPosition);
+    script.setAttribute("data-theme", document.documentElement.dataset.scheme === "dark" ? cfg.darkTheme : cfg.lightTheme);
+    script.setAttribute("data-lang", cfg.lang);
+    script.setAttribute("crossorigin", "anonymous");
+    script.async = true;
+    if (oldScript) {
+      oldScript.parentNode.insertBefore(script, oldScript);
+      oldScript.parentNode.removeChild(oldScript);
+    } else {
+      var anchor = main.querySelector(".site-footer");
+      if (anchor) {
+        main.insertBefore(script, anchor);
+      } else {
+        main.appendChild(script);
+      }
+    }
   });
 })();
 </script>
