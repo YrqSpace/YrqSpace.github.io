@@ -343,21 +343,39 @@
         document.head.appendChild(customFont);
     }());
 </script>
-<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
-<div id="aplayer"></div>
+    <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+    <div id="aplayer"></div>
 
-<script>
-    const home = "https://yrqspace.github.io/"
-    const ap = new APlayer({
-        container: document.getElementById('aplayer'),
-        fixed: true,
-        lrcType: 3,
-        audio: [
+    <script>
+        const home = "https://yrqspace.github.io/"
+        const ap = new APlayer({
+            container: document.getElementById('aplayer'),
+            fixed: true,
+            lrcType: 0,
+            audio: [
     {
         name: '清空',
         artist: '王忻辰 苏星婕',
         url: '/music/qingkong/song.mp3',
         cover: '/music/qingkong/cover.jpg',
+    },
+    {
+        name: '云烟成雨',
+        artist: '房东的猫',
+        url: '/music/yunyanchengyu/song.mp3',
+        cover: '/music/yunyanchengyu/cover.jpg',
+    },
+    {
+        name: '带我去找夜生活',
+        artist: '告五人',
+        url: '/music/daiwoquzhaoyeshenghuo/song.mp3',
+        cover: '/music/daiwoquzhaoyeshenghuo/cover.jpg',
+    },
+    {
+        name: '等一场雨',
+        artist: '苏星婕',
+        url: '/music/dengyichangyu/song.mp3',
+        cover: '/music/dengyichangyu/cover.jpg',
     },
     {
         name: 'river flows in you',
@@ -370,6 +388,60 @@
         artist: 'Yiruma',
         url: '/music/Kiss-The-Rain/song.mp3',
         cover: '/music/Kiss-The-Rain/cover.jpg',
+    },
+    {
+        name: 'Maybe',
+        artist: 'Yiruma',
+        url: '/music/maybe/song.mp3',
+        cover: '/music/maybe/cover.jpg',
+    },
+    {
+        name: 'Summer',
+        artist: '久石让',
+        url: '/music/summer/song.mp3',
+        cover: '/music/summer/cover.jpg',
+    },
+    {
+        name: 'Merry Christmas Mr. Lawrence',
+        artist: '坂本龙一',
+        url: '/music/merrychristmasmrlawrence/song.mp3',
+        cover: '/music/merrychristmasmrlawrence/cover.jpg',
+    },
+    {
+        name: 'My Soul',
+        artist: 'July',
+        url: '/music/mysoul/song.mp3',
+        cover: '/music/mysoul/cover.jpg',
+    },
+    {
+        name: 'Una Mattina',
+        artist: 'Ludovico Einaudi',
+        url: '/music/unamattina/song.mp3',
+        cover: '/music/unamattina/cover.jpg',
+    },
+    {
+        name: '夜的钢琴曲五',
+        artist: '石进',
+        url: '/music/yedegangqinquwu/song.mp3',
+        cover: '/music/yedegangqinquwu/cover.jpg',
+    },
+    {
+        name: 'Flower Dance',
+        artist: 'DJ Okawari',
+        url: '/music/flowerdance/song.mp3',
+        cover: '/music/flowerdance/cover.jpg',
+    },
+    {
+        name: 'Harbor',
+        artist: 'Tomppabeats',
+        url: '/music/harbor/song.mp3',
+        cover: '/music/harbor/cover.jpg',
+    },
+    {
+        name: 'Controlla',
+        artist: 'Drake',
+        url: '/music/controlla/song.mp3',
+        cover: '/music/controlla/cover.jpg',
     }
 ]
 
@@ -411,7 +483,7 @@
 
 
 
-</script>
+    </script>
 
 <script src="/js/pjax.min.js"></script>
 <script src="/js/topbar.min.js"></script>
