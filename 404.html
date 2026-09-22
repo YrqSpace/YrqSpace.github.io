@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
-    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+    <head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="演示说明">
 <title>404 Page not found</title>
 
-<link rel='canonical' href='http://localhost:1313/404.html'>
+<link rel='canonical' href='https://yrqspace.github.io/404.html'>
 
 <link rel="stylesheet" href="/scss/style.min.c05081975b8bcdebc247080ac3bf39d7e409943ef9046d225919089af82fcc7a.css"><meta property='og:title' content="404 Page not found">
 <meta property='og:description' content="演示说明">
-<meta property='og:url' content='http://localhost:1313/404.html'>
+<meta property='og:url' content='https://yrqspace.github.io/404.html'>
 <meta property='og:site_name' content='爱玩win11的me'>
 <meta property='og:type' content='website'><meta property='og:updated_time' content=' 2026-09-18T00:00:00&#43;00:00 '/>
 <meta name="twitter:title" content="404 Page not found">
@@ -427,34 +427,45 @@
             return '浏览器';
         }
 
-        function initWelcome() {
+        
+        
+        var KEY = 'welcome-shown';
+
+        function alreadyShown() {
+            try { return sessionStorage.getItem(KEY) === '1'; } catch (e) { return false; }
+        }
+
+        function markShown() {
+            try { sessionStorage.setItem(KEY, '1'); } catch (e) { }
+        }
+
+        function showWelcome() {
             var toast = document.getElementById('welcome-toast');
             if (!toast) return;
 
+            
+            if (alreadyShown()) return;
+
             var browserSpan = document.getElementById('welcome-browser');
             if (browserSpan) browserSpan.textContent = detectBrowser();
-
-            var KEY = 'welcome-toast-closed';
-            var closed = false;
-            try { closed = sessionStorage.getItem(KEY) === '1'; } catch (e) { }
 
             var closeBtn = toast.querySelector('.welcome-toast__close');
             if (closeBtn) {
                 closeBtn.addEventListener('click', function () {
                     toast.classList.remove('is-show');
-                    try { sessionStorage.setItem(KEY, '1'); } catch (e) { }
                 });
             }
 
-            if (!closed) {
-                setTimeout(function () { toast.classList.add('is-show'); }, 700);
-            }
+            setTimeout(function () {
+                toast.classList.add('is-show');
+                markShown();
+            }, 700);
         }
 
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initWelcome);
+            document.addEventListener('DOMContentLoaded', showWelcome);
         } else {
-            initWelcome();
+            showWelcome();
         }
     })();
 </script>
@@ -463,7 +474,7 @@
     <div id="aplayer"></div>
 
     <script>
-        const home = "http://localhost:1313/"
+        const home = "https://yrqspace.github.io/"
         const ap = new APlayer({
             container: document.getElementById('aplayer'),
             fixed: true,
