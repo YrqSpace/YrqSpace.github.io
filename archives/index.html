@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
-    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+    <head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="">
 <title>归档</title>
 
-<link rel='canonical' href='http://localhost:1313/archives/'>
+<link rel='canonical' href='https://yrqspace.github.io/archives/'>
 
 <link rel="stylesheet" href="/scss/style.min.c05081975b8bcdebc247080ac3bf39d7e409943ef9046d225919089af82fcc7a.css"><meta property='og:title' content="归档">
 <meta property='og:description' content="">
-<meta property='og:url' content='http://localhost:1313/archives/'>
+<meta property='og:url' content='https://yrqspace.github.io/archives/'>
 <meta property='og:site_name' content='爱玩win11的me'>
 <meta property='og:type' content='article'><meta property='article:section' content='Page' /><meta property='article:published_time' content='2019-05-28T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2019-05-28T00:00:00&#43;00:00'/>
 <meta name="twitter:title" content="归档">
@@ -347,23 +347,32 @@
 <div id="aplayer"></div>
 
 <script>
-    const home = "http://localhost:1313/"
+    const home = "https://yrqspace.github.io/"
     const ap = new APlayer({
         container: document.getElementById('aplayer'),
         fixed: true,
         lrcType: 3,
-        audio: [{
-            name: '清空',
-            artist: '王忻辰 苏星婕',
-            url: '/music/qingkong/song.mp3',
-            cover: '/music/qingkong/cover.jpg',
-            lrc: home + '/music/qingkong/lyric.lrc'
-            name: 'river flows in you',
-            artist: 'Yiruma',
-            url: '/music/river flows in you/song.mp3',
-            cover: '/music/river flows in you/cover.jpg',
-            lrc: home + '/music/river flows in you/lyric.lrc'
-        }]
+        audio: [
+    {
+        name: '清空',
+        artist: '王忻辰 苏星婕',
+        url: '/music/qingkong/song.mp3',
+        cover: '/music/qingkong/cover.jpg',
+    },
+    {
+        name: 'river flows in you',
+        artist: 'Yiruma',
+        url: '/music/river-flows-in-you/song.mp3',
+        cover: '/music/river-flows-in-you/cover.jpg',
+    },
+    {
+        name: 'Kiss The Rain',
+        artist: 'Yiruma',
+        url: '/music/Kiss-The-Rain/song.mp3',
+        cover: '/music/Kiss-The-Rain/cover.jpg',
+    }
+]
+
     });
 
 
@@ -404,11 +413,6 @@
 
 </script>
 
-<meting-js
-	server="netease"
-	type="playlist"
-	id="60198">
-</meting-js>
 <script src="/js/pjax.min.js"></script>
 <script src="/js/topbar.min.js"></script>
 <script>
