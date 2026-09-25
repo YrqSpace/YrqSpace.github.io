@@ -759,6 +759,64 @@
     darkTheme: "dark",
     lang: "zh-CN"
   };
+</script><link rel="stylesheet" href="/vendor/waline/waline.css">
+<script>
+window.__walineCfg = {"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji":["https://cdn.jsdelivr.net/npm/@waline/emojis@1.0.1/weibo"],"lang":"zh-CN","locale":{"admin":"Admin"},"requiredMeta":["name","email","url"],"serverURL":"https://yrq1622.cc.cd"};
+(function () {
+  var WALINE_URL = '\/vendor\/waline\/waline.js';
+  var bootAttempts = 0;
+
+  function loadModule() {
+    
+    if (!window.__walineModulePromise) {
+      window.__walineModulePromise = import(WALINE_URL);
+    }
+    return window.__walineModulePromise;
+  }
+
+  window.__walineBoot = function () {
+    var el = document.getElementById('waline');
+    if (!el) {
+      
+      if (bootAttempts < 40) {
+        bootAttempts++;
+        setTimeout(window.__walineBoot, 200);
+      }
+      return;
+    }
+    if (el.dataset.wlMounted === '1' || el.dataset.wlMounting === '1') return;
+
+    el.dataset.wlMounting = '1';
+    loadModule().then(function (m) {
+      var init = (m && (m.init || (m.default && m.default.init))) || (window.Waline && window.Waline.init);
+      if (typeof init !== 'function') throw new Error('waline init not found');
+      
+      var mountEl = document.getElementById('waline');
+      if (!mountEl) {
+        el.dataset.wlMounting = '';
+        return;
+      }
+      mountEl.innerHTML = '';
+      init(window.__walineCfg);
+      
+      mountEl.dataset.wlMounted = '1';
+      mountEl.dataset.wlMounting = '';
+      bootAttempts = 0;
+    }).catch(function (e) {
+      
+      window.__walineModulePromise = null;
+      var mountEl = document.getElementById('waline');
+      if (mountEl) mountEl.dataset.wlMounting = '';
+      console.error('[waline] load failed', e);
+    });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { window.__walineBoot(); });
+  } else {
+    window.__walineBoot();
+  }
+})();
 </script><script>
 (function () {
   
@@ -814,6 +872,9 @@
   document.addEventListener("pjax:complete", function () {
     if (window.Stack && typeof Stack.init === "function") Stack.init();
     if (window.topbar && typeof topbar.hide === "function") topbar.hide();
+
+    
+    if (window.__walineBoot) window.__walineBoot();
 
     var cfg = window.__giscusConfig;
     if (!cfg || !window.__pjaxHasComments) return;
