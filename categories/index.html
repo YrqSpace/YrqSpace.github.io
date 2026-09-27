@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://yrqspace.github.io/categories/'>
 
-<link rel="stylesheet" href="/scss/style.min.c05081975b8bcdebc247080ac3bf39d7e409943ef9046d225919089af82fcc7a.css"><meta property='og:title' content="Categories">
+<link rel="stylesheet" href="/scss/style.min.206bbcc3d4c409dfa1f2be0e589a9ab9c1d84480572625a517d59e7b46297298.css"><meta property='og:title' content="Categories">
 <meta property='og:description' content="演示说明">
 <meta property='og:url' content='https://yrqspace.github.io/categories/'>
 <meta property='og:site_name' content='爱玩win11的me'>
@@ -17,6 +17,112 @@
 
   
 
+<script>document.documentElement.classList.add('is-loading');</script>
+<div class="loading">
+    <div class="spinner">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</div>
+
+<style>
+    .loading {
+        position: fixed;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 99;
+         
+        background-color: var(--body-background, #f5f5fa);
+         
+        transition: opacity 0.5s ease;
+    }
+
+     
+    .loading.is-hidden {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+     
+    html[data-scheme="light"] .loading {
+        background-color: #f5f5fa;
+    }
+    html[data-scheme="dark"] .loading {
+        background-color: #303030;
+    }
+    @media (prefers-color-scheme: dark) {
+        .loading {
+            background-color: #303030;
+        }
+    }
+
+     
+    html.is-loading .aplayer {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+     
+    .aplayer {
+        transition: opacity 0.4s ease;
+    }
+
+    .spinner {
+  --gap: 5px;
+  --clr: #3b82f6;    
+  --height: 23px;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap);
+}
+
+.spinner span {
+  background: var(--clr);
+  width: 6px;
+  height: var(--height);
+  animation: grow 1s ease-in-out infinite;
+}
+.spinner span:nth-child(2) { animation: grow 1s ease-in-out 0.15s infinite; }
+.spinner span:nth-child(3) { animation: grow 1s ease-in-out 0.3s infinite; }
+.spinner span:nth-child(4) { animation: grow 1s ease-in-out 0.475s infinite; }
+
+@keyframes grow {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(1.8); }
+}
+
+</style>
+
+<script>
+    function initLoading() {
+        let loading = document.querySelector(".loading");
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            setTimeout(function () {
+                
+                loading.classList.add("is-hidden");
+                
+                setTimeout(function () {
+                    loading.style.display = "none";
+                    
+                    document.documentElement.classList.remove("is-loading");
+                }, 500);
+            }, 500);
+        });
+    }
+
+    initLoading();
+</script>
 
     </head>
     <body class="">
@@ -901,6 +1007,102 @@ window.__walineCfg = {"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji"
 })();
 </script>
 
+
+
+<style>
+    #TableOfContents > ul, ol {
+        ul, ol {
+            display: none;
+        }
+        .open {
+            display: block;
+        }
+    }
+</style>
+
+<script>
+    function initTocHide() {
+        
+        let toc = document.querySelector(".widget--toc");
+        if (!toc) {
+            return;
+        }
+        
+        window.addEventListener('scroll', function() {
+            
+            let openUl = document.querySelectorAll(".open");
+            if (openUl.length > 0) {
+              openUl.forEach((ul) => {
+                ul.classList.remove("open")
+              })
+            }
+            
+            let currentLi = document.querySelector(".active-class");
+            if (!currentLi) {
+                return
+            }
+            
+            if (currentLi.children.length > 1) {
+                currentLi.children[1].classList.add("open")
+            }
+            
+            let ul = currentLi.parentElement;
+            do {
+                ul.classList.add("open");
+                ul = ul.parentElement.parentElement
+            } while (ul !== undefined && (ul.localName === 'ul' || ul.localName === 'ol'))
+        });
+    }
+    initTocHide()
+</script>
+
+
+
+<style>
+    #backTopBtn {
+        display: none;
+        position: fixed;
+        bottom: 30px;
+        z-index: 99;
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        background-image: url(https://yrqspace.github.io/icons/backTop.svg);
+    }
+</style>
+
+<script>
+    
+
+    function initScrollTop() {
+        let rightSideBar = document.querySelector(".right-sidebar");
+        if (!rightSideBar) {
+            return;
+        }
+        
+        let btn = document.createElement("div");
+        btn.id = "backTopBtn";
+        btn.onclick = backToTop
+        rightSideBar.appendChild(btn)
+        
+        window.onscroll = function() {
+            
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                btn.style.display = "block";
+            } else {
+                btn.style.display = "none";
+            }
+        };
+    }
+
+    
+
+    function backToTop(){
+        window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    initScrollTop();
+</script>
 
     </body>
 </html>
