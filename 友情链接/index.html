@@ -105,19 +105,86 @@
 
 <script>
     function initLoading() {
-        let loading = document.querySelector(".loading");
-        document.addEventListener('DOMContentLoaded', function() {
+        var loading = document.querySelector(".loading");
+        var hidden = false;
+
+        
+        function hideLoading() {
+            if (!loading || hidden) {
+                return;
+            }
+            hidden = true;
+            
+            loading.classList.add("is-hidden");
             
             setTimeout(function () {
+                loading.style.display = "none";
                 
-                loading.classList.add("is-hidden");
-                
-                setTimeout(function () {
-                    loading.style.display = "none";
-                    
-                    document.documentElement.classList.remove("is-loading");
-                }, 500);
+                document.documentElement.classList.remove("is-loading");
             }, 500);
+        }
+
+        
+        function whenImageReady(img, callback) {
+            if (!img) {
+                callback();
+                return;
+            }
+            
+            try { img.loading = "eager"; } catch (e) {}
+            if (img.complete && img.naturalWidth !== 0) {
+                callback();
+                return;
+            }
+            img.addEventListener("load", callback, { once: true });
+            img.addEventListener("error", callback, { once: true });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            var avatar = document.querySelector(".site-avatar img, img.site-logo");
+
+            
+            var articles = document.querySelectorAll(".article-list > article, .article-list .article-item");
+            var total = articles.length;
+            var need = Math.ceil(total / 2);
+
+            var avatarDone = false;
+            var articleDone = 0;
+            var hideScheduled = false;
+
+            function maybeHide() {
+                if (avatarDone && articleDone >= need && !hideScheduled) {
+                    hideScheduled = true;
+                    
+                    setTimeout(hideLoading, 1000);
+                }
+            }
+
+            
+            whenImageReady(avatar, function () {
+                avatarDone = true;
+                maybeHide();
+            });
+
+            if (need === 0) {
+                maybeHide();
+            } else {
+                var counted = 0;
+                Array.prototype.forEach.call(articles, function (article) {
+                    if (counted >= need) {
+                        return;
+                    }
+                    counted++;
+                    whenImageReady(article.querySelector("img"), function () {
+                        articleDone++;
+                        maybeHide();
+                    });
+                });
+            }
+
+            
+            setTimeout(hideLoading, 15000);
         });
     }
 
