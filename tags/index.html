@@ -1719,6 +1719,14 @@
                         
                     </a> 
                 </div>
+            <div class="archives-year">
+                    <a href="/archives/#0001">
+                        
+                            <span class="year">0001</span>
+                            <span class="count">1</span>
+                        
+                    </a> 
+                </div>
             
         </div>
     </section>
@@ -1741,6 +1749,10 @@
     <h2 class="widget-title section-title">分类</h2>
 
     <div class="tagCloud-tags">
+        
+            <a href="/categories/%E8%96%85%E7%BE%8A%E6%AF%9B/" class="font_size_1">
+                薅羊毛
+            </a>
         
             <a href="/categories/%E9%9A%8F%E5%BF%83%E8%AE%B0/" class="font_size_1">
                 随心记
@@ -1986,10 +1998,39 @@
                 });
             }
 
-            setTimeout(function () {
+            
+            function reveal() {
                 toast.classList.add('is-show');
                 markShown();
-            }, 700);
+            }
+
+            function loadingDone() {
+                return !document.documentElement.classList.contains('is-loading');
+            }
+
+            if (loadingDone()) {
+                setTimeout(reveal, 300);
+                return;
+            }
+
+            var done = false;
+            var observer = new MutationObserver(function () {
+                if (!done && loadingDone()) {
+                    done = true;
+                    observer.disconnect();
+                    setTimeout(reveal, 300);
+                }
+            });
+            observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
+            
+            setTimeout(function () {
+                if (!done) {
+                    done = true;
+                    observer.disconnect();
+                    reveal();
+                }
+            }, 20000);
         }
 
         if (document.readyState === 'loading') {
@@ -2315,13 +2356,10 @@ window.__walineCfg = {"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji"
 
 
 <style>
-    #TableOfContents > ul, ol {
-        ul, ol {
-            display: none;
-        }
-        .open {
-            display: block;
-        }
+     
+    #TableOfContents ul,
+    #TableOfContents ol {
+        display: block;
     }
 </style>
 

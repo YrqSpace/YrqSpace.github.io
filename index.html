@@ -1720,6 +1720,14 @@
                         
                     </a> 
                 </div>
+            <div class="archives-year">
+                    <a href="/archives/#0001">
+                        
+                            <span class="year">0001</span>
+                            <span class="count">1</span>
+                        
+                    </a> 
+                </div>
             
         </div>
     </section>
@@ -1742,6 +1750,10 @@
     <h2 class="widget-title section-title">分类</h2>
 
     <div class="tagCloud-tags">
+        
+            <a href="/categories/%E8%96%85%E7%BE%8A%E6%AF%9B/" class="font_size_1">
+                薅羊毛
+            </a>
         
             <a href="/categories/%E9%9A%8F%E5%BF%83%E8%AE%B0/" class="font_size_1">
                 随心记
@@ -1783,7 +1795,7 @@
     
     <header class="article-category">
         
-            <a href="/categories/%E9%9A%8F%E5%BF%83%E8%AE%B0/" style="background-color: #2a9d8f; color: #fff;">
+            <a href="/categories/%E9%9A%8F%E5%BF%83%E8%AE%B0/" >
                 随心记
             </a>
         
@@ -1830,6 +1842,72 @@
 
                 <time class="article-time--reading">
                     阅读时长: 1 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+</article>
+        
+            
+<article class="has-image">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/%E5%85%8D%E8%B4%B9%E4%BA%91%E7%94%B5%E8%84%91%E6%95%99%E7%A8%8B/">
+                <img src="/p/%E5%85%8D%E8%B4%B9%E4%BA%91%E7%94%B5%E8%84%91%E6%95%99%E7%A8%8B/fengmian_hu15738216041711614212.jpg"
+                        srcset="/p/%E5%85%8D%E8%B4%B9%E4%BA%91%E7%94%B5%E8%84%91%E6%95%99%E7%A8%8B/fengmian_hu15738216041711614212.jpg 800w, /p/%E5%85%8D%E8%B4%B9%E4%BA%91%E7%94%B5%E8%84%91%E6%95%99%E7%A8%8B/fengmian_hu9647393134497148747.jpg 1600w"
+                        width="800" 
+                        height="405" 
+                        loading="lazy"
+                        alt="Featured image of post 免费云电脑教程" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E8%96%85%E7%BE%8A%E6%AF%9B/" style="background-color: #00ffe5; color: #fff;">
+                薅羊毛
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/%E5%85%8D%E8%B4%B9%E4%BA%91%E7%94%B5%E8%84%91%E6%95%99%E7%A8%8B/">免费云电脑教程</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 2 分钟
                 </time>
             </div>
         
@@ -2053,10 +2131,39 @@
                 });
             }
 
-            setTimeout(function () {
+            
+            function reveal() {
                 toast.classList.add('is-show');
                 markShown();
-            }, 700);
+            }
+
+            function loadingDone() {
+                return !document.documentElement.classList.contains('is-loading');
+            }
+
+            if (loadingDone()) {
+                setTimeout(reveal, 300);
+                return;
+            }
+
+            var done = false;
+            var observer = new MutationObserver(function () {
+                if (!done && loadingDone()) {
+                    done = true;
+                    observer.disconnect();
+                    setTimeout(reveal, 300);
+                }
+            });
+            observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
+            
+            setTimeout(function () {
+                if (!done) {
+                    done = true;
+                    observer.disconnect();
+                    reveal();
+                }
+            }, 20000);
         }
 
         if (document.readyState === 'loading') {
@@ -2382,13 +2489,10 @@ window.__walineCfg = {"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji"
 
 
 <style>
-    #TableOfContents > ul, ol {
-        ul, ol {
-            display: none;
-        }
-        .open {
-            display: block;
-        }
+     
+    #TableOfContents ul,
+    #TableOfContents ol {
+        display: block;
     }
 </style>
 

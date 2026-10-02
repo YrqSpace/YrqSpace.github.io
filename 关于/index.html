@@ -817,10 +817,39 @@ GitHub 上的 yrqspace 是我折腾各种项目的地方，欢迎来看看。
                 });
             }
 
-            setTimeout(function () {
+            
+            function reveal() {
                 toast.classList.add('is-show');
                 markShown();
-            }, 700);
+            }
+
+            function loadingDone() {
+                return !document.documentElement.classList.contains('is-loading');
+            }
+
+            if (loadingDone()) {
+                setTimeout(reveal, 300);
+                return;
+            }
+
+            var done = false;
+            var observer = new MutationObserver(function () {
+                if (!done && loadingDone()) {
+                    done = true;
+                    observer.disconnect();
+                    setTimeout(reveal, 300);
+                }
+            });
+            observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
+            
+            setTimeout(function () {
+                if (!done) {
+                    done = true;
+                    observer.disconnect();
+                    reveal();
+                }
+            }, 20000);
         }
 
         if (document.readyState === 'loading') {
@@ -1146,13 +1175,10 @@ window.__walineCfg = {"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji"
 
 
 <style>
-    #TableOfContents > ul, ol {
-        ul, ol {
-            display: none;
-        }
-        .open {
-            display: block;
-        }
+     
+    #TableOfContents ul,
+    #TableOfContents ol {
+        display: block;
     }
 </style>
 

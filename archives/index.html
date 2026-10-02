@@ -420,24 +420,37 @@
             <div class="article-list--tile">
                 
                     
-<article class="has-image">
+<article class="">
     <a href="/categories/%E9%9A%8F%E5%BF%83%E8%AE%B0/">
         
         
+
+        <div class="article-details">
+            <h2 class="article-title">随心记</h2>
+        </div>
+    </a>
+</article>
+
+                
+                    
+<article class="has-image">
+    <a href="/categories/%E8%96%85%E7%BE%8A%E6%AF%9B/">
+        
+        
             <div class="article-image">
-                <img src="/categories/%E9%9A%8F%E5%BF%83%E8%AE%B0/joonas-sild-bZTw-BJfkNY-unsplash.53c3513402994d3bd238b0f3979836fd_hu11639811255088322483.jpg" 
+                <img src="/categories/%E8%96%85%E7%BE%8A%E6%AF%9B/haoyangmao.d4a5f5749486c881d221a3d6357e36e3_hu627784546958342715.jpg" 
                         width="250" 
                         height="150" 
                         loading="lazy"
-                        alt="Featured image of post 随心记"
-                        data-key="随心记" 
-                        data-hash="md5-U8NRNAKZTTvSOLDzl5g2/Q==">
+                        alt="Featured image of post 薅羊毛"
+                        data-key="薅羊毛" 
+                        data-hash="md5-1KX1dJSGyIHSIaPWNX424w==">
                 
             </div>
         
 
         <div class="article-details">
-            <h2 class="article-title">随心记</h2>
+            <h2 class="article-title">薅羊毛</h2>
         </div>
     </a>
 </article>
@@ -471,6 +484,34 @@
                         width="120"
                         height="120" 
                         alt="你好,世界"
+                        loading="lazy">
+                
+            </div>
+        
+    </a>
+</article>
+            
+        </div>
+    </div>
+    
+    
+    <div class="archives-group" id="0001">
+        <h2 class="archives-date section-title"><a href="/archives/#0001">0001</a></h2>
+        <div class="article-list--compact">
+            
+                <article>
+    <a href="/p/%E5%85%8D%E8%B4%B9%E4%BA%91%E7%94%B5%E8%84%91%E6%95%99%E7%A8%8B/">
+        <div class="article-details">
+            <h2 class="article-title">免费云电脑教程</h2>
+            <footer class="article-time">
+                <time datetime='0001-01-01T00:00:00Z'>0001-01-01</time>
+            </footer>
+        </div>
+            <div class="article-image">
+                <img src="/p/%E5%85%8D%E8%B4%B9%E4%BA%91%E7%94%B5%E8%84%91%E6%95%99%E7%A8%8B/fengmian_hu9069673655326150893.jpg" 
+                        width="120"
+                        height="120" 
+                        alt="免费云电脑教程"
                         loading="lazy">
                 
             </div>
@@ -693,10 +734,39 @@
                 });
             }
 
-            setTimeout(function () {
+            
+            function reveal() {
                 toast.classList.add('is-show');
                 markShown();
-            }, 700);
+            }
+
+            function loadingDone() {
+                return !document.documentElement.classList.contains('is-loading');
+            }
+
+            if (loadingDone()) {
+                setTimeout(reveal, 300);
+                return;
+            }
+
+            var done = false;
+            var observer = new MutationObserver(function () {
+                if (!done && loadingDone()) {
+                    done = true;
+                    observer.disconnect();
+                    setTimeout(reveal, 300);
+                }
+            });
+            observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
+            
+            setTimeout(function () {
+                if (!done) {
+                    done = true;
+                    observer.disconnect();
+                    reveal();
+                }
+            }, 20000);
         }
 
         if (document.readyState === 'loading') {
@@ -1022,13 +1092,10 @@ window.__walineCfg = {"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji"
 
 
 <style>
-    #TableOfContents > ul, ol {
-        ul, ol {
-            display: none;
-        }
-        .open {
-            display: block;
-        }
+     
+    #TableOfContents ul,
+    #TableOfContents ol {
+        display: block;
     }
 </style>
 
