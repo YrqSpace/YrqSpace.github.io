@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://yrqspace.github.io/p/%E4%BD%A0%E5%A5%BD%E4%B8%96%E7%95%8C/'>
 
-<link rel="stylesheet" href="/scss/style.min.206bbcc3d4c409dfa1f2be0e589a9ab9c1d84480572625a517d59e7b46297298.css"><meta property='og:title' content="你好,世界">
+<link rel="stylesheet" href="/scss/style.min.888e00436a5c4f9c5e082ac6617cca8ae3b46012ab7005385a7791c844046781.css"><meta property='og:title' content="你好,世界">
 <meta property='og:description' content="😄我人生中第一个博客,兴奋! 到底了。因:作者懒">
 <meta property='og:url' content='https://yrqspace.github.io/p/%E4%BD%A0%E5%A5%BD%E4%B8%96%E7%95%8C/'>
 <meta property='og:site_name' content='爱玩win11的me'>
@@ -1166,6 +1166,10 @@ window.__walineCfg = {"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji"
     if (window.topbar && typeof topbar.hide === "function") topbar.hide();
 
     
+    if (typeof initScrollTop === "function") initScrollTop();
+    if (typeof initTocHide === "function") initTocHide();
+
+    
     if (window.__walineBoot) window.__walineBoot();
 
     var cfg = window.__giscusConfig;
@@ -1269,24 +1273,34 @@ window.__walineCfg = {"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji"
     
 
     function initScrollTop() {
-        let rightSideBar = document.querySelector(".right-sidebar");
-        if (!rightSideBar) {
-            return;
-        }
         
+        let rightSideBar = document.querySelector(".right-sidebar");
+        
+        document.querySelectorAll("#backTopBtn").forEach(function (el) { el.remove(); });
         let btn = document.createElement("div");
         btn.id = "backTopBtn";
-        btn.onclick = backToTop
-        rightSideBar.appendChild(btn)
+        btn.onclick = backToTop;
+        if (rightSideBar) {
+            rightSideBar.appendChild(btn);
+        } else {
+            
+            btn.style.right = "30px";
+            document.body.appendChild(btn);
+        }
         
-        window.onscroll = function() {
+        function updateBackTop() {
             
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                 btn.style.display = "block";
             } else {
                 btn.style.display = "none";
             }
-        };
+        }
+        
+        window.removeEventListener("scroll", window.__backTopScroll);
+        window.__backTopScroll = updateBackTop;
+        window.addEventListener("scroll", window.__backTopScroll);
+        updateBackTop();
     }
 
     

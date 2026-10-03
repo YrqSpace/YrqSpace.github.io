@@ -6,11 +6,11 @@
 
 <link rel='canonical' href='https://yrqspace.github.io/p/%E5%85%8D%E8%B4%B9%E4%BA%91%E7%94%B5%E8%84%91%E6%95%99%E7%A8%8B/'>
 
-<link rel="stylesheet" href="/scss/style.min.206bbcc3d4c409dfa1f2be0e589a9ab9c1d84480572625a517d59e7b46297298.css"><meta property='og:title' content="免费云电脑教程">
+<link rel="stylesheet" href="/scss/style.min.888e00436a5c4f9c5e082ac6617cca8ae3b46012ab7005385a7791c844046781.css"><meta property='og:title' content="免费云电脑教程">
 <meta property='og:description' content="可惜管理员权限要另外花 Þ（牛马币） 准备 在开始之前，要先进入 QQ 群： （1群）761392004 （2群）894043961 注册账号 传送至注册页面 用">
 <meta property='og:url' content='https://yrqspace.github.io/p/%E5%85%8D%E8%B4%B9%E4%BA%91%E7%94%B5%E8%84%91%E6%95%99%E7%A8%8B/'>
 <meta property='og:site_name' content='爱玩win11的me'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='og:image' content='https://yrqspace.github.io/p/%E5%85%8D%E8%B4%B9%E4%BA%91%E7%94%B5%E8%84%91%E6%95%99%E7%A8%8B/fengmian.jpg' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2026-10-02T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2026-10-02T00:00:00&#43;00:00'/><meta property='og:image' content='https://yrqspace.github.io/p/%E5%85%8D%E8%B4%B9%E4%BA%91%E7%94%B5%E8%84%91%E6%95%99%E7%A8%8B/fengmian.jpg' />
 <meta name="twitter:title" content="免费云电脑教程">
 <meta name="twitter:description" content="可惜管理员权限要另外花 Þ（牛马币） 准备 在开始之前，要先进入 QQ 群： （1群）761392004 （2群）894043961 注册账号 传送至注册页面 用"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://yrqspace.github.io/p/%E5%85%8D%E8%B4%B9%E4%BA%91%E7%94%B5%E8%84%91%E6%95%99%E7%A8%8B/fengmian.jpg' />
@@ -497,6 +497,19 @@
     
     
     <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2026-10-02</time>
+            </div>
         
 
         
@@ -1279,6 +1292,10 @@ window.__walineCfg = {"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji"
     if (window.topbar && typeof topbar.hide === "function") topbar.hide();
 
     
+    if (typeof initScrollTop === "function") initScrollTop();
+    if (typeof initTocHide === "function") initTocHide();
+
+    
     if (window.__walineBoot) window.__walineBoot();
 
     var cfg = window.__giscusConfig;
@@ -1382,24 +1399,34 @@ window.__walineCfg = {"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji"
     
 
     function initScrollTop() {
-        let rightSideBar = document.querySelector(".right-sidebar");
-        if (!rightSideBar) {
-            return;
-        }
         
+        let rightSideBar = document.querySelector(".right-sidebar");
+        
+        document.querySelectorAll("#backTopBtn").forEach(function (el) { el.remove(); });
         let btn = document.createElement("div");
         btn.id = "backTopBtn";
-        btn.onclick = backToTop
-        rightSideBar.appendChild(btn)
+        btn.onclick = backToTop;
+        if (rightSideBar) {
+            rightSideBar.appendChild(btn);
+        } else {
+            
+            btn.style.right = "30px";
+            document.body.appendChild(btn);
+        }
         
-        window.onscroll = function() {
+        function updateBackTop() {
             
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                 btn.style.display = "block";
             } else {
                 btn.style.display = "none";
             }
-        };
+        }
+        
+        window.removeEventListener("scroll", window.__backTopScroll);
+        window.__backTopScroll = updateBackTop;
+        window.addEventListener("scroll", window.__backTopScroll);
+        updateBackTop();
     }
 
     

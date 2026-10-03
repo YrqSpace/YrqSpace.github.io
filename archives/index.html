@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://yrqspace.github.io/archives/'>
 
-<link rel="stylesheet" href="/scss/style.min.206bbcc3d4c409dfa1f2be0e589a9ab9c1d84480572625a517d59e7b46297298.css"><meta property='og:title' content="归档">
+<link rel="stylesheet" href="/scss/style.min.888e00436a5c4f9c5e082ac6617cca8ae3b46012ab7005385a7791c844046781.css"><meta property='og:title' content="归档">
 <meta property='og:description' content="">
 <meta property='og:url' content='https://yrqspace.github.io/archives/'>
 <meta property='og:site_name' content='爱玩win11的me'>
@@ -420,19 +420,6 @@
             <div class="article-list--tile">
                 
                     
-<article class="">
-    <a href="/categories/%E9%9A%8F%E5%BF%83%E8%AE%B0/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">随心记</h2>
-        </div>
-    </a>
-</article>
-
-                
-                    
 <article class="has-image">
     <a href="/categories/%E8%96%85%E7%BE%8A%E6%AF%9B/">
         
@@ -456,6 +443,19 @@
 </article>
 
                 
+                    
+<article class="">
+    <a href="/categories/%E9%9A%8F%E5%BF%83%E8%AE%B0/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">随心记</h2>
+        </div>
+    </a>
+</article>
+
+                
             </div>
         </div>
         
@@ -472,6 +472,26 @@
         <div class="article-list--compact">
             
                 <article>
+    <a href="/p/%E5%85%8D%E8%B4%B9%E4%BA%91%E7%94%B5%E8%84%91%E6%95%99%E7%A8%8B/">
+        <div class="article-details">
+            <h2 class="article-title">免费云电脑教程</h2>
+            <footer class="article-time">
+                <time datetime='2026-10-02T00:00:00Z'>2026-10-02</time>
+            </footer>
+        </div>
+            <div class="article-image">
+                <img src="/p/%E5%85%8D%E8%B4%B9%E4%BA%91%E7%94%B5%E8%84%91%E6%95%99%E7%A8%8B/fengmian_hu9069673655326150893.jpg" 
+                        width="120"
+                        height="120" 
+                        alt="免费云电脑教程"
+                        loading="lazy">
+                
+            </div>
+        
+    </a>
+</article>
+            
+                <article>
     <a href="/p/%E4%BD%A0%E5%A5%BD%E4%B8%96%E7%95%8C/">
         <div class="article-details">
             <h2 class="article-title">你好,世界</h2>
@@ -484,34 +504,6 @@
                         width="120"
                         height="120" 
                         alt="你好,世界"
-                        loading="lazy">
-                
-            </div>
-        
-    </a>
-</article>
-            
-        </div>
-    </div>
-    
-    
-    <div class="archives-group" id="0001">
-        <h2 class="archives-date section-title"><a href="/archives/#0001">0001</a></h2>
-        <div class="article-list--compact">
-            
-                <article>
-    <a href="/p/%E5%85%8D%E8%B4%B9%E4%BA%91%E7%94%B5%E8%84%91%E6%95%99%E7%A8%8B/">
-        <div class="article-details">
-            <h2 class="article-title">免费云电脑教程</h2>
-            <footer class="article-time">
-                <time datetime='0001-01-01T00:00:00Z'>0001-01-01</time>
-            </footer>
-        </div>
-            <div class="article-image">
-                <img src="/p/%E5%85%8D%E8%B4%B9%E4%BA%91%E7%94%B5%E8%84%91%E6%95%99%E7%A8%8B/fengmian_hu9069673655326150893.jpg" 
-                        width="120"
-                        height="120" 
-                        alt="免费云电脑教程"
                         loading="lazy">
                 
             </div>
@@ -1051,6 +1043,10 @@ window.__walineCfg = {"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji"
     if (window.topbar && typeof topbar.hide === "function") topbar.hide();
 
     
+    if (typeof initScrollTop === "function") initScrollTop();
+    if (typeof initTocHide === "function") initTocHide();
+
+    
     if (window.__walineBoot) window.__walineBoot();
 
     var cfg = window.__giscusConfig;
@@ -1154,24 +1150,34 @@ window.__walineCfg = {"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji"
     
 
     function initScrollTop() {
-        let rightSideBar = document.querySelector(".right-sidebar");
-        if (!rightSideBar) {
-            return;
-        }
         
+        let rightSideBar = document.querySelector(".right-sidebar");
+        
+        document.querySelectorAll("#backTopBtn").forEach(function (el) { el.remove(); });
         let btn = document.createElement("div");
         btn.id = "backTopBtn";
-        btn.onclick = backToTop
-        rightSideBar.appendChild(btn)
+        btn.onclick = backToTop;
+        if (rightSideBar) {
+            rightSideBar.appendChild(btn);
+        } else {
+            
+            btn.style.right = "30px";
+            document.body.appendChild(btn);
+        }
         
-        window.onscroll = function() {
+        function updateBackTop() {
             
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                 btn.style.display = "block";
             } else {
                 btn.style.display = "none";
             }
-        };
+        }
+        
+        window.removeEventListener("scroll", window.__backTopScroll);
+        window.__backTopScroll = updateBackTop;
+        window.addEventListener("scroll", window.__backTopScroll);
+        updateBackTop();
     }
 
     

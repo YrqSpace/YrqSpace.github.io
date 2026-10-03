@@ -6,11 +6,11 @@
 
 <link rel='canonical' href='https://yrqspace.github.io/categories/'>
 
-<link rel="stylesheet" href="/scss/style.min.206bbcc3d4c409dfa1f2be0e589a9ab9c1d84480572625a517d59e7b46297298.css"><meta property='og:title' content="Categories">
+<link rel="stylesheet" href="/scss/style.min.888e00436a5c4f9c5e082ac6617cca8ae3b46012ab7005385a7791c844046781.css"><meta property='og:title' content="Categories">
 <meta property='og:description' content="演示说明">
 <meta property='og:url' content='https://yrqspace.github.io/categories/'>
 <meta property='og:site_name' content='爱玩win11的me'>
-<meta property='og:type' content='website'><meta property='og:updated_time' content=' 2026-09-18T00:00:00&#43;00:00 '/>
+<meta property='og:type' content='website'><meta property='og:updated_time' content=' 2026-10-02T00:00:00&#43;00:00 '/>
 <meta name="twitter:title" content="Categories">
 <meta name="twitter:description" content="演示说明"><link rel="alternate" type="application/rss&#43;xml" href="https://yrqspace.github.io/categories/index.xml">
     <link rel="shortcut icon" href="/favicon.ico" />
@@ -1715,15 +1715,7 @@
                     <a href="/archives/#2026">
                         
                             <span class="year">2026</span>
-                            <span class="count">1</span>
-                        
-                    </a> 
-                </div>
-            <div class="archives-year">
-                    <a href="/archives/#0001">
-                        
-                            <span class="year">0001</span>
-                            <span class="count">1</span>
+                            <span class="count">2</span>
                         
                     </a> 
                 </div>
@@ -1786,22 +1778,11 @@
     <section class="article-list--compact">
         
             <article>
-    <a href="/categories/%E9%9A%8F%E5%BF%83%E8%AE%B0/">
-        <div class="article-details">
-            <h2 class="article-title">随心记</h2>
-            <footer class="article-time">
-                <time datetime='2026-09-18T00:00:00Z'>2026-09-18</time>
-            </footer>
-        </div>
-    </a>
-</article>
-        
-            <article>
     <a href="/categories/%E8%96%85%E7%BE%8A%E6%AF%9B/">
         <div class="article-details">
             <h2 class="article-title">薅羊毛</h2>
             <footer class="article-time">
-                <time datetime='0001-01-01T00:00:00Z'>0001-01-01</time>
+                <time datetime='2026-10-02T00:00:00Z'>2026-10-02</time>
             </footer>
         </div>
             <div class="article-image">
@@ -1813,6 +1794,17 @@
                 
             </div>
         
+    </a>
+</article>
+        
+            <article>
+    <a href="/categories/%E9%9A%8F%E5%BF%83%E8%AE%B0/">
+        <div class="article-details">
+            <h2 class="article-title">随心记</h2>
+            <footer class="article-time">
+                <time datetime='2026-09-18T00:00:00Z'>2026-09-18</time>
+            </footer>
+        </div>
     </a>
 </article>
         
@@ -2345,6 +2337,10 @@ window.__walineCfg = {"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji"
     if (window.topbar && typeof topbar.hide === "function") topbar.hide();
 
     
+    if (typeof initScrollTop === "function") initScrollTop();
+    if (typeof initTocHide === "function") initTocHide();
+
+    
     if (window.__walineBoot) window.__walineBoot();
 
     var cfg = window.__giscusConfig;
@@ -2448,24 +2444,34 @@ window.__walineCfg = {"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji"
     
 
     function initScrollTop() {
-        let rightSideBar = document.querySelector(".right-sidebar");
-        if (!rightSideBar) {
-            return;
-        }
         
+        let rightSideBar = document.querySelector(".right-sidebar");
+        
+        document.querySelectorAll("#backTopBtn").forEach(function (el) { el.remove(); });
         let btn = document.createElement("div");
         btn.id = "backTopBtn";
-        btn.onclick = backToTop
-        rightSideBar.appendChild(btn)
+        btn.onclick = backToTop;
+        if (rightSideBar) {
+            rightSideBar.appendChild(btn);
+        } else {
+            
+            btn.style.right = "30px";
+            document.body.appendChild(btn);
+        }
         
-        window.onscroll = function() {
+        function updateBackTop() {
             
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                 btn.style.display = "block";
             } else {
                 btn.style.display = "none";
             }
-        };
+        }
+        
+        window.removeEventListener("scroll", window.__backTopScroll);
+        window.__backTopScroll = updateBackTop;
+        window.addEventListener("scroll", window.__backTopScroll);
+        updateBackTop();
     }
 
     
