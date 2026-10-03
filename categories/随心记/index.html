@@ -18,6 +18,8 @@
 
   
 
+
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
 <script>document.documentElement.classList.add('is-loading');</script>
 <div class="loading">
     <div class="spinner">
@@ -26,12 +28,16 @@
         <span></span>
         <span></span>
     </div>
+    <div class="captcha-prepare" id="captchaPrepare">正在准备人机验证...</div>
+    <div class="captcha-box" id="captchaBox"></div>
+    <div class="captcha-after" id="captchaAfter">请稍后,正在请求blog-turnstile接口</div>
 </div>
 
 <style>
     .loading {
         position: fixed;
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         top: 0;
@@ -42,7 +48,7 @@
          
         background-color: var(--body-background, #f5f5fa);
          
-        transition: opacity 0.5s ease;
+        transition: opacity 0.1s ease;
     }
 
      
@@ -76,38 +82,85 @@
     }
 
     .spinner {
-  --gap: 5px;
-  --clr: #3b82f6;    
-  --height: 23px;
-  width: 100px;
-  height: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--gap);
-}
+        --gap: 5px;
+        --clr: #3b82f6;    
+        --height: 23px;
+        width: 100px;
+        height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--gap);
+        transition: opacity 0.35s ease;
+    }
+     
+    .spinner.is-hidden {
+        opacity: 0;
+    }
 
-.spinner span {
-  background: var(--clr);
-  width: 6px;
-  height: var(--height);
-  animation: grow 1s ease-in-out infinite;
-}
-.spinner span:nth-child(2) { animation: grow 1s ease-in-out 0.15s infinite; }
-.spinner span:nth-child(3) { animation: grow 1s ease-in-out 0.3s infinite; }
-.spinner span:nth-child(4) { animation: grow 1s ease-in-out 0.475s infinite; }
+    .spinner span {
+        background: var(--clr);
+        width: 6px;
+        height: var(--height);
+        animation: grow 1s ease-in-out infinite;
+    }
+    .spinner span:nth-child(2) { animation: grow 1s ease-in-out 0.15s infinite; }
+    .spinner span:nth-child(3) { animation: grow 1s ease-in-out 0.3s infinite; }
+    .spinner span:nth-child(4) { animation: grow 1s ease-in-out 0.475s infinite; }
 
-@keyframes grow {
-  0%, 100% { transform: scaleY(1); }
-  50% { transform: scaleY(1.8); }
-}
+    @keyframes grow {
+        0%, 100% { transform: scaleY(1); }
+        50% { transform: scaleY(1.8); }
+    }
 
+     
+    .captcha-prepare {
+        display: none;
+        margin-top: 6px;
+        font-size: 14px;
+        letter-spacing: 1px;
+        color: var(--body-text-color, #555);
+    }
+    .captcha-prepare.is-show {
+        display: block;
+        animation: captchaFade 0.3s ease;
+    }
+
+     
+    .captcha-box {
+        display: none;
+        margin-top: 6px;
+        min-height: 65px;
+    }
+    .captcha-box.is-show {
+        display: block;
+        animation: captchaFade 0.3s ease;
+    }
+
+     
+    .captcha-after {
+        display: none;
+        margin-top: 6px;
+        font-size: 14px;
+        letter-spacing: 1px;
+        color: var(--body-text-color, #555);
+    }
+    .captcha-after.is-show {
+        display: block;
+        animation: captchaFade 0.3s ease;
+    }
+
+    @keyframes captchaFade {
+        from { opacity: 0; transform: translateY(6px); }
+        to { opacity: 1; transform: none; }
+    }
 </style>
 
 <script>
     function initLoading() {
         var loading = document.querySelector(".loading");
         var hidden = false;
+        var captchaStarted = false;
 
         
         function hideLoading() {
@@ -123,6 +176,86 @@
                 
                 document.documentElement.classList.remove("is-loading");
             }, 500);
+        }
+
+        
+        
+        function startCaptcha() {
+            if (captchaStarted) {
+                return;
+            }
+            captchaStarted = true;
+
+            var spinner = document.querySelector(".loading .spinner");
+            var prepare = document.getElementById("captchaPrepare");
+            var box = document.getElementById("captchaBox");
+
+            
+            if (spinner) {
+                spinner.classList.add("is-hidden");
+            }
+            
+            if (prepare) {
+                prepare.classList.add("is-show");
+            }
+
+            
+            setTimeout(function () {
+                if (prepare) {
+                    prepare.classList.remove("is-show");
+                }
+                if (box) {
+                    box.classList.add("is-show");
+                }
+                renderTurnstile(box);
+            }, 500);
+        }
+
+        
+        function renderTurnstile(box) {
+            if (!box) {
+                return;
+            }
+            var waited = 0;
+            var timer = setInterval(function () {
+                if (window.turnstile && typeof window.turnstile.render === "function") {
+                    clearInterval(timer);
+                    doRender(box);
+                } else if (waited >= 8000) {
+                    clearInterval(timer);
+                    box.innerHTML = '<p style="margin:0 0 12px;font-size:13px;text-align:center;">验证组件加载失败，请检查网络后重试</p>';
+                    var btn = document.createElement("button");
+                    btn.textContent = "重新加载";
+                    btn.style.cssText = "display:block;margin:0 auto;padding:8px 18px;border:0;border-radius:8px;background:var(--accent-color,#3b82f6);color:#fff;cursor:pointer;";
+                    btn.onclick = function () {
+                        location.reload();
+                    };
+                    box.appendChild(btn);
+                }
+                waited += 200;
+            }, 200);
+        }
+
+        function doRender(box) {
+            var scheme = document.documentElement.getAttribute("data-scheme");
+            var theme = scheme === "dark" ? "dark" : (scheme === "light" ? "light" : "auto");
+            try {
+                window.turnstile.render(box, {
+                    sitekey: "0x4AAAAAAFMoHgJeuUgOvCLv",
+                    theme: theme,
+                    callback: function () {
+                        
+                        var prepare = document.getElementById("captchaPrepare");
+                        var after = document.getElementById("captchaAfter");
+                        if (box) { box.classList.remove("is-show"); }
+                        if (prepare) { prepare.classList.remove("is-show"); }
+                        if (after) { after.classList.add("is-show"); }
+                        setTimeout(hideLoading, 800);
+                    }
+                });
+            } catch (e) {
+                box.innerHTML = '<p style="margin:0;font-size:13px;text-align:center;">验证初始化失败，请刷新页面重试</p>';
+            }
         }
 
         
@@ -152,24 +285,24 @@
 
             var avatarDone = false;
             var articleDone = 0;
-            var hideScheduled = false;
+            var startScheduled = false;
 
-            function maybeHide() {
-                if (avatarDone && articleDone >= need && !hideScheduled) {
-                    hideScheduled = true;
+            function maybeStart() {
+                if (avatarDone && articleDone >= need && !startScheduled) {
+                    startScheduled = true;
                     
-                    setTimeout(hideLoading, 1000);
+                    setTimeout(startCaptcha, 1000);
                 }
             }
 
             
             whenImageReady(avatar, function () {
                 avatarDone = true;
-                maybeHide();
+                maybeStart();
             });
 
             if (need === 0) {
-                maybeHide();
+                maybeStart();
             } else {
                 var counted = 0;
                 Array.prototype.forEach.call(articles, function (article) {
@@ -179,13 +312,13 @@
                     counted++;
                     whenImageReady(article.querySelector("img"), function () {
                         articleDone++;
-                        maybeHide();
+                        maybeStart();
                     });
                 });
             }
 
             
-            setTimeout(hideLoading, 15000);
+            setTimeout(startCaptcha, 15000);
         });
     }
 
