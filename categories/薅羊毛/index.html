@@ -468,13 +468,24 @@
 </div>
 
 <script>
-  initTime();
+  
+  (function startClockWhenLoaded() {
+    function boot() { initTime(); }
+    if (!document.documentElement.classList.contains("is-loading")) { boot(); return; }
+    var obs = new MutationObserver(function () {
+      if (!document.documentElement.classList.contains("is-loading")) {
+        obs.disconnect();
+        boot();
+      }
+    });
+    obs.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+  })();
 
   
 
   function initTime() {
     
-    const now = new Date(Date.now() + 3000);
+    const now = new Date();
     const perHour = 360 / 12;
     const perHourMinute = perHour / 60;
     const perSecond = 360 / 60;
@@ -497,6 +508,11 @@
 </script>
 
 <style>
+ 
+html.is-loading .clock-wrapper,
+html.is-loading .clock-wrapper * {
+  animation-play-state: paused !important;
+}
 .clock-wrapper {
  
   overflow: hidden;
