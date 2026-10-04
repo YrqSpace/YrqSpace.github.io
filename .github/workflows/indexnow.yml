@@ -1,0 +1,16 @@
+name: IndexNow
+on:
+  push:
+    branches: [master]
+  schedule:
+    - cron: '0 4 */3 * *'
+
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Submit URLs to IndexNow
+        uses: bojieyang/indexnow-action@v2
+        with:
+          sitemap-location: https://yrqspace.github.io/sitemap.xml
+          key: ${{ secrets.INDEXNOW_KEY }}
