@@ -1854,9 +1854,15 @@ html.is-loading .clock-wrapper * {
             
         
             
-                <section class="widget search-widget">
-        <div class="widget-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                
+    
+    <form action="/search/" method="get" role="search" class="pf-nav-search widget">
+        <p>
+            <label for="pf-nav-keyword">搜索</label>
+            <input id="pf-nav-keyword" type="search" name="keyword" required
+                   placeholder="输入关键词..." aria-label="搜索" />
+            <button type="submit" title="搜索">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
   <circle cx="10" cy="10" r="7" />
   <line x1="21" y1="21" x2="15" y2="15" />
@@ -1864,76 +1870,57 @@ html.is-loading .clock-wrapper * {
 
 
 
-        </div>
-        <h2 class="widget-title section-title">搜索</h2>
+            </button>
+        </p>
+    </form>
 
-        
-        <div id="pf-sidebar-search" data-searchpage="/search/"></div>
-
-        <link rel="stylesheet" href="/pagefind/pagefind-ui.css">
-        <style>
-            .widget.search-widget #pf-sidebar-search .pagefind-ui {
-                --pagefind-ui-primary: var(--accent-color);
-                --pagefind-ui-text: var(--card-text-color-main);
-                --pagefind-ui-background: var(--card-background);
-                --pagefind-ui-border: var(--card-separator-color);
-                --pagefind-ui-tag: var(--card-background-selected);
-                --pagefind-ui-border-width: 1px;
-                --pagefind-ui-border-radius: var(--card-border-radius);
-                --pagefind-ui-font: var(--base-font-family);
-                --pagefind-ui-scale: 0.85;
-                width: 100%;
-            }
-        </style>
-
-        <script src="/pagefind/pagefind-ui.js" onerror="window.__pfSidebarError = true;"></script>
-        <script>
-        (function () {
-            function mount() {
-                var el = document.getElementById('pf-sidebar-search');
-                if (!el || el.dataset.pfMounted === '1') return;
-
-                
-                if (typeof PagefindUI === 'undefined' || window.__pfSidebarError) {
-                    var sp = el.getAttribute('data-searchpage') || '/search/';
-                    el.innerHTML = '<p><a href="' + sp + '">前往搜索页 →</a></p>';
-                    el.dataset.pfMounted = '1';
-                    return;
-                }
-
-                el.innerHTML = '';
-                new PagefindUI({
-                    element: "#pf-sidebar-search",
-                    showSubResults: false,
-                    showImages: false,
-                    resetStyles: false,
-                    translations: {
-                        placeholder: "搜索文章…",
-                        clear_search: "清空",
-                        load_more: "加载更多结果",
-                        search_label: "搜索本站",
-                        zero_results: "没有找到相关内容",
-                        many_results: "找到 [COUNT] 条结果",
-                        one_result: "找到 1 条结果",
-                        searching: "搜索中…"
-                    }
-                });
-                el.dataset.pfMounted = '1';
-            }
-
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', mount);
-            } else {
-                mount();
-            }
-            document.addEventListener('pjax:complete', function () {
-                var el = document.getElementById('pf-sidebar-search');
-                if (el) el.dataset.pfMounted = '';
-                mount();
-            });
-        })();
-        </script>
-    </section>
+    <style>
+        .pf-nav-search {
+            position: relative;
+            --button-size: 60px;
+        }
+        .pf-nav-search p { position: relative; margin: 0; }
+        .pf-nav-search label {
+            position: absolute;
+            top: 10px;
+            inset-inline-start: 20px;
+            font-size: 1.3rem;
+            color: var(--card-text-color-tertiary);
+        }
+        .pf-nav-search input {
+            padding: 30px 20px 15px 20px;
+            border-radius: var(--card-border-radius);
+            background-color: var(--card-background);
+            box-shadow: var(--shadow-l1);
+            color: var(--card-text-color-main);
+            width: 100%;
+            border: 0;
+            -webkit-appearance: none;
+            transition: box-shadow 0.3s ease;
+            font-size: 1.5rem;
+        }
+        .pf-nav-search input:focus { outline: 0; box-shadow: var(--shadow-l2); }
+        .pf-nav-search button {
+            position: absolute;
+            inset-inline-end: 0;
+            top: 0;
+            height: 100%;
+            width: var(--button-size);
+            cursor: pointer;
+            background-color: transparent;
+            border: 0;
+            padding: 0 10px;
+        }
+        .pf-nav-search button:focus { outline: 0; }
+        .pf-nav-search button:focus svg { stroke-width: 2; color: var(--accent-color); }
+        .pf-nav-search button svg {
+            color: var(--card-text-color-secondary);
+            stroke-width: 1.33;
+            transition: all 0.3s ease;
+            width: 20px;
+            height: 20px;
+        }
+    </style>
             
         
             
