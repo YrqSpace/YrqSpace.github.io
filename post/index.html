@@ -19,7 +19,22 @@
 
 
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
-<script>document.documentElement.classList.add('is-loading');</script>
+<script>
+    (function () {
+        
+        var KEY = 'turnstile-passed';
+        var passed = false;
+        try { passed = sessionStorage.getItem(KEY) === '1'; } catch (e) { passed = false; }
+        
+        window.__turnstilePassed = passed;
+        if (passed) {
+            
+            document.documentElement.classList.add('turnstile-passed');
+        } else {
+            document.documentElement.classList.add('is-loading');
+        }
+    })();
+</script>
 <div class="loading">
     <div class="spinner">
         <span></span>
@@ -54,6 +69,11 @@
     .loading.is-hidden {
         opacity: 0;
         pointer-events: none;
+    }
+
+     
+    html.turnstile-passed .loading {
+        display: none !important;
     }
 
      
@@ -122,7 +142,7 @@
     }
     .captcha-prepare.is-show {
         display: block;
-        animation: captchaFade 0.3s ease;
+        animation: captchaSlideIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
     }
 
      
@@ -133,7 +153,7 @@
     }
     .captcha-box.is-show {
         display: block;
-        animation: captchaFade 0.3s ease;
+        animation: captchaSlideIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
     }
 
      
@@ -146,12 +166,13 @@
     }
     .captcha-after.is-show {
         display: block;
-        animation: captchaFade 0.3s ease;
+        animation: captchaSlideIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
     }
 
-    @keyframes captchaFade {
-        from { opacity: 0; transform: translateY(6px); }
-        to { opacity: 1; transform: none; }
+     
+    @keyframes captchaSlideIn {
+        from { opacity: 0; transform: translateX(60px); }
+        to { opacity: 1; transform: translateX(0); }
     }
 </style>
 
@@ -160,6 +181,15 @@
         var loading = document.querySelector(".loading");
         var hidden = false;
         var captchaStarted = false;
+
+        
+        if (window.__turnstilePassed) {
+            if (loading) {
+                loading.style.display = "none";
+            }
+            document.documentElement.classList.remove("is-loading");
+            return;
+        }
 
         
         function hideLoading() {
@@ -243,6 +273,8 @@
                     sitekey: "0x4AAAAAAFMoHgJeuUgOvCLv",
                     theme: theme,
                     callback: function () {
+                        
+                        try { sessionStorage.setItem("turnstile-passed", "1"); } catch (e) {}
                         
                         var prepare = document.getElementById("captchaPrepare");
                         var after = document.getElementById("captchaAfter");
@@ -2665,6 +2697,9 @@ window.__walineCfg = {"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji"
 
 
 <script src=/background/fish.9a6f557c6803ec27ad4d8c49dbd42095eb8a1236eac60d90ffa5ef6b512f36f3.js></script>
+
+
+
 
     </body>
 </html>
