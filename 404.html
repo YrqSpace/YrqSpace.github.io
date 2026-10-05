@@ -579,25 +579,85 @@
 </aside>
 
             <main class="main full-width">
-    <div class="not-found-card">
-        <h1 class="article-title">404 错误</h1>
-        <h2 class="article-subtitle">页面不存在</h2>
+<div class="nf-wrap">
+    <div class="nf-card">
+        <div class="nf-404" id="nf404">4<span class="nf-zero">0</span>4</div>
+        <h1 class="nf-title">哎呀，迷路了</h1>
+        <p class="nf-desc" id="nfDesc">这里是博客的无人区，连小鱼都游走了。</p>
+        <a class="nf-btn" href="/">回首页逛逛</a>
     </div>
-    <footer class="site-footer">
-    <section class="copyright">
-        &copy; 
-        
-            2020 - 
-        
-        2026 爱玩win11的me
-    </section>
-    
-    <section class="powerby">
-        Build using Hugo <br />
-        
-    </section>
-</footer>
+</div>
 
+<style>
+.nf-wrap {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 1rem;
+    text-align: center;
+}
+.nf-card {
+    background: var(--card-background);
+    border-radius: 16px;
+    padding: 3rem 2.5rem;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, .08);
+    max-width: 480px;
+    width: 100%;
+}
+.nf-404 {
+    font-size: 5rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--accent-color);
+    cursor: pointer;
+    user-select: none;
+    display: inline-block;
+}
+.nf-zero { display: inline-block; }
+.nf-title { margin: 1rem 0 .5rem; font-size: 1.5rem; }
+.nf-desc { color: var(--body-text-color); opacity: .75; margin-bottom: 1.5rem; }
+
+ 
+.nf-btn {
+    display: inline-block;
+    padding: .6rem 1.6rem;
+    border-radius: 6px;
+    background: var(--accent-color);
+    color: var(--accent-color-text);
+    text-decoration: none;
+    font-weight: 500;
+    transition: opacity .2s;
+}
+.nf-btn:hover { opacity: .85; }
+
+@keyframes nf-shake {
+    0%, 100% { transform: rotate(0); }
+    25% { transform: rotate(-8deg); }
+    75% { transform: rotate(8deg); }
+}
+.nf-shake { animation: nf-shake .4s ease; }
+</style>
+
+<script>
+(function () {
+    var descs = [
+        '这里是博客的无人区，连小鱼都游走了。',
+        '你好像打错地址了……要不回首页逛逛？',
+        '这条链接不存在，但小鱼还在努力游。',
+        '迷路了吧？点击数字可以解压哦。',
+        '404 不是错误，是通往首页的传送门。'
+    ];
+    document.getElementById('nfDesc').textContent =
+        descs[Math.floor(Math.random() * descs.length)];
+    document.getElementById('nf404').addEventListener('click', function () {
+        this.classList.remove('nf-shake');
+        void this.offsetWidth;
+        this.classList.add('nf-shake');
+    });
+})();
+</script>
 
             </main>
         </div>
