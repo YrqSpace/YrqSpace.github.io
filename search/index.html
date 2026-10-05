@@ -355,7 +355,26 @@
 
     initLoading();
 </script>
-<link rel="preload" href="/search/index.json" as="fetch" crossorigin="anonymous">
+
+    
+    <link rel="stylesheet" href="/pagefind/pagefind-ui.css">
+    <style>
+        #search {
+            --pagefind-ui-primary: var(--accent-color);
+            --pagefind-ui-text: var(--card-text-color-main);
+            --pagefind-ui-background: var(--card-background);
+            --pagefind-ui-border: var(--card-separator-color);
+            --pagefind-ui-tag: var(--card-background-selected);
+            --pagefind-ui-border-width: 1px;
+            --pagefind-ui-border-radius: var(--card-border-radius);
+            --pagefind-ui-font: var(--base-font-family);
+        }
+        .search-page-wrap { width: 100%; max-width: 900px; margin: 0 auto; }
+        #search .pagefind-ui__search-input { font-weight: 400; }
+        #search .pagefind-ui__result-link { color: var(--accent-color); }
+        #pf-hint { display: none; margin-top: 1rem; font-size: .9rem; color: var(--card-text-color-secondary); }
+    </style>
+
     </head>
     <body class="template-search">
     <script>
@@ -579,32 +598,76 @@
 </aside>
 
             <main class="main full-width">
-<form action="/search/" class="search-form"data-json="/search/index.json">
-    <p>
-        <label>搜索</label>
-        <input name="keyword" placeholder="输入关键词..." />
-    </p>
+<div class="search-page-wrap">
+    <h1 class="section-title">搜索</h1>
 
-    <button title="搜索">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="10" cy="10" r="7" />
-  <line x1="21" y1="21" x2="15" y2="15" />
-</svg>
-
-
-
-    </button>
-</form>
-
-<div class="search-result">
-    <h3 class="search-result--title section-title"></h3>
-    <div class="search-result--list article-list--compact"></div>
+    
+    <div id="search"></div>
+    <p id="pf-hint"></p>
 </div>
 
+
+<script src="/pagefind/pagefind-ui.js" onerror="window.__pfLoadError = true;"></script>
 <script>
-    window.searchResultTitleTemplate = "#PAGES_COUNT 个结果"
-</script><script type="text/javascript" src="/ts/search.js" defer></script>
+(function () {
+    window.__pfMount = function () {
+        var el = document.getElementById('search');
+        if (!el) return;
+        if (el.dataset.pfMounted === '1') return;
+
+        if (typeof PagefindUI === 'undefined' || window.__pfLoadError) {
+            var hint = document.getElementById('pf-hint');
+            if (hint) {
+                hint.style.display = 'block';
+                hint.textContent = '搜索索引尚未生成：请先构建站点并运行 pagefind，再用静态服务器打开 public/ 目录（hugo server 不会提供 /pagefind/ 资源）。';
+            }
+            return;
+        }
+
+        el.innerHTML = '';
+        new PagefindUI({
+            element: "#search",
+            showSubResults: true,
+            showImages: false,
+            resetStyles: false,
+            translations: {
+                placeholder: "搜索文章…",
+                clear_search: "清空",
+                load_more: "加载更多结果",
+                search_label: "搜索本站",
+                filters_label: "筛选",
+                zero_results: "没有找到与 “[SEARCH_TERM]” 相关的内容",
+                many_results: "找到 [COUNT] 条与 “[SEARCH_TERM]” 相关的结果",
+                one_result: "找到 1 条与 “[SEARCH_TERM]” 相关的结果",
+                alt_search: "未找到 “[SEARCH_TERM]”，改为显示 “[DIFFERENT_TERM]” 的结果",
+                search_suggestion: "未找到 “[SEARCH_TERM]”，请尝试以下关键词之一：",
+                searching: "搜索中…"
+            }
+        });
+        el.dataset.pfMounted = '1';
+
+        var hint = document.getElementById('pf-hint');
+        if (hint) hint.style.display = 'none';
+    };
+
+    
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', window.__pfMount);
+    } else {
+        window.__pfMount();
+    }
+
+    
+    if (!window.__pfPjaxBound) {
+        window.__pfPjaxBound = true;
+        document.addEventListener('pjax:complete', function () {
+            var el = document.getElementById('search');
+            if (el) el.dataset.pfMounted = '';
+            if (typeof window.__pfMount === 'function') window.__pfMount();
+        });
+    }
+})();
+</script>
 
 <footer class="site-footer">
     <section class="copyright">
