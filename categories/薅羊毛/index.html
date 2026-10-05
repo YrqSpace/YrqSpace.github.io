@@ -1855,13 +1855,9 @@ html.is-loading .clock-wrapper * {
             
         
             
-                <form action="/search/" class="search-form widget" >
-        <p>
-            <label>搜索</label>
-            <input name="keyword" required placeholder="输入关键词..." />
-        
-            <button title="搜索">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <section class="widget search-widget">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
   <circle cx="10" cy="10" r="7" />
   <line x1="21" y1="21" x2="15" y2="15" />
@@ -1869,9 +1865,76 @@ html.is-loading .clock-wrapper * {
 
 
 
-            </button>
-        </p>
-    </form>
+        </div>
+        <h2 class="widget-title section-title">搜索</h2>
+
+        
+        <div id="pf-sidebar-search" data-searchpage="/search/"></div>
+
+        <link rel="stylesheet" href="/pagefind/pagefind-ui.css">
+        <style>
+            .widget.search-widget #pf-sidebar-search .pagefind-ui {
+                --pagefind-ui-primary: var(--accent-color);
+                --pagefind-ui-text: var(--card-text-color-main);
+                --pagefind-ui-background: var(--card-background);
+                --pagefind-ui-border: var(--card-separator-color);
+                --pagefind-ui-tag: var(--card-background-selected);
+                --pagefind-ui-border-width: 1px;
+                --pagefind-ui-border-radius: var(--card-border-radius);
+                --pagefind-ui-font: var(--base-font-family);
+                --pagefind-ui-scale: 0.85;
+                width: 100%;
+            }
+        </style>
+
+        <script src="/pagefind/pagefind-ui.js" onerror="window.__pfSidebarError = true;"></script>
+        <script>
+        (function () {
+            function mount() {
+                var el = document.getElementById('pf-sidebar-search');
+                if (!el || el.dataset.pfMounted === '1') return;
+
+                
+                if (typeof PagefindUI === 'undefined' || window.__pfSidebarError) {
+                    var sp = el.getAttribute('data-searchpage') || '/search/';
+                    el.innerHTML = '<p><a href="' + sp + '">前往搜索页 →</a></p>';
+                    el.dataset.pfMounted = '1';
+                    return;
+                }
+
+                el.innerHTML = '';
+                new PagefindUI({
+                    element: "#pf-sidebar-search",
+                    showSubResults: false,
+                    showImages: false,
+                    resetStyles: false,
+                    translations: {
+                        placeholder: "搜索文章…",
+                        clear_search: "清空",
+                        load_more: "加载更多结果",
+                        search_label: "搜索本站",
+                        zero_results: "没有找到相关内容",
+                        many_results: "找到 [COUNT] 条结果",
+                        one_result: "找到 1 条结果",
+                        searching: "搜索中…"
+                    }
+                });
+                el.dataset.pfMounted = '1';
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', mount);
+            } else {
+                mount();
+            }
+            document.addEventListener('pjax:complete', function () {
+                var el = document.getElementById('pf-sidebar-search');
+                if (el) el.dataset.pfMounted = '';
+                mount();
+            });
+        })();
+        </script>
+    </section>
             
         
             
