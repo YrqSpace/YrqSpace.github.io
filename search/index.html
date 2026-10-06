@@ -595,6 +595,30 @@
     #search .pagefind-ui__search-input { font-weight: 400; }
     #search .pagefind-ui__result-link { color: var(--accent-color); }
     #pf-hint { display: none; margin-top: 1rem; font-size: .9rem; color: var(--card-text-color-secondary); }
+
+     
+    #search .pagefind-ui__search-clear {
+        color: transparent;
+        font-size: 0;
+        line-height: 0;
+        overflow: hidden;
+        background-color: transparent;
+        position: relative;
+    }
+    #search .pagefind-ui__search-clear::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        margin: auto;
+        width: 20px;
+        height: 20px;
+        background-color: var(--pagefind-ui-text);
+        opacity: .55;
+        -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 6l-12 12'/%3E%3Cpath d='M6 6l12 12'/%3E%3C/svg%3E") center / contain no-repeat;
+        mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 6l-12 12'/%3E%3Cpath d='M6 6l12 12'/%3E%3C/svg%3E") center / contain no-repeat;
+        transition: opacity .15s ease;
+    }
+    #search .pagefind-ui__search-clear:hover::before { opacity: 1; }
 </style>
 
 <div class="search-page-wrap">
