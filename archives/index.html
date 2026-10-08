@@ -1496,5 +1496,60 @@ window.__walineCfg = {"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji"
 })();
 </script>
 
+
+<script>
+(function () {
+    function buildAlt(img) {
+        if (img.getAttribute('alt') !== null && img.getAttribute('alt').trim() !== '') return null;
+
+        if (img.dataset && img.dataset.key && img.dataset.key.trim()) return img.dataset.key.trim();
+
+        var sec = img.closest('.section-card');
+        if (sec) {
+            var term = sec.querySelector('.section-term');
+            if (term && term.textContent.trim()) return term.textContent.trim();
+            var desc = sec.querySelector('.section-description');
+            if (desc && desc.textContent.trim()) return desc.textContent.trim();
+            var h = sec.querySelector('h1, h2');
+            if (h && h.textContent.trim()) return h.textContent.trim();
+        }
+
+        var art = img.closest('article') || img.closest('.article-details');
+        if (art) {
+            var t = art.querySelector('.article-title');
+            if (t && t.textContent.trim()) return t.textContent.trim();
+        }
+
+        var src = img.getAttribute('src') || '';
+        var base = decodeURIComponent(src.split('/').pop().split('?')[0]).replace(/\.[a-z0-9]+$/i, '');
+        base = base.replace(/[-_]+/g, ' ').replace(/\s+/g, ' ').trim();
+        var pt = document.querySelector('.article-title, h1');
+        var pageTitle = pt ? pt.textContent.trim() : '';
+        if (base && !/^[\d\s]+$/.test(base)) return base;
+        return (pageTitle ? pageTitle + ' ' : '') + '配图';
+    }
+
+    function runAltFix() {
+        var imgs = document.querySelectorAll('img:not([alt])');
+        Array.prototype.forEach.call(imgs, function (img) {
+            var a = buildAlt(img);
+            if (a) img.setAttribute('alt', a);
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', runAltFix);
+    } else {
+        runAltFix();
+    }
+    ['pjax:complete', 'pjax:end', 'pjax:success'].forEach(function (e) {
+        document.addEventListener(e, runAltFix);
+    });
+    window.addEventListener('load', runAltFix);
+    setTimeout(runAltFix, 1500);
+    setTimeout(runAltFix, 3000);
+})();
+</script>
+
     </body>
 </html>
