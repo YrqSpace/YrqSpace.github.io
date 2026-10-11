@@ -1573,5 +1573,28 @@ function closeCookieModal() {
 })();
 </script>
 
+
+
+
+<script>
+if (!window.__pjaxPagefindFix) {
+    window.__pjaxPagefindFix = true;
+    document.addEventListener('click', function (e) {
+        var link = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+        if (!link || !window.pjax) return;
+        if (!link.closest('.pagefind-ui')) return;
+        if (link.target === '_blank' || link.getAttribute('rel') === 'external') return;
+        var url = link.getAttribute('href');
+        if (!url || url.charAt(0) === '#') return;
+        e.preventDefault();
+        if (typeof window.pjax.loadUrl === 'function') {
+            window.pjax.loadUrl(link.href);
+        } else {
+            location.href = link.href;
+        }
+    }, true);
+}
+</script>
+
     </body>
 </html>
