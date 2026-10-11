@@ -1554,14 +1554,18 @@ window.__walineCfg = {"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji"
 
 
 <style>
-#cookie-modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:90%;max-width:520px;height:60vh;background:var(--card-background);border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,.25);z-index:9998;display:none;flex-direction:column;overflow:hidden;}
-#cookie-modal.is-show{display:flex;}
+#cookie-modal-backdrop{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.45);z-index:9997;opacity:0;visibility:hidden;transition:opacity .3s ease,visibility .3s ease;}
+#cookie-modal-backdrop.is-show{opacity:1;visibility:visible;}
+#cookie-modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.92);width:90%;max-width:520px;height:60vh;background:var(--card-background);border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,.25);z-index:9998;opacity:0;visibility:hidden;display:flex;flex-direction:column;overflow:hidden;transition:transform .3s cubic-bezier(.22,1,.36,1),opacity .3s ease,visibility .3s ease;}
+#cookie-modal.is-show{transform:translate(-50%,-50%) scale(1);opacity:1;visibility:visible;}
+#cookie-modal.is-hide{transform:translate(-50%,-50%) scale(.95) translateY(8px);opacity:0;visibility:hidden;}
 #cookie-modal .cookie-head{padding:16px 20px;border-bottom:1px solid var(--card-separator-color);font-size:18px;font-weight:700;color:var(--card-text-color-main);}
 #cookie-modal .cookie-body{flex:1;overflow-y:auto;padding:16px 20px;font-size:14px;line-height:1.8;color:var(--card-text-color-main);}
 #cookie-modal .cookie-foot{padding:12px 20px;border-top:1px solid var(--card-separator-color);display:flex;justify-content:flex-end;align-items:center;}
 #cookie-modal .btn{background:#3b82f6;color:#fff;border:0;border-radius:8px;padding:8px 24px;cursor:pointer;font-size:14px;}
 </style>
 
+<div id="cookie-modal-backdrop"></div>
 <div id="cookie-modal" role="dialog" aria-modal="true">
     <div class="cookie-head">使用您的 Cookie</div>
     <div class="cookie-body">
@@ -1569,33 +1573,44 @@ window.__walineCfg = {"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji"
         <p>您可以随时在浏览器设置中管理或禁用 Cookies，具体操作方法可参考浏览器的帮助文档。我们尊重您的选择，并承诺保护您的隐私。</p>
         <p><strong>关于第三方服务：</strong></p>
         <p>本站使用 Cloudflare 、CDN 服务、以及 Waline 评论系统。这些服务可能会设置必要的技术性 Cookie，以保障验证与评论功能正常。它们的使用受其自身隐私政策的约束。</p>
-        <p>如果您同意我们使用 Cookie，即可正常使用本站各项功能。如果您选择禁用 Cookies，部分功能（如评论、主题记忆）可能无法使用，但浏览文章不受影响。</p>
+        <p>如果您同意我们使用 Cookie，即可正常使用本站各项功能。如果您选择禁用 Cookies，部分功能(如评论、主题记忆)可能无法使用，但浏览文章不受影响。</p>
         <p>我们承诺严格遵循隐私政策处理所有 Cookie 信息，确保您的个人信息安全。</p>
     </div>
     <div class="cookie-foot">
-        <button class="btn" onclick="localStorage.setItem('cookie-ok','1');document.getElementById('cookie-modal').classList.remove('is-show')">可以</button>
+        <button class="btn" onclick="closeCookieModal()">可以</button>
     </div>
 </div>
 
 <script>
+function closeCookieModal() {
+    var m = document.getElementById('cookie-modal');
+    var b = document.getElementById('cookie-modal-backdrop');
+    if (!m) return;
+    localStorage.setItem('cookie-ok', '1');
+    m.classList.add('is-hide');
+    if (b) b.classList.remove('is-show');
+    setTimeout(function () {
+        m.classList.remove('is-show', 'is-hide');
+    }, 320);
+}
 (function () {
     function showModal() {
         var m = document.getElementById('cookie-modal');
+        var b = document.getElementById('cookie-modal-backdrop');
         if (!m) return;
         if (localStorage.getItem('cookie-ok')) return;
         m.classList.add('is-show');
+        if (b) b.classList.add('is-show');
     }
     function isPassed() {
         try { return sessionStorage.getItem('turnstile-passed') === '1'; } catch (e) { return false; }
     }
-     
     var timer = setInterval(function () {
         if (isPassed()) {
             clearInterval(timer);
-            setTimeout(showModal, 800);   
+            setTimeout(showModal, 800);
         }
     }, 300);
-     
     if (window.__turnstilePassed || document.documentElement.classList.contains('turnstile-passed')) {
         setTimeout(showModal, 500);
     }
