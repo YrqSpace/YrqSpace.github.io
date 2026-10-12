@@ -657,8 +657,72 @@ GitHub 上的 yrqspace 是我折腾各种项目的地方，欢迎来看看。
     </footer>
 
 
+    <style>
+.article-prevnext {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin: 24px 0 8px;
+    padding: 0;
+}
+.article-prevnext a {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 14px 16px;
+    border-radius: var(--card-border-radius, 12px);
+    background: var(--card-background);
+    box-shadow: var(--shadow-l1);
+    text-decoration: none;
+    color: var(--card-text-color-main);
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+.article-prevnext a:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-l2);
+}
+.article-prevnext a.next {
+    text-align: right;
+}
+.article-prevnext .label {
+    font-size: 13px;
+    color: var(--card-text-color-secondary);
+}
+.article-prevnext .title {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+.article-prevnext .placeholder {
+    flex: 1;
+}
+@media (max-width: 640px) {
+    .article-prevnext {
+        flex-direction: column;
+    }
+    .article-prevnext a.next {
+        text-align: left;
+    }
+    .article-prevnext .placeholder {
+        display: none;
+    }
+}
+</style>
+<div class="article-prevnext">
+    <a class="prev" href="https://yrqspace.github.io/search/">
+        <span class="label">← 上一篇</span>
+        <span class="title">搜索</span>
+    </a>
+    <a class="next" href="https://yrqspace.github.io/archives/">
+        <span class="label">下一篇 →</span>
+        <span class="title">归档</span>
+    </a>
+</div>
+
     
 </article>
+
 
     
 
@@ -695,6 +759,14 @@ GitHub 上的 yrqspace 是我折腾各种项目的地方，欢迎来看看。
     
 
     <footer class="site-footer">
+    <section class="site-stats">
+        <span>共 2 篇文章</span>
+        <span class="dot">·</span>
+        <span>约 0.1 万字</span>
+        <span class="dot">·</span>
+        <span>运行 24 天</span>
+    </section>
+
     <section class="copyright">
         &copy; 
         
@@ -708,6 +780,19 @@ GitHub 上的 yrqspace 是我折腾各种项目的地方，欢迎来看看。
         
     </section>
 </footer>
+
+<style>
+    .site-footer .site-stats {
+        text-align: center;
+        font-size: 14px;
+        color: var(--card-text-color-secondary);
+        margin-bottom: 8px;
+    }
+    .site-footer .site-stats .dot {
+        margin: 0 6px;
+        opacity: .6;
+    }
+</style>
 
 
     
