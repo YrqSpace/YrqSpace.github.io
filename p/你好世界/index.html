@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://yrqspace.github.io/p/%E4%BD%A0%E5%A5%BD%E4%B8%96%E7%95%8C/'>
 
-<link rel="stylesheet" href="/scss/style.min.e00a6c1cd8a8cd0514f99170a36de1c2a593fd15dd3c4f69f261fe2328457061.css"><meta property='og:title' content="你好,世界">
+<link rel="stylesheet" href="/scss/style.min.b92b7f48815235b7c4db7410ccb18f5b9d3ad03efaa3db0551651ba9b3aa2559.css"><meta property='og:title' content="你好,世界">
 <meta property='og:description' content="记录我的第一篇博客">
 <meta property='og:url' content='https://yrqspace.github.io/p/%E4%BD%A0%E5%A5%BD%E4%B8%96%E7%95%8C/'>
 <meta property='og:site_name' content='爱玩win11的me'>
@@ -788,6 +788,34 @@
 
     
 
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/%E6%88%91%E7%9A%84-bing-%E6%94%B6%E5%BD%95%E6%8A%98%E8%85%BE%E8%AE%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-16-cover.jpg" loading="lazy" alt="Featured image of post 我的 Bing 收录折腾记" data-key="" data-hash="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-16-cover.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">我的 Bing 收录折腾记</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
      
     
         
@@ -820,11 +848,11 @@
 
     <footer class="site-footer">
     <section class="site-stats">
-        <span>共 2 篇文章</span>
+        <span>共 3 篇文章</span>
         <span class="dot">·</span>
-        <span>约 0.1 万字</span>
+        <span>约 0.2 万字</span>
         <span class="dot">·</span>
-        <span>运行 27 天</span>
+        <span>运行 28 天</span>
     </section>
 
     <section class="copyright">
@@ -1880,6 +1908,89 @@ if (!window.__pjaxPagefindFix) {
         }
     }, true);
 }
+</script>
+
+
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 78px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+        
+        window.dispatchEvent(new Event('resize'))
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://yrqspace.github.io/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
 </script>
 
     </body>

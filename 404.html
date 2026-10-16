@@ -6,11 +6,11 @@
 
 <link rel='canonical' href='https://yrqspace.github.io/404.html'>
 
-<link rel="stylesheet" href="/scss/style.min.e00a6c1cd8a8cd0514f99170a36de1c2a593fd15dd3c4f69f261fe2328457061.css"><meta property='og:title' content="404 Page not found">
+<link rel="stylesheet" href="/scss/style.min.b92b7f48815235b7c4db7410ccb18f5b9d3ad03efaa3db0551651ba9b3aa2559.css"><meta property='og:title' content="404 Page not found">
 <meta property='og:description' content="记录折腾博客的日常">
 <meta property='og:url' content='https://yrqspace.github.io/404.html'>
 <meta property='og:site_name' content='爱玩win11的me'>
-<meta property='og:type' content='website'><meta property='og:updated_time' content=' 2026-10-02T00:00:00&#43;00:00 '/>
+<meta property='og:type' content='website'><meta property='og:updated_time' content=' 2026-10-16T13:00:00&#43;08:00 '/>
 <meta name="twitter:title" content="404 Page not found">
 <meta name="twitter:description" content="记录折腾博客的日常">
     <link rel="shortcut icon" href="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/yuansu/favicon.ico" />
@@ -1606,6 +1606,89 @@ if (!window.__pjaxPagefindFix) {
         }
     }, true);
 }
+</script>
+
+
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 78px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+        
+        window.dispatchEvent(new Event('resize'))
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://yrqspace.github.io/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
 </script>
 
     </body>

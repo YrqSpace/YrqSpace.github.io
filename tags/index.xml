@@ -6,6 +6,31 @@
         <description>Recent content in Tags on 爱玩win11的me</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
-        <copyright>爱玩win11的me</copyright><atom:link href="https://yrqspace.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+        <copyright>爱玩win11的me</copyright>
+        <lastBuildDate>Fri, 16 Oct 2026 13:00:00 +0800</lastBuildDate><atom:link href="https://yrqspace.github.io/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Bing</title>
+        <link>https://yrqspace.github.io/tags/bing/</link>
+        <pubDate>Fri, 16 Oct 2026 13:00:00 +0800</pubDate>
+        
+        <guid>https://yrqspace.github.io/tags/bing/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Hugo</title>
+        <link>https://yrqspace.github.io/tags/hugo/</link>
+        <pubDate>Fri, 16 Oct 2026 13:00:00 +0800</pubDate>
+        
+        <guid>https://yrqspace.github.io/tags/hugo/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>IndexNow</title>
+        <link>https://yrqspace.github.io/tags/indexnow/</link>
+        <pubDate>Fri, 16 Oct 2026 13:00:00 +0800</pubDate>
+        
+        <guid>https://yrqspace.github.io/tags/indexnow/</guid>
+        <description></description>
+        </item>
+        
     </channel>
 </rss>

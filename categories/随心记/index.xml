@@ -7,7 +7,82 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>爱玩win11的me</copyright>
-        <lastBuildDate>Fri, 18 Sep 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://yrqspace.github.io/categories/%E9%9A%8F%E5%BF%83%E8%AE%B0/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 16 Oct 2026 13:00:00 +0800</lastBuildDate><atom:link href="https://yrqspace.github.io/categories/%E9%9A%8F%E5%BF%83%E8%AE%B0/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>我的 Bing 收录折腾记</title>
+        <link>https://yrqspace.github.io/p/%E6%88%91%E7%9A%84-bing-%E6%94%B6%E5%BD%95%E6%8A%98%E8%85%BE%E8%AE%B0/</link>
+        <pubDate>Fri, 16 Oct 2026 13:00:00 +0800</pubDate>
+        
+        <guid>https://yrqspace.github.io/p/%E6%88%91%E7%9A%84-bing-%E6%94%B6%E5%BD%95%E6%8A%98%E8%85%BE%E8%AE%B0/</guid>
+        <description>&lt;img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-16-cover.jpg" alt="Featured image of post 我的 Bing 收录折腾记" /&gt;&lt;p&gt;建站的时候满心欢喜：域名有了、主题换了、文章写了两篇，感觉自己马上就是个&amp;quot;有博客的人&amp;quot;了。结果打开 Bing 一搜，&lt;code&gt;site:yrqspace.github.io&lt;/code&gt;，啥也没有。&lt;/p&gt;
+&lt;p&gt;一开始我是不慌的，毕竟新站嘛，等就是了。等到第 5、6 天还是零结果，去 Bing Webmaster Tools 一看，状态写着——&amp;ldquo;已发现但未爬网&amp;rdquo;。&lt;/p&gt;
+&lt;p&gt;好家伙，意思就是：Bing 知道你在这，但就是不来你家看看。发现时间是 10 月 4 日，到 10 月 15 日已经 11 天了，连门都没敲一下。&lt;/p&gt;
+&lt;p&gt;于是我的折腾开始了。&lt;/p&gt;
+&lt;h2 id=&#34;第一回合老老实实按门铃&#34;&gt;第一回合：老老实实按门铃
+&lt;/h2&gt;&lt;p&gt;最先做的，是把站点地图通过 IndexNow 提交上去。IndexNow 是啥？你可以理解成&amp;quot;门铃&amp;quot;——按一下，告诉 Bing&amp;quot;这有新内容了，来抓我&amp;quot;。&lt;/p&gt;
+&lt;p&gt;提交方式简单到离谱：浏览器打开一个链接就行，像这样：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;https://api.indexnow.org/indexnow?url=你的网站&amp;amp;key=你的key
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;页面返回空白，一开始我还以为失败了，后来才知道——&lt;strong&gt;成功就是空白&lt;/strong&gt;。对，IndexNow 提交成功时响应体是空的，什么都没写。看着像个 bug，其实是规范。&lt;/p&gt;
+&lt;h2 id=&#34;第二回合robotstxt-居然是-404&#34;&gt;第二回合：robots.txt 居然是 404
+&lt;/h2&gt;&lt;p&gt;顺手去检查 &lt;code&gt;robots.txt&lt;/code&gt;，结果一打开——404。&lt;/p&gt;
+&lt;p&gt;当时心想完了，是不是挡着搜索引擎了？查了一圈才明白：&lt;strong&gt;没有 robots.txt 不等于禁止访问&lt;/strong&gt;，它只是&amp;quot;路标&amp;quot;而不是&amp;quot;通行证&amp;quot;。没有它，爬虫默认就是放行的，所以 404 根本不是收录慢的原因。&lt;/p&gt;
+&lt;p&gt;不过既然没有，那就补一个，顺便把 sitemap 指给搜索引擎：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;User-agent: *
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Allow: /
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Sitemap: https://yrqspace.github.io/sitemap.xml
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;第三回合让门铃自动化&#34;&gt;第三回合：让&amp;quot;门铃&amp;quot;自动化
+&lt;/h2&gt;&lt;p&gt;手动提交了几次之后，我寻思：我每次更新博客都要手动开链接按门铃，太蠢了。我的部署是双击一个 &lt;code&gt;上传.bat&lt;/code&gt; 脚本完成的，那能不能让它推送完自动提交 IndexNow？&lt;/p&gt;
+&lt;p&gt;说干就干，在脚本末尾加了行 curl。结果一跑，报错：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&amp;#39;url&amp;#39; 不是内部或外部命令，也不是可运行的程序
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;排查半天，真相是：&lt;strong&gt;Windows 命令行的 &lt;code&gt;&amp;amp;&lt;/code&gt; 是&amp;quot;命令分隔符&amp;quot;&lt;/strong&gt;。我的链接里 &lt;code&gt;sitemap.xml&lt;/code&gt; 和 &lt;code&gt;key=&lt;/code&gt; 之间那个 &lt;code&gt;&amp;amp;&lt;/code&gt;，被 cmd 当成&amp;quot;再执行一条命令&amp;quot;拆开了。解决办法是在 &lt;code&gt;&amp;amp;&lt;/code&gt; 前面加个 &lt;code&gt;^&lt;/code&gt; 转义：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bat&#34; data-lang=&#34;bat&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;curl &lt;span class=&#34;s2&#34;&gt;&amp;#34;https://api.indexnow.org/indexnow?url=https://yrqspace.github.io/sitemap.xml^&amp;amp;key=你的key&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;跑完还是静悄悄的，什么输出都没有。我还以为又失败了，后来去 Bing Webmaster Tools 看 IndexNow 报告——&lt;strong&gt;提交的 URL 数从 3 变成了 4&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;成了。以后每次双击上传，Bing 自动收到通知，门铃彻底自动化。&lt;/p&gt;
+&lt;h2 id=&#34;经验总结&#34;&gt;经验总结
+&lt;/h2&gt;&lt;p&gt;折腾完回头捋一捋，这几件事挺值得记的：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;新站收录慢是常态&lt;/strong&gt;。Bing 对新站通常 1~4 周才收录，&amp;ldquo;已发现但未爬网&amp;quot;不是被拒，就是排队中，别焦虑。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;IndexNow 提交成功 = 空白页&lt;/strong&gt;。不是失败，是规范如此。想看证据，去 Webmaster Tools 的报告页。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;没有 robots.txt 不是坏事&lt;/strong&gt;。它只是路标，补一个把 sitemap 指过去就行。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;&amp;amp;&lt;/code&gt; 在 Windows 命令行里是分隔符&lt;/strong&gt;。URL 里有 &lt;code&gt;&amp;amp;&lt;/code&gt; 必须写成 &lt;code&gt;^&amp;amp;&lt;/code&gt;，这个坑踩一次就记住了。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;内容才是王道&lt;/strong&gt;。门铃按得再勤，站里就两篇文章，爬虫来了也没什么可抓的。收录慢，很多时候不是技术问题，是内容太少。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;写到这，我的站还是&amp;quot;已发现但未爬网&amp;rdquo;。不过没关系，门铃装了、路标立了、内容也在补了——剩下的就是等。&lt;/p&gt;
+&lt;p&gt;等 Bing 来敲门的那天，我再写一篇《收录成功记》。&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>你好,世界</title>
         <link>https://yrqspace.github.io/p/%E4%BD%A0%E5%A5%BD%E4%B8%96%E7%95%8C/</link>
         <pubDate>Fri, 18 Sep 2026 00:00:00 +0000</pubDate>

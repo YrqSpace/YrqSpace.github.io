@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://yrqspace.github.io/p/%E5%85%8D%E8%B4%B9%E4%BA%91%E7%94%B5%E8%84%91%E6%95%99%E7%A8%8B/'>
 
-<link rel="stylesheet" href="/scss/style.min.e00a6c1cd8a8cd0514f99170a36de1c2a593fd15dd3c4f69f261fe2328457061.css"><meta property='og:title' content="免费云电脑获取与认证教程">
+<link rel="stylesheet" href="/scss/style.min.b92b7f48815235b7c4db7410ccb18f5b9d3ad03efaa3db0551651ba9b3aa2559.css"><meta property='og:title' content="免费云电脑获取与认证教程">
 <meta property='og:description' content="在 hiltyun 公益专区做任务赚牛马币，购买免费云电脑，提交工单完成认证后即可开始使用。">
 <meta property='og:url' content='https://yrqspace.github.io/p/%E5%85%8D%E8%B4%B9%E4%BA%91%E7%94%B5%E8%84%91%E6%95%99%E7%A8%8B/'>
 <meta property='og:site_name' content='爱玩win11的me'>
@@ -869,7 +869,10 @@
         <span class="label">← 上一篇</span>
         <span class="title">你好,世界</span>
     </a>
-    <span class="placeholder"></span>
+    <a class="next" href="https://yrqspace.github.io/p/%E6%88%91%E7%9A%84-bing-%E6%94%B6%E5%BD%95%E6%8A%98%E8%85%BE%E8%AE%B0/">
+        <span class="label">下一篇 →</span>
+        <span class="title">我的 Bing 收录折腾记</span>
+    </a>
 </div>
 
     
@@ -912,11 +915,11 @@
 
     <footer class="site-footer">
     <section class="site-stats">
-        <span>共 2 篇文章</span>
+        <span>共 3 篇文章</span>
         <span class="dot">·</span>
-        <span>约 0.1 万字</span>
+        <span>约 0.2 万字</span>
         <span class="dot">·</span>
-        <span>运行 27 天</span>
+        <span>运行 28 天</span>
     </section>
 
     <section class="copyright">
@@ -1972,6 +1975,89 @@ if (!window.__pjaxPagefindFix) {
         }
     }, true);
 }
+</script>
+
+
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 78px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+        
+        window.dispatchEvent(new Event('resize'))
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://yrqspace.github.io/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
 </script>
 
     </body>
