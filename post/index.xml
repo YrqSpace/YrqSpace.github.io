@@ -13,7 +13,7 @@
         <pubDate>Fri, 23 Oct 2026 22:40:00 +0800</pubDate>
         
         <guid>https://yrqspace.github.io/p/%E7%BB%99%E5%8D%9A%E5%AE%A2%E5%8A%A0%E4%B8%8A%E5%8D%9A%E5%AE%A2%E5%A4%A7%E8%81%94%E7%9B%9F%E6%8A%8A%E5%B1%95%E7%A4%BA%E6%9D%83%E9%87%8D%E5%88%B7%E5%88%B0-113/</guid>
-        <description>&lt;p&gt;上一篇写到给开源项目提 PR 换外链，一条反链到手之后我尝到甜头了：既然外链是搜索引擎判断&amp;quot;这站靠不靠谱&amp;quot;的重要信号，那一条远远不够。&lt;/p&gt;
+        <description>&lt;img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-23-cover.jpg" alt="Featured image of post 给博客加上博客大联盟，把展示权重刷到 113" /&gt;&lt;p&gt;上一篇写到给开源项目提 PR 换外链，一条反链到手之后我尝到甜头了：既然外链是搜索引擎判断&amp;quot;这站靠不靠谱&amp;quot;的重要信号，那一条远远不够。&lt;/p&gt;
 &lt;p&gt;这次盯上的是&lt;strong&gt;博客大联盟&lt;/strong&gt;（bo.ke），一个中文独立博客的聚合站。它和其他导航站不太一样的地方在于，它有一套&lt;strong&gt;权重体系&lt;/strong&gt;：基础 50 分，加上互链 50 分、RSS 10 分、站内头像 3 分，最后乘在线率。权重越高，站内的展示排序越靠前。&lt;/p&gt;
 &lt;p&gt;说白了，它不只要收你，还要你&amp;quot;配合&amp;quot;——你把它的链接挂在自己站上，它给你更高的曝光。这是个很朴素的交换：我给你流量入口，你给我一条反链。&lt;/p&gt;
 &lt;p&gt;听起来简单，但我一路踩了三个坑。&lt;/p&gt;
@@ -168,7 +168,7 @@
         <pubDate>Thu, 22 Oct 2026 13:00:00 +0800</pubDate>
         
         <guid>https://yrqspace.github.io/p/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%BB%99%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E6%8F%90-pr/</guid>
-        <description>&lt;img src="https://yrqspace.github.io/p/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%BB%99%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E6%8F%90-pr/cover.jpg" alt="Featured image of post 第一次给开源项目提 PR" /&gt;&lt;p&gt;建站半个月，Bing 迟迟不收录，查来查去发现我缺一个信号：&lt;strong&gt;外部链接&lt;/strong&gt;。搜索引擎发现一个网站靠四个信号——IndexNow、sitemap、站内链接、外链，前三个我都齐了，就缺最后一个。&lt;/p&gt;
+        <description>&lt;img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-22-cover.jpg" alt="Featured image of post 第一次给开源项目提 PR" /&gt;&lt;p&gt;建站半个月，Bing 迟迟不收录，查来查去发现我缺一个信号：&lt;strong&gt;外部链接&lt;/strong&gt;。搜索引擎发现一个网站靠四个信号——IndexNow、sitemap、站内链接、外链，前三个我都齐了，就缺最后一个。&lt;/p&gt;
 &lt;p&gt;于是我把目光投向了一个叫 &lt;a class=&#34;link&#34; href=&#34;https://github.com/timqian/chinese-independent-blogs&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;chinese-independent-blogs&lt;/a&gt; 的仓库：一个专门收集中文独立博客的列表，star 两万多。把我的博客加进去，就等于在一个高权威的页面上留了一条指向我网站的链接——这就是高质量外链。&lt;/p&gt;
 &lt;p&gt;但问题来了：&lt;strong&gt;这个仓库不是我的，我没权限直接改它。&lt;/strong&gt; 这就得用上传说中的 PR（Pull Request，拉取请求）了。&lt;/p&gt;
