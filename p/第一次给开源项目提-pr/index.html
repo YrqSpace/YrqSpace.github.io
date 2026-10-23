@@ -1,0 +1,2089 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="为了给博客攒一条外链，我人生中第一次给开源项目提了 PR。从 fork、改 CSV、投错仓库到 lint 通过，一路都是坑，也一路都在学。">
+<title>第一次给开源项目提 PR</title>
+
+<link rel='canonical' href='https://yrqspace.github.io/p/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%BB%99%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E6%8F%90-pr/'>
+
+<link rel="stylesheet" href="/scss/style.min.b92b7f48815235b7c4db7410ccb18f5b9d3ad03efaa3db0551651ba9b3aa2559.css"><meta property='og:title' content="第一次给开源项目提 PR">
+<meta property='og:description' content="为了给博客攒一条外链，我人生中第一次给开源项目提了 PR。从 fork、改 CSV、投错仓库到 lint 通过，一路都是坑，也一路都在学。">
+<meta property='og:url' content='https://yrqspace.github.io/p/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%BB%99%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E6%8F%90-pr/'>
+<meta property='og:site_name' content='爱玩win11的me'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='GitHub' /><meta property='article:tag' content='PR' /><meta property='article:tag' content='开源' /><meta property='article:tag' content='独立博客' /><meta property='article:published_time' content='2026-10-22T13:00:00&#43;08:00'/><meta property='article:modified_time' content='2026-10-22T13:00:00&#43;08:00'/><meta property='og:image' content='https://yrqspace.github.io/p/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%BB%99%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E6%8F%90-pr/cover.jpg' />
+<meta name="twitter:title" content="第一次给开源项目提 PR">
+<meta name="twitter:description" content="为了给博客攒一条外链，我人生中第一次给开源项目提了 PR。从 fork、改 CSV、投错仓库到 lint 通过，一路都是坑，也一路都在学。"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://yrqspace.github.io/p/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%BB%99%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E6%8F%90-pr/cover.jpg' />
+    <link rel="shortcut icon" href="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/yuansu/favicon.ico" />
+
+  
+
+
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
+<script>
+    (function () {
+        
+        var KEY = 'turnstile-passed';
+        var passed = false;
+        try { passed = sessionStorage.getItem(KEY) === '1'; } catch (e) { passed = false; }
+        
+        window.__turnstilePassed = passed;
+        if (passed) {
+            
+            document.documentElement.classList.add('turnstile-passed');
+        } else {
+            document.documentElement.classList.add('is-loading');
+        }
+    })();
+</script>
+<div class="loading">
+    <div class="spinner">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <div class="captcha-prepare" id="captchaPrepare">正在准备人机验证...</div>
+    <div class="captcha-box" id="captchaBox"></div>
+    <div class="captcha-after" id="captchaAfter">请稍后,正在请求blog-turnstile接口</div>
+</div>
+
+<style>
+    .loading {
+        position: fixed;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 99;
+         
+        background-color: var(--body-background, #f5f5fa);
+         
+        transition: opacity 0.1s ease;
+    }
+
+     
+    .loading.is-hidden {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+     
+    html.turnstile-passed .loading {
+        display: none !important;
+    }
+
+     
+    html[data-scheme="light"] .loading {
+        background-color: #f5f5fa;
+    }
+    html[data-scheme="dark"] .loading {
+        background-color: #303030;
+    }
+    @media (prefers-color-scheme: dark) {
+        .loading {
+            background-color: #303030;
+        }
+    }
+
+     
+    html.is-loading .aplayer {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+     
+    .aplayer {
+        transition: opacity 0.4s ease;
+    }
+
+    .spinner {
+        --gap: 5px;
+        --clr: #3b82f6;    
+        --height: 23px;
+        width: 100px;
+        height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--gap);
+        transition: opacity 0.35s ease;
+    }
+     
+    .spinner.is-hidden {
+        opacity: 0;
+    }
+
+    .spinner span {
+        background: var(--clr);
+        width: 6px;
+        height: var(--height);
+        animation: grow 1s ease-in-out infinite;
+    }
+    .spinner span:nth-child(2) { animation: grow 1s ease-in-out 0.15s infinite; }
+    .spinner span:nth-child(3) { animation: grow 1s ease-in-out 0.3s infinite; }
+    .spinner span:nth-child(4) { animation: grow 1s ease-in-out 0.475s infinite; }
+
+    @keyframes grow {
+        0%, 100% { transform: scaleY(1); }
+        50% { transform: scaleY(1.8); }
+    }
+
+     
+    .captcha-prepare {
+        display: none;
+        margin-top: 6px;
+        font-size: 14px;
+        letter-spacing: 1px;
+        color: var(--body-text-color, #555);
+    }
+    .captcha-prepare.is-show {
+        display: block;
+        animation: captchaSlideIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+     
+    .captcha-box {
+        display: none;
+        margin-top: 6px;
+        min-height: 65px;
+    }
+    .captcha-box.is-show {
+        display: block;
+        animation: captchaSlideIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+     
+    .captcha-after {
+        display: none;
+        margin-top: 6px;
+        font-size: 14px;
+        letter-spacing: 1px;
+        color: var(--body-text-color, #555);
+    }
+    .captcha-after.is-show {
+        display: block;
+        animation: captchaSlideIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+     
+    @keyframes captchaSlideIn {
+        from { opacity: 0; transform: translateX(60px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+</style>
+
+<script>
+    function initLoading() {
+        var loading = document.querySelector(".loading");
+        var hidden = false;
+        var captchaStarted = false;
+
+        
+        if (window.__turnstilePassed) {
+            if (loading) {
+                loading.style.display = "none";
+            }
+            document.documentElement.classList.remove("is-loading");
+            return;
+        }
+
+        
+        function hideLoading() {
+            if (!loading || hidden) {
+                return;
+            }
+            hidden = true;
+            
+            loading.classList.add("is-hidden");
+            
+            setTimeout(function () {
+                loading.style.display = "none";
+                
+                document.documentElement.classList.remove("is-loading");
+            }, 500);
+        }
+
+        
+        
+        function startCaptcha() {
+            if (captchaStarted) {
+                return;
+            }
+            captchaStarted = true;
+
+            var spinner = document.querySelector(".loading .spinner");
+            var prepare = document.getElementById("captchaPrepare");
+            var box = document.getElementById("captchaBox");
+
+            
+            if (spinner) {
+                spinner.classList.add("is-hidden");
+            }
+            
+            if (prepare) {
+                prepare.classList.add("is-show");
+            }
+
+            
+            setTimeout(function () {
+                if (prepare) {
+                    prepare.classList.remove("is-show");
+                }
+                if (box) {
+                    box.classList.add("is-show");
+                }
+                renderTurnstile(box);
+            }, 500);
+        }
+
+        
+        function renderTurnstile(box) {
+            if (!box) {
+                return;
+            }
+            var waited = 0;
+            var timer = setInterval(function () {
+                if (window.turnstile && typeof window.turnstile.render === "function") {
+                    clearInterval(timer);
+                    doRender(box);
+                } else if (waited >= 8000) {
+                    clearInterval(timer);
+                    box.innerHTML = '<p style="margin:0 0 12px;font-size:13px;text-align:center;">验证组件加载失败，请检查网络后重试</p>';
+                    var btn = document.createElement("button");
+                    btn.textContent = "重新加载";
+                    btn.style.cssText = "display:block;margin:0 auto;padding:8px 18px;border:0;border-radius:8px;background:var(--accent-color,#3b82f6);color:#fff;cursor:pointer;";
+                    btn.onclick = function () {
+                        location.reload();
+                    };
+                    box.appendChild(btn);
+                }
+                waited += 200;
+            }, 200);
+        }
+
+        function doRender(box) {
+            var scheme = document.documentElement.getAttribute("data-scheme");
+            var theme = scheme === "dark" ? "dark" : (scheme === "light" ? "light" : "auto");
+            try {
+                window.turnstile.render(box, {
+                    sitekey: "0x4AAAAAAFMoHgJeuUgOvCLv",
+                    theme: theme,
+                    callback: function () {
+                        
+                        try { sessionStorage.setItem("turnstile-passed", "1"); } catch (e) {}
+                        
+                        var prepare = document.getElementById("captchaPrepare");
+                        var after = document.getElementById("captchaAfter");
+                        if (box) { box.classList.remove("is-show"); }
+                        if (prepare) { prepare.classList.remove("is-show"); }
+                        if (after) { after.classList.add("is-show"); }
+                        setTimeout(hideLoading, 800);
+                    }
+                });
+            } catch (e) {
+                box.innerHTML = '<p style="margin:0;font-size:13px;text-align:center;">验证初始化失败，请刷新页面重试</p>';
+            }
+        }
+
+        
+        function whenImageReady(img, callback) {
+            if (!img) {
+                callback();
+                return;
+            }
+            
+            try { img.loading = "eager"; } catch (e) {}
+            if (img.complete && img.naturalWidth !== 0) {
+                callback();
+                return;
+            }
+            img.addEventListener("load", callback, { once: true });
+            img.addEventListener("error", callback, { once: true });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            var avatar = document.querySelector(".site-avatar img, img.site-logo");
+
+            
+            var articles = document.querySelectorAll(".article-list > article, .article-list .article-item");
+            var total = articles.length;
+            var need = Math.ceil(total / 2);
+
+            var avatarDone = false;
+            var articleDone = 0;
+            var startScheduled = false;
+
+            function maybeStart() {
+                if (avatarDone && articleDone >= need && !startScheduled) {
+                    startScheduled = true;
+                    
+                    setTimeout(startCaptcha, 1000);
+                }
+            }
+
+            
+            whenImageReady(avatar, function () {
+                avatarDone = true;
+                maybeStart();
+            });
+
+            if (need === 0) {
+                maybeStart();
+            } else {
+                var counted = 0;
+                Array.prototype.forEach.call(articles, function (article) {
+                    if (counted >= need) {
+                        return;
+                    }
+                    counted++;
+                    whenImageReady(article.querySelector("img"), function () {
+                        articleDone++;
+                        maybeStart();
+                    });
+                });
+            }
+
+            
+            setTimeout(startCaptcha, 15000);
+        });
+    }
+
+    initLoading();
+</script>
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu3149871140739389790.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🤔</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">爱玩win11的me</a></h1>
+            <h2 class="site-description">欢迎来到我的博客</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/3707040578931526'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-brand-bilibili"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M3 10a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-6" /><path d="M8 3l2 3" /><path d="M16 3l-2 3" /><path d="M9 13v-2" /><path d="M15 11v2" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/YrqSpace'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友情链接</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#第一回合fork-一份往-csv-里加一行">第一回合：fork 一份，往 CSV 里加一行</a></li>
+    <li><a href="#第二回合pr-投错地址了">第二回合：PR 投错地址了</a></li>
+    <li><a href="#第三回合关掉重投">第三回合：关掉重投</a></li>
+    <li><a href="#第四回合等合并">第四回合：等合并</a></li>
+    <li><a href="#经验总结">经验总结</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%BB%99%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E6%8F%90-pr/">
+                <img src="/p/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%BB%99%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E6%8F%90-pr/cover_hu7959189246422810361.jpg"
+                        srcset="/p/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%BB%99%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E6%8F%90-pr/cover_hu7959189246422810361.jpg 800w, /p/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%BB%99%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E6%8F%90-pr/cover_hu13105939821360282459.jpg 1600w"
+                        width="800" 
+                        height="450" 
+                        loading="lazy"
+                        alt="Featured image of post 第一次给开源项目提 PR" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E9%9A%8F%E5%BF%83%E8%AE%B0/" style="background-color: #c62a97; color: #fff;">
+                随心记
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title" data-pagefind-meta="title" data-pagefind-weight="10">
+            <a href="/p/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%BB%99%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E6%8F%90-pr/">第一次给开源项目提 PR</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            为了给博客攒一条外链，我人生中第一次给开源项目提了 PR。从 fork、改 CSV、投错仓库到 lint 通过，一路都是坑，也一路都在学。
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2026-10-22</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 4 分钟
+                </time>
+            </div>
+        
+
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>建站半个月，Bing 迟迟不收录，查来查去发现我缺一个信号：<strong>外部链接</strong>。搜索引擎发现一个网站靠四个信号——IndexNow、sitemap、站内链接、外链，前三个我都齐了，就缺最后一个。</p>
+<p>于是我把目光投向了一个叫 <a class="link" href="https://github.com/timqian/chinese-independent-blogs"  target="_blank" rel="noopener"
+    >chinese-independent-blogs</a> 的仓库：一个专门收集中文独立博客的列表，star 两万多。把我的博客加进去，就等于在一个高权威的页面上留了一条指向我网站的链接——这就是高质量外链。</p>
+<p>但问题来了：<strong>这个仓库不是我的，我没权限直接改它。</strong> 这就得用上传说中的 PR（Pull Request，拉取请求）了。</p>
+<h2 id="第一回合fork-一份往-csv-里加一行">第一回合：fork 一份，往 CSV 里加一行
+</h2><p>PR 的第一步是 <strong>fork</strong>——把别人的仓库复制一份到自己的账号下，想怎么改都行。</p>
+<p>Fork 完，我找到目标文件 <code>blogs-original.csv</code>，这是个纯文本表格，每一行是一个博客的信息，格式是&quot;名称, URL, RSS, 标签&quot;。我模仿前面几条的格式，在末尾加了一行：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">爱玩win11的me, https://yrqspace.github.io, https://yrqspace.github.io/index.xml, 生活; 技术; 随笔
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>改完提交，GitHub 自动给我建了个新分支 <code>YrqSpace-patch-1</code>，然后页面上出现了一个绿色的按钮——<strong>Compare &amp; pull request</strong>。我毫不犹豫就点了。</p>
+<h2 id="第二回合pr-投错地址了">第二回合：PR 投错地址了
+</h2><p>点完进去，填了句&quot;你好，这是我的个人博客，麻烦审核，谢谢&quot;，又点了一下绿色按钮，PR 就这么发起了。</p>
+<p>然后我仔细一看页面，总觉得哪里不对劲：</p>
+<ul>
+<li>我的头像旁边赫然标着 <strong>Owner</strong></li>
+<li>页面上居然有一个 <strong>Merge pull request</strong>（合并）按钮</li>
+</ul>
+<p>我反应过来了：<strong>这个 PR 开到了我自己的 fork 仓库里</strong>（<code>YrqSpace/chinese-independent-blogs</code>），而不是原仓库。等于我把信写好了，却投到了自己家门口。</p>
+<p>原因也简单：GitHub 默认把对比的&quot;目标仓库&quot;设成了我 fork 的那份，而不是原作者那份。我没看清 base 是哪个仓库，就一路点了下去。</p>
+<h2 id="第三回合关掉重投">第三回合：关掉重投
+</h2><p>搞清楚了就动手改：先点 <strong>Close pull request</strong> 把投错的 PR 关掉，然后用跨仓库对比的直达链接重新发起：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">https://github.com/timqian/chinese-independent-blogs/compare/master...YrqSpace:YrqSpace-patch-1
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这个链接的意思是：<strong>用我 fork 里的分支，向原仓库发起对比</strong>。打开一看，base 显示的是 <code>timqian/chinese-independent-blogs</code>，这回对了。确认、点绿色、再点绿色，PR 就到了原仓库，编号 <strong>#2287</strong>。</p>
+<p>这次我检查了三个&quot;投对了&quot;的迹象：标题是原仓库的名字、我的头像旁边没有 Owner、页面上没有合并按钮——因为我没权限合并别人的仓库，有那个按钮才奇怪。</p>
+<h2 id="第四回合等合并">第四回合：等合并
+</h2><p>发起之后，仓库的自动检查跑了起来。几分钟后，页面上出现了我最想看到的一句话：</p>
+<blockquote>
+<p>All checks have passed · Lint blogs metadata / lint · Successful in 9s</p>
+</blockquote>
+<p>那个 lint 是仓库的格式校验脚本，自动检查我加的那行数据合不合规——9 秒通过，意味着我那行 CSV 写得没问题。加上&quot;No conflicts with base branch&quot;，改动可以干净合并。</p>
+<p>剩下的，就是等仓库维护者点一下合并按钮了。快则几小时，慢则一两周，GitHub 会通知我。</p>
+<h2 id="经验总结">经验总结
+</h2><p>这次折腾下来，几个点挺值得记：</p>
+<ol>
+<li><strong>PR 是&quot;申请&quot;，不是&quot;推送&quot;</strong>。push 是往自己的仓库写，PR 是向别人的仓库提交修改申请，方向完全不同。</li>
+<li><strong>提 PR 一定要看 base 仓库</strong>。Compare 页面顶部会写清楚&quot;从哪个分支对比到哪个仓库&quot;，投错地址是新手最容易踩的坑。判断投没投对，看 PR 页面上有没有&quot;Merge&quot;按钮、头像旁有没有&quot;Owner&quot;标记就行。</li>
+<li><strong>fork 不用删</strong>。删了不影响已发起的 PR，但留着能随时同步原仓库、以后想再提交也方便。</li>
+<li><strong>lint 是个好东西</strong>。它自动帮你把关格式，过了就说明你改对了，省去了人工扯皮。</li>
+<li><strong>外链也不是非得买</strong>。把博客提交到各种独立博客列表、导航站、聚合平台，都是合法免费的外链来源，比买链接安全一万倍——至少不会被搜索引擎当垃圾。</li>
+</ol>
+<p>写到这，PR 还在等合并，Bing 的收录也还在排队。不过无所谓，该做的信号都做了，剩下的就是等。</p>
+<p>等哪天 Bing 收录了我，我再写一篇《Bing 收录成功记》——那就真圆满了。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/github/">GitHub</a>
+        
+            <a href="/tags/pr/">PR</a>
+        
+            <a href="/tags/%E5%BC%80%E6%BA%90/">开源</a>
+        
+            <a href="/tags/%E7%8B%AC%E7%AB%8B%E5%8D%9A%E5%AE%A2/">独立博客</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>根据 CC BY-NC-SA 4.0 协议许可</span>
+    </section>
+    </footer>
+
+
+    <style>
+.article-prevnext {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin: 24px 0 8px;
+    padding: 0;
+}
+.article-prevnext a {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 14px 16px;
+    border-radius: var(--card-border-radius, 12px);
+    background: var(--card-background);
+    box-shadow: var(--shadow-l1);
+    text-decoration: none;
+    color: var(--card-text-color-main);
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+.article-prevnext a:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-l2);
+}
+.article-prevnext a.next {
+    text-align: right;
+}
+.article-prevnext .label {
+    font-size: 13px;
+    color: var(--card-text-color-secondary);
+}
+.article-prevnext .title {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+.article-prevnext .placeholder {
+    flex: 1;
+}
+@media (max-width: 640px) {
+    .article-prevnext {
+        flex-direction: column;
+    }
+    .article-prevnext a.next {
+        text-align: left;
+    }
+    .article-prevnext .placeholder {
+        display: none;
+    }
+}
+</style>
+<div class="article-prevnext">
+    <a class="prev" href="https://yrqspace.github.io/p/%E6%88%91%E7%9A%84-bing-%E6%94%B6%E5%BD%95%E6%8A%98%E8%85%BE%E8%AE%B0/">
+        <span class="label">← 上一篇</span>
+        <span class="title">我的 Bing 收录折腾记</span>
+    </a>
+    <span class="placeholder"></span>
+</div>
+
+    
+</article>
+
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/%E6%88%91%E7%9A%84-bing-%E6%94%B6%E5%BD%95%E6%8A%98%E8%85%BE%E8%AE%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-16-cover.jpg" loading="lazy" alt="Featured image of post 我的 Bing 收录折腾记" data-key="" data-hash="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-16-cover.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">我的 Bing 收录折腾记</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/%E4%BD%A0%E5%A5%BD%E4%B8%96%E7%95%8C/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/09/2026-09-18-cover.jpg" loading="lazy" alt="Featured image of post 你好,世界" data-key="你好,世界" data-hash="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/09/2026-09-18-cover.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">你好,世界</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <style>
+    .waline-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+         
+        --waline-font-size: var(--article-font-size, 1.6rem);
+    }
+
+     
+    .waline-container,
+    .waline-container input,
+    .waline-container textarea,
+    .waline-container button,
+    .waline-container select {
+        font-family: var(--article-font-family, var(--base-font-family));
+    }
+
+    .waline-container .wl-count {
+        color: var(--card-text-color-main);
+    }
+</style>
+<div id="waline" class="waline-container"></div>
+
+    
+
+    <footer class="site-footer">
+    <section class="site-stats">
+        <span>共 4 篇文章</span>
+        <span class="dot">·</span>
+        <span>约 0.4 万字</span>
+        <span class="dot">·</span>
+        <span>运行 35 天</span>
+    </section>
+
+    <section class="copyright">
+        &copy; 
+        
+            2024 - 
+        
+        2026 爱玩win11的me
+    </section>
+    
+    <section class="powerby">
+        Build using Hugo <br />
+        
+    </section>
+</footer>
+
+<style>
+    .site-footer .site-stats {
+        text-align: center;
+        font-size: 14px;
+        color: var(--card-text-color-secondary);
+        margin-bottom: 8px;
+    }
+    .site-footer .site-stats .dot {
+        margin: 0 6px;
+        opacity: .6;
+    }
+</style>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdmirror.com/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdmirror.com/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdmirror.com/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdmirror.com/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdmirror.com/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.loli.net/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+<style>
+    .welcome-toast {
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        max-width: 440px;
+        padding: 16px 38px 16px 16px;
+        background: var(--card-background);
+        color: var(--card-text-color-main);
+        border: 1px solid var(--card-separator-color);
+        border-radius: var(--card-border-radius, 12px);
+        box-shadow: 0 10px 34px rgba(0, 0, 0, 0.18);
+        transform: translateX(130%);
+        opacity: 0;
+        pointer-events: none;
+        transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.45s ease;
+    }
+
+    .welcome-toast.is-show {
+        transform: translateX(0);
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .welcome-toast__wave {
+        flex-shrink: 0;
+        font-size: 4rem;
+        line-height: 1;
+        display: inline-block;
+        transform-origin: 70% 70%;
+        animation: welcome-wave 1.8s ease-in-out infinite;
+    }
+
+    @keyframes welcome-wave {
+
+        0%,
+        100% {
+            transform: rotate(0deg);
+        }
+
+        20% {
+            transform: rotate(18deg);
+        }
+
+        40% {
+            transform: rotate(-10deg);
+        }
+
+        60% {
+            transform: rotate(14deg);
+        }
+
+        80% {
+            transform: rotate(-6deg);
+        }
+    }
+
+    .welcome-toast__body {
+        min-width: 0;
+    }
+
+    .welcome-toast__greet {
+        margin: 0 0 8px;
+        font-size: 1.4rem;
+        line-height: 1.55;
+        color: var(--card-text-color-main);
+    }
+
+    .welcome-toast__greet b {
+        color: var(--accent-color);
+        font-weight: 600;
+    }
+
+    .welcome-toast__link {
+        display: inline-block;
+        font-size: 1.3rem;
+        line-height: 1.5;
+        white-space: nowrap;
+        color: var(--accent-color);
+        text-decoration: none !important;
+        border-bottom: 1px dashed var(--accent-color);
+        padding-bottom: 1px;
+        transition: opacity 0.2s ease;
+    }
+
+    .welcome-toast__link:hover {
+        opacity: 0.75;
+    }
+
+    .welcome-toast__close {
+        position: absolute;
+        top: 8px;
+        right: 10px;
+        width: 22px;
+        height: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        border: none;
+        background: none;
+        color: var(--card-text-color-secondary);
+        font-size: 1.8rem;
+        line-height: 1;
+        cursor: pointer;
+        transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    .welcome-toast__close:hover {
+        color: var(--card-text-color-main);
+        transform: scale(1.15);
+    }
+
+    @media (max-width: 640px) {
+        .welcome-toast {
+            left: 12px;
+            right: 12px;
+            bottom: 12px;
+            max-width: none;
+        }
+    }
+</style>
+
+<div id="welcome-toast" class="welcome-toast" role="dialog" aria-live="polite" aria-label="欢迎通知">
+    <button class="welcome-toast__close" type="button" aria-label="关闭">&times;</button>
+    <span class="welcome-toast__wave" aria-hidden="true">👋</span>
+    <div class="welcome-toast__body">
+        <p class="welcome-toast__greet">泥嚎！来自 <b id="welcome-browser">你的浏览器</b> 的朋友，欢迎来到我的 blog</p>
+        <a class="welcome-toast__link" href="https://github.com/YrqSpace/YrqSpace.github.io/issues/1" target="_blank" rel="noopener">👉 觉得文章有意思？点这里去 GitHub 订阅</a>
+    </div>
+</div>
+
+<script>
+    (function () {
+        function detectBrowser() {
+            var ua = navigator.userAgent;
+            if (/Edg\//.test(ua) || /EdgiOS\//.test(ua)) return 'Edge';
+            if (/OPR\//.test(ua) || /Opera/.test(ua)) return 'Opera';
+            if (/Firefox\//.test(ua) || /FxiOS\//.test(ua)) return 'Firefox';
+            if (/Chrome\//.test(ua) || /CriOS\//.test(ua)) return 'Chrome';
+            if (/Safari\//.test(ua)) return 'Safari';
+            return '浏览器';
+        }
+
+        
+        
+        var KEY = 'welcome-shown';
+
+        function alreadyShown() {
+            try { return sessionStorage.getItem(KEY) === '1'; } catch (e) { return false; }
+        }
+
+        function markShown() {
+            try { sessionStorage.setItem(KEY, '1'); } catch (e) { }
+        }
+
+        function showWelcome() {
+            var toast = document.getElementById('welcome-toast');
+            if (!toast) return;
+
+            
+            if (alreadyShown()) return;
+
+            var browserSpan = document.getElementById('welcome-browser');
+            if (browserSpan) browserSpan.textContent = detectBrowser();
+
+            var closeBtn = toast.querySelector('.welcome-toast__close');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', function () {
+                    toast.classList.remove('is-show');
+                });
+            }
+
+            
+            function reveal() {
+                toast.classList.add('is-show');
+                markShown();
+            }
+
+            function loadingDone() {
+                return !document.documentElement.classList.contains('is-loading');
+            }
+
+            if (loadingDone()) {
+                setTimeout(reveal, 300);
+                return;
+            }
+
+            var done = false;
+            var observer = new MutationObserver(function () {
+                if (!done && loadingDone()) {
+                    done = true;
+                    observer.disconnect();
+                    setTimeout(reveal, 300);
+                }
+            });
+            observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
+            
+            setTimeout(function () {
+                if (!done) {
+                    done = true;
+                    observer.disconnect();
+                    reveal();
+                }
+            }, 20000);
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', showWelcome);
+        } else {
+            showWelcome();
+        }
+    })();
+</script>
+
+    <script src="https://cdn.jsdmirror.com/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    <div id="aplayer"></div>
+
+    <script>
+        const home = "https://yrqspace.github.io/"
+        const ap = new APlayer({
+            container: document.getElementById('aplayer'),
+            fixed: true,
+            lrcType: 0,
+            audio: [
+    {
+        name: '清空',
+        artist: '王忻辰 苏星婕',
+        url: '/music/qingkong/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/qingkong.jpg',
+    },
+    {
+        name: '云烟成雨',
+        artist: '房东的猫',
+        url: '/music/yunyanchengyu/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/yunyanchengyu.jpg',
+    },
+    {
+        name: '带我去找夜生活',
+        artist: '告五人',
+        url: '/music/daiwoquzhaoyeshenghuo/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/daiwoquzhaoyeshenghuo.jpg',
+    },
+    {
+        name: '等一场雨',
+        artist: '苏星婕',
+        url: '/music/dengyichangyu/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/dengyichangyu.jpg',
+    },
+    {
+        name: 'river flows in you',
+        artist: 'Yiruma',
+        url: '/music/river-flows-in-you/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/river-flows-in-you.jpg',
+    },
+    {
+        name: 'Kiss The Rain',
+        artist: 'Yiruma',
+        url: '/music/Kiss-The-Rain/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/Kiss-The-Rain.jpg',
+    },
+    {
+        name: 'Maybe',
+        artist: 'Yiruma',
+        url: '/music/maybe/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/maybe.jpg',
+    },
+    {
+        name: 'Summer',
+        artist: '久石让',
+        url: '/music/summer/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/summer.jpg',
+    },
+    {
+        name: 'Merry Christmas Mr. Lawrence',
+        artist: '坂本龙一',
+        url: '/music/merrychristmasmrlawrence/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/merrychristmasmrlawrence.jpg',
+    },
+    {
+        name: 'My Soul',
+        artist: 'July',
+        url: '/music/mysoul/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/mysoul.jpg',
+    },
+    {
+        name: 'Una Mattina',
+        artist: 'Ludovico Einaudi',
+        url: '/music/unamattina/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/unamattina.jpg',
+    },
+    {
+        name: '夜的钢琴曲五',
+        artist: '石进',
+        url: '/music/yedegangqinquwu/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/yedegangqinquwu.jpg',
+    },
+    {
+        name: 'Flower Dance',
+        artist: 'DJ Okawari',
+        url: '/music/flowerdance/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/flowerdance.jpg',
+    },
+    {
+        name: 'Harbor',
+        artist: 'Tomppabeats',
+        url: '/music/harbor/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/harbor.jpg',
+    },
+    {
+        name: 'Controlla',
+        artist: 'Drake',
+        url: '/music/controlla/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/controlla.jpg',
+    }
+]
+
+    });
+
+
+   
+
+    window.onbeforeunload = () => {
+        
+        const playInfo = {
+            index: ap.list.index,
+            currentTime: ap.audio.currentTime,
+            paused: ap.paused
+        };
+        localStorage.setItem("playInfo", JSON.stringify(playInfo));
+    };
+
+    
+
+    window.onload = () => {
+        
+        const playInfo = JSON.parse(localStorage.getItem("playInfo"));
+        if (!playInfo) {
+            return;
+        }
+        
+        ap.list.switch(playInfo.index);
+        
+        setTimeout(() => {
+            
+            ap.seek(playInfo.currentTime);
+            
+            if (!playInfo.paused) {
+                ap.play()
+            }
+        }, 500);
+    };
+
+
+
+    </script>
+
+<script src="/js/pjax.min.js"></script>
+<script src="/js/topbar.min.js"></script>
+<script>
+  window.__giscusConfig = {
+    repo: "YrqSpace/Giscus",
+    repoId: "R_kgDOUhG6JA",
+    category: "Announcements",
+    categoryId: "DIC_kwDOUhG6JM4DF78m",
+    mapping: "pathname",
+    strict: 0,
+    reactionsEnabled: 1,
+    emitMetadata: 0,
+    inputPosition: "top",
+    lightTheme: "light",
+    darkTheme: "dark",
+    lang: "zh-CN"
+  };
+</script><link rel="stylesheet" href="/vendor/waline/waline.css">
+<script>
+window.__walineCfg = {"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji":["https://unpkg.com/@waline/emojis@1.4.0/bmoji","https://unpkg.com/@waline/emojis@1.4.0/bilibili"],"lang":"zh-CN","locale":{"admin":"Admin"},"requiredMeta":["name","email","url"],"serverURL":"https://yrq1622.cc.cd"};
+(function () {
+  var WALINE_URL = '\/vendor\/waline\/waline.js';
+  var bootAttempts = 0;
+
+  function loadModule() {
+    
+    if (!window.__walineModulePromise) {
+      window.__walineModulePromise = import(WALINE_URL);
+    }
+    return window.__walineModulePromise;
+  }
+
+  window.__walineBoot = function () {
+    var el = document.getElementById('waline');
+    if (!el) {
+      
+      if (bootAttempts < 40) {
+        bootAttempts++;
+        setTimeout(window.__walineBoot, 200);
+      }
+      return;
+    }
+    if (el.dataset.wlMounted === '1' || el.dataset.wlMounting === '1') return;
+
+    el.dataset.wlMounting = '1';
+    loadModule().then(function (m) {
+      var init = (m && (m.init || (m.default && m.default.init))) || (window.Waline && window.Waline.init);
+      if (typeof init !== 'function') throw new Error('waline init not found');
+      
+      var mountEl = document.getElementById('waline');
+      if (!mountEl) {
+        el.dataset.wlMounting = '';
+        return;
+      }
+      mountEl.innerHTML = '';
+      init(window.__walineCfg);
+      
+      mountEl.dataset.wlMounted = '1';
+      mountEl.dataset.wlMounting = '';
+      bootAttempts = 0;
+    }).catch(function (e) {
+      
+      window.__walineModulePromise = null;
+      var mountEl = document.getElementById('waline');
+      if (mountEl) mountEl.dataset.wlMounting = '';
+      console.error('[waline] load failed', e);
+    });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { window.__walineBoot(); });
+  } else {
+    window.__walineBoot();
+  }
+})();
+</script><script>
+(function () {
+  
+  if (typeof Pjax === "undefined") {
+    console.warn("[pjax] 库未加载，已跳过无刷新初始化");
+    return;
+  }
+
+  var pjax = new Pjax({
+    selectors: [".main-container"],
+    
+    timeout: 15000
+  });
+
+  
+  
+  window.pjax = pjax;
+
+  
+  var rawHandleResponse = pjax.handleResponse.bind(pjax);
+
+  
+  pjax.handleResponse = function (responseText, request, href, options) {
+    try {
+      var newDom = new DOMParser().parseFromString(responseText, "text/html");
+      if (newDom && newDom.body) {
+        if (newDom.body.className) {
+          document.body.setAttribute("class", newDom.body.className);
+        }
+        window.__pjaxHasComments = !!newDom.body.querySelector('script[src="https://giscus.app/client.js"]');
+      }
+    } catch (e) {
+      console.warn("[pjax] 同步 body class 失败", e);
+    }
+    
+    return rawHandleResponse(responseText, request, href, options);
+  };
+
+  
+  if (window.topbar && typeof topbar.config === "function") {
+    topbar.config({
+      barColors: {
+        "0": "rgba(255,  255, 255, 1)", 
+        "1.0": "rgba(0, 149, 234,  1)" 
+      }
+    });
+  }
+
+  document.addEventListener("pjax:send", function () {
+    if (window.topbar && typeof topbar.show === "function") topbar.show();
+  });
+
+  document.addEventListener("pjax:complete", function () {
+    if (window.Stack && typeof Stack.init === "function") Stack.init();
+    if (window.topbar && typeof topbar.hide === "function") topbar.hide();
+
+    
+    if (typeof initScrollTop === "function") initScrollTop();
+    if (typeof initTocHide === "function") initTocHide();
+
+    
+    if (window.__walineBoot) window.__walineBoot();
+
+    var cfg = window.__giscusConfig;
+    if (!cfg || !window.__pjaxHasComments) return;
+    var main = document.querySelector(".main-container main") || document.querySelector("main");
+    if (!main) return;
+    main.querySelectorAll(".giscus").forEach(function (el) { el.remove(); });
+    var oldScript = main.querySelector('script[src="https://giscus.app/client.js"]');
+    var script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.setAttribute("data-repo", cfg.repo);
+    script.setAttribute("data-repo-id", cfg.repoId);
+    script.setAttribute("data-category", cfg.category);
+    script.setAttribute("data-category-id", cfg.categoryId);
+    script.setAttribute("data-mapping", cfg.mapping);
+    script.setAttribute("data-strict", cfg.strict);
+    script.setAttribute("data-reactions-enabled", cfg.reactionsEnabled);
+    script.setAttribute("data-emit-metadata", cfg.emitMetadata);
+    script.setAttribute("data-input-position", cfg.inputPosition);
+    script.setAttribute("data-theme", document.documentElement.dataset.scheme === "dark" ? cfg.darkTheme : cfg.lightTheme);
+    script.setAttribute("data-lang", cfg.lang);
+    script.setAttribute("crossorigin", "anonymous");
+    script.async = true;
+    if (oldScript) {
+      oldScript.parentNode.insertBefore(script, oldScript);
+      oldScript.parentNode.removeChild(oldScript);
+    } else {
+      var anchor = main.querySelector(".site-footer");
+      if (anchor) {
+        main.insertBefore(script, anchor);
+      } else {
+        main.appendChild(script);
+      }
+    }
+  });
+})();
+</script>
+
+
+
+<style>
+     
+    #TableOfContents ul,
+    #TableOfContents ol {
+        display: block;
+    }
+</style>
+
+<script>
+    function initTocHide() {
+        
+        let toc = document.querySelector(".widget--toc");
+        if (!toc) {
+            return;
+        }
+        
+        window.addEventListener('scroll', function() {
+            
+            let openUl = document.querySelectorAll(".open");
+            if (openUl.length > 0) {
+              openUl.forEach((ul) => {
+                ul.classList.remove("open")
+              })
+            }
+            
+            let currentLi = document.querySelector(".active-class");
+            if (!currentLi) {
+                return
+            }
+            
+            if (currentLi.children.length > 1) {
+                currentLi.children[1].classList.add("open")
+            }
+            
+            let ul = currentLi.parentElement;
+            do {
+                ul.classList.add("open");
+                ul = ul.parentElement.parentElement
+            } while (ul !== undefined && (ul.localName === 'ul' || ul.localName === 'ol'))
+        });
+    }
+    initTocHide()
+</script>
+
+
+
+<style>
+    #backTopBtn {
+        display: none;
+        position: fixed;
+        bottom: 30px;
+        z-index: 99;
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        background-image: url(https://yrqspace.github.io/icons/backTop.svg);
+    }
+</style>
+
+<script>
+    
+
+    function initScrollTop() {
+        
+        let rightSideBar = document.querySelector(".right-sidebar");
+        
+        document.querySelectorAll("#backTopBtn").forEach(function (el) { el.remove(); });
+        let btn = document.createElement("div");
+        btn.id = "backTopBtn";
+        btn.onclick = backToTop;
+        if (rightSideBar) {
+            rightSideBar.appendChild(btn);
+        } else {
+            
+            btn.style.right = "30px";
+            document.body.appendChild(btn);
+        }
+        
+        function updateBackTop() {
+            
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                btn.style.display = "block";
+            } else {
+                btn.style.display = "none";
+            }
+        }
+        
+        window.removeEventListener("scroll", window.__backTopScroll);
+        window.__backTopScroll = updateBackTop;
+        window.addEventListener("scroll", window.__backTopScroll);
+        updateBackTop();
+    }
+
+    
+
+    function backToTop(){
+        window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    initScrollTop();
+</script>
+
+
+<div id="particles-js"></div>
+
+<script src=/background/particles.min.08f2e0aff5b71bc59b17ee2aacf0f5d68b77a9d20a185cff1df07f7916db5f44.js></script>
+<script>
+    particlesJS.load('particles-js', "/background/particlesjs-config.2368193f537c13d79c72a08b7586e884f75c953cb6c55079ac09d35b1ccc6dbe.json", function() {
+        console.log('particles.js loaded - callback');
+    });
+</script>
+
+<style>
+    #particles-js {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        pointer-events: none;
+    }
+</style>
+
+
+<script src=/background/fish.d5921750081cfe1813aedc5c17c35818046aabe25d2c45cd39f25df21e346fb3.js></script>
+
+
+<script src=/js/holiday-eggs.7a4718c6824e19a216478c1d657ca7e5382ad719f644faed143a55e9a990412c.js></script>
+
+
+
+
+
+<script>
+(function () {
+    var PF_CSS = '/pagefind/pagefind-ui.css';
+    var PF_JS = '/pagefind/pagefind-ui.js';
+    var TRANSLATIONS = {
+        placeholder: "搜索文章…",
+        clear_search: "清空",
+        load_more: "加载更多结果",
+        search_label: "搜索本站",
+        filters_label: "筛选",
+        zero_results: "没有找到与 “[SEARCH_TERM]” 相关的内容",
+        many_results: "找到 [COUNT] 条与 “[SEARCH_TERM]” 相关的结果",
+        one_result: "找到 1 条与 “[SEARCH_TERM]” 相关的结果",
+        alt_search: "未找到 “[SEARCH_TERM]”，改为显示 “[DIFFERENT_TERM]” 的结果",
+        search_suggestion: "未找到 “[SEARCH_TERM]”，请尝试以下关键词之一：",
+        searching: "搜索中…"
+    };
+
+    function ensureCss() {
+        if (document.querySelector('link[href="' + PF_CSS + '"]')) return;
+        var l = document.createElement('link');
+        l.rel = 'stylesheet';
+        l.href = PF_CSS;
+        document.head.appendChild(l);
+    }
+
+    function whenReady(cb) {
+        if (typeof window.PagefindUI !== 'undefined') { cb(true); return; }
+        
+        var tries = 0;
+        (function loop() {
+            if (typeof window.PagefindUI !== 'undefined') { cb(true); return; }
+            if (tries++ > 100) { cb(false); return; } 
+            setTimeout(loop, 100);
+        })();
+    }
+
+    function ensureScript(cb) {
+        if (typeof window.PagefindUI !== 'undefined') { cb(true); return; }
+        if (!document.querySelector('script[data-pf-ui]')) {
+            var s = document.createElement('script');
+            s.src = PF_JS;
+            s.setAttribute('data-pf-ui', '1');
+            s.onload = function () { whenReady(cb); };
+            s.onerror = function () { cb(false); };
+            document.head.appendChild(s);
+            return;
+        }
+        whenReady(cb);
+    }
+
+    function getTerm() {
+        try {
+            var p = new URLSearchParams(window.location.search);
+            return p.get('keyword') || p.get('q') || '';
+        } catch (e) { return ''; }
+    }
+
+    function mount() {
+        var el = document.getElementById('search');
+        if (!el) return; 
+
+        ensureCss();     
+
+        ensureScript(function (ok) {
+            var box = document.getElementById('search');
+            if (!box) return;
+            var hint = document.getElementById('pf-hint');
+
+            if (!ok || typeof window.PagefindUI === 'undefined') {
+                if (hint) {
+                    hint.style.display = 'block';
+                    hint.textContent = '对不起，搜索资源加载失败，请刷新页面重试。';
+                }
+                return;
+            }
+
+            if (box.dataset.pfMounted !== '1') {
+                box.innerHTML = '';
+                new window.PagefindUI({
+                    element: "#search",
+                    showSubResults: true,
+                    showImages: false,
+                    resetStyles: false,
+                    translations: TRANSLATIONS
+                });
+                box.dataset.pfMounted = '1';
+            }
+            if (hint) hint.style.display = 'none';
+
+            
+            var term = getTerm();
+            if (term) {
+                var input = box.querySelector('.pagefind-ui__search-input');
+                if (input && input.value !== term) {
+                    input.value = term;
+                    input.dispatchEvent(new Event('input', { bubbles: true }));
+                    try { input.focus(); } catch (e) {}
+                }
+            }
+        });
+    }
+
+    window.__pfEnsure = mount;
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () { setTimeout(mount, 0); });
+    } else {
+        setTimeout(mount, 0);
+    }
+    
+    document.addEventListener('pjax:complete', function () { setTimeout(mount, 0); });
+})();
+</script>
+
+
+<script>
+(function () {
+    function buildAlt(img) {
+        if (img.getAttribute('alt') !== null && img.getAttribute('alt').trim() !== '') return null;
+
+        if (img.dataset && img.dataset.key && img.dataset.key.trim()) return img.dataset.key.trim();
+
+        var sec = img.closest('.section-card');
+        if (sec) {
+            var term = sec.querySelector('.section-term');
+            if (term && term.textContent.trim()) return term.textContent.trim();
+            var desc = sec.querySelector('.section-description');
+            if (desc && desc.textContent.trim()) return desc.textContent.trim();
+            var h = sec.querySelector('h1, h2');
+            if (h && h.textContent.trim()) return h.textContent.trim();
+        }
+
+        var art = img.closest('article') || img.closest('.article-details');
+        if (art) {
+            var t = art.querySelector('.article-title');
+            if (t && t.textContent.trim()) return t.textContent.trim();
+        }
+
+        var src = img.getAttribute('src') || '';
+        var base = decodeURIComponent(src.split('/').pop().split('?')[0]).replace(/\.[a-z0-9]+$/i, '');
+        base = base.replace(/[-_]+/g, ' ').replace(/\s+/g, ' ').trim();
+        var pt = document.querySelector('.article-title, h1');
+        var pageTitle = pt ? pt.textContent.trim() : '';
+        if (base && !/^[\d\s]+$/.test(base)) return base;
+        return (pageTitle ? pageTitle + ' ' : '') + '配图';
+    }
+
+    function runAltFix() {
+        var imgs = document.querySelectorAll('img:not([alt])');
+        Array.prototype.forEach.call(imgs, function (img) {
+            var a = buildAlt(img);
+            if (a) img.setAttribute('alt', a);
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', runAltFix);
+    } else {
+        runAltFix();
+    }
+    ['pjax:complete', 'pjax:end', 'pjax:success'].forEach(function (e) {
+        document.addEventListener(e, runAltFix);
+    });
+    window.addEventListener('load', runAltFix);
+    setTimeout(runAltFix, 1500);
+    setTimeout(runAltFix, 3000);
+})();
+</script>
+
+
+
+<style>
+#cookie-modal-backdrop{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.45);z-index:9997;opacity:0;visibility:hidden;transition:opacity .3s ease,visibility .3s ease;}
+#cookie-modal-backdrop.is-show{opacity:1;visibility:visible;}
+#cookie-modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.92);width:90%;max-width:520px;height:60vh;background:var(--card-background);border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,.25);z-index:9998;opacity:0;visibility:hidden;display:flex;flex-direction:column;overflow:hidden;transition:transform .3s cubic-bezier(.22,1,.36,1),opacity .3s ease,visibility .3s ease;}
+#cookie-modal.is-show{transform:translate(-50%,-50%) scale(1);opacity:1;visibility:visible;}
+#cookie-modal.is-hide{transform:translate(-50%,-50%) scale(.95) translateY(8px);opacity:0;visibility:hidden;}
+#cookie-modal .cookie-head{padding:16px 20px;border-bottom:1px solid var(--card-separator-color);font-size:18px;font-weight:700;color:var(--card-text-color-main);}
+#cookie-modal .cookie-body{flex:1;overflow-y:auto;padding:16px 20px;font-size:14px;line-height:1.8;color:var(--card-text-color-main);}
+#cookie-modal .cookie-foot{padding:12px 20px;border-top:1px solid var(--card-separator-color);display:flex;justify-content:flex-end;align-items:center;}
+#cookie-modal .btn{background:#3b82f6;color:#fff;border:0;border-radius:8px;padding:8px 24px;cursor:pointer;font-size:14px;}
+</style>
+
+<div id="cookie-modal-backdrop"></div>
+<div id="cookie-modal" role="dialog" aria-modal="true">
+    <div class="cookie-head">使用您的 Cookie</div>
+    <div class="cookie-body">
+        <p>您好，感谢您访问本站！为了提供更便捷的体验，如记住您的主题偏好、播放进度等功能，本站会使用少量 Cookie 及浏览器本地存储。这些数据仅用于站内功能正常运行，不会被用于广告追踪，也不会出售给任何第三方。</p>
+        <p>您可以随时在浏览器设置中管理或禁用 Cookies，具体操作方法可参考浏览器的帮助文档。我们尊重您的选择，并承诺保护您的隐私。</p>
+        <p><strong>关于第三方服务：</strong></p>
+        <p>本站使用 Cloudflare 、CDN 服务、以及 Waline 评论系统。这些服务可能会设置必要的技术性 Cookie，以保障验证与评论功能正常。它们的使用受其自身隐私政策的约束。</p>
+        <p>如果您同意我们使用 Cookie，即可正常使用本站各项功能。如果您选择禁用 Cookies，部分功能(如评论、主题记忆)可能无法使用，但浏览文章不受影响。</p>
+        <p>我们承诺严格遵循隐私政策处理所有 Cookie 信息，确保您的个人信息安全。</p>
+    </div>
+    <div class="cookie-foot">
+        <button class="btn" onclick="closeCookieModal()">可以</button>
+    </div>
+</div>
+
+<script>
+function closeCookieModal() {
+    var m = document.getElementById('cookie-modal');
+    var b = document.getElementById('cookie-modal-backdrop');
+    if (!m) return;
+    localStorage.setItem('cookie-ok', '1');
+    m.classList.add('is-hide');
+    if (b) b.classList.remove('is-show');
+    setTimeout(function () {
+        m.classList.remove('is-show', 'is-hide');
+    }, 320);
+}
+(function () {
+    function showModal() {
+        var m = document.getElementById('cookie-modal');
+        var b = document.getElementById('cookie-modal-backdrop');
+        if (!m) return;
+        if (localStorage.getItem('cookie-ok')) return;
+        m.classList.add('is-show');
+        if (b) b.classList.add('is-show');
+    }
+    function isPassed() {
+        try { return sessionStorage.getItem('turnstile-passed') === '1'; } catch (e) { return false; }
+    }
+    var timer = setInterval(function () {
+        if (isPassed()) {
+            clearInterval(timer);
+            setTimeout(showModal, 800);
+        }
+    }, 300);
+    if (window.__turnstilePassed || document.documentElement.classList.contains('turnstile-passed')) {
+        setTimeout(showModal, 500);
+    }
+})();
+</script>
+
+
+
+
+<script>
+if (!window.__pjaxPagefindFix) {
+    window.__pjaxPagefindFix = true;
+    document.addEventListener('click', function (e) {
+        var link = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+        if (!link || !window.pjax) return;
+        if (!link.closest('.pagefind-ui')) return;
+        if (link.target === '_blank' || link.getAttribute('rel') === 'external') return;
+        var url = link.getAttribute('href');
+        if (!url || url.charAt(0) === '#') return;
+        e.preventDefault();
+        if (typeof window.pjax.loadUrl === 'function') {
+            window.pjax.loadUrl(link.href);
+        } else {
+            location.href = link.href;
+        }
+    }, true);
+}
+</script>
+
+
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 78px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+        
+        window.dispatchEvent(new Event('resize'))
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://yrqspace.github.io/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+    </body>
+</html>
