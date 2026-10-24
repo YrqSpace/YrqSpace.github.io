@@ -1992,12 +1992,50 @@ html.is-loading .clock-wrapper * {
     <div class="widget-title">
         <h4>服务状态</h4>
     </div>
-    <div class="widget-content">
+    <div class="widget-content status-badge-row">
         <a href="https://yrqspace.github.io/status/" target="_blank" rel="noopener">
-            <img src="https://img.shields.io/website?url=https%3A%2F%2Fyrqspace.github.io&label=博客状态" alt="博客状态">
+
+            
+            <img class="badge-light"
+                 src="https://img.shields.io/website?url=https%3A%2F%2Fyrqspace.github.io&label=%E5%8D%9A%E5%AE%A2%E7%8A%B6%E6%80%81&style=flat&labelColor=6a737d&color=2ea44f"
+                 alt="博客状态" height="20">
+
+            
+            <img class="badge-dark"
+                 src="https://img.shields.io/website?url=https%3A%2F%2Fyrqspace.github.io&label=%E5%8D%9A%E5%AE%A2%E7%8A%B6%E6%80%81&style=flat&labelColor=30363d&color=3fb950"
+                 alt="博客状态" height="20">
+
         </a>
     </div>
 </div>
+
+<style>
+ 
+.status-badge-row {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.status-badge-row img {
+    height: 20px;
+    width: auto;
+    border-radius: 4px;
+}
+
+ 
+.badge-dark { display: none !important; }
+
+ 
+[data-scheme="dark"] .badge-light { display: none !important; }
+[data-scheme="dark"] .badge-dark  { display: inline-block !important; }
+
+ 
+@media (prefers-color-scheme: dark) {
+    html:not([data-scheme="light"]) .badge-light { display: none !important; }
+    html:not([data-scheme="light"]) .badge-dark  { display: inline-block !important; }
+}
+</style>
 
             
         
