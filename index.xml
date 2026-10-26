@@ -584,7 +584,53 @@ GitHub 上的 yrqspace 是我折腾各种项目的地方，欢迎来看看。
         <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
         
         <guid>https://yrqspace.github.io/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/</guid>
-        <description></description>
+        <description>&lt;div class=&#34;fl-card&#34;&gt;
+  &lt;div class=&#34;fl-hd&#34;&gt;&lt;i&gt;&lt;/i&gt;&lt;h3&gt;本站信息&lt;/h3&gt;&lt;span&gt;Copy &amp;amp; paste&lt;/span&gt;&lt;/div&gt;
+  &lt;div class=&#34;fl-info&#34; id=&#34;fl-info&#34;&gt;
+    &lt;div class=&#34;fl-row&#34;&gt;&lt;span class=&#34;k&#34;&gt;站点名称&lt;/span&gt;&lt;span class=&#34;v&#34;&gt;爱玩win11的me&lt;/span&gt;&lt;button class=&#34;fl-cp&#34; type=&#34;button&#34;&gt;复制&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&#34;fl-row&#34;&gt;&lt;span class=&#34;k&#34;&gt;站点域名&lt;/span&gt;&lt;span class=&#34;v&#34;&gt;https://yrqspace.github.io&lt;/span&gt;&lt;button class=&#34;fl-cp&#34; type=&#34;button&#34;&gt;复制&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&#34;fl-row&#34;&gt;&lt;span class=&#34;k&#34;&gt;头像&lt;/span&gt;&lt;span class=&#34;v&#34;&gt;https://yrqspace.github.io/img/avatar.png&lt;/span&gt;&lt;button class=&#34;fl-cp&#34; type=&#34;button&#34;&gt;复制&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&#34;fl-row&#34;&gt;&lt;span class=&#34;k&#34;&gt;站点简介&lt;/span&gt;&lt;span class=&#34;v&#34;&gt;欢迎来到我的博客&lt;/span&gt;&lt;button class=&#34;fl-cp&#34; type=&#34;button&#34;&gt;复制&lt;/button&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;button class=&#34;fl-all&#34; id=&#34;fl-all&#34; type=&#34;button&#34;&gt;
+    &lt;svg viewBox=&#34;0 0 24 24&#34;&gt;&lt;rect x=&#34;9&#34; y=&#34;9&#34; width=&#34;12&#34; height=&#34;12&#34; rx=&#34;2&#34;/&gt;&lt;path d=&#34;M5 15V5a2 2 0 0 1 2-2h8&#34;/&gt;&lt;/svg&gt;
+    一键复制本站信息 &lt;kbd&gt;YAML&lt;/kbd&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;script&gt;
+(function(){
+  var box=document.getElementById(&#39;fl-info&#39;); if(!box) return;
+  function clip(t){
+    if(navigator.clipboard&amp;&amp;window.isSecureContext) return navigator.clipboard.writeText(t);
+    var a=document.createElement(&#39;textarea&#39;); a.value=t; a.style.position=&#39;fixed&#39;; a.style.opacity=&#39;0&#39;;
+    document.body.appendChild(a); a.select();
+    try{document.execCommand(&#39;copy&#39;)}catch(e){}
+    document.body.removeChild(a); return Promise.resolve();
+  }
+  function flash(b,t){
+    if(!b.dataset.old) b.dataset.old=b.innerHTML;
+    b.innerHTML=t; b.classList.add(&#39;ok&#39;);
+    setTimeout(function(){b.innerHTML=b.dataset.old; b.classList.remove(&#39;ok&#39;)},1600);
+  }
+  var rows=box.querySelectorAll(&#39;.fl-row&#39;);
+  Array.prototype.forEach.call(rows,function(r){
+    var b=r.querySelector(&#39;.fl-cp&#39;); if(!b) return;
+    b.addEventListener(&#39;click&#39;,function(){
+      clip(r.querySelector(&#39;.v&#39;).textContent.trim()).then(function(){flash(b,&#39;已复制&#39;)});
+    });
+  });
+  var all=document.getElementById(&#39;fl-all&#39;);
+  all.addEventListener(&#39;click&#39;,function(){
+    var m={}; Array.prototype.forEach.call(rows,function(r){
+      m[r.querySelector(&#39;.k&#39;).textContent.trim()]=r.querySelector(&#39;.v&#39;).textContent.trim();
+    });
+    var NL=String.fromCharCode(10);
+    var md=[&#39;- name: &#39;+m[&#39;站点名称&#39;],&#39;  url: &#39;+m[&#39;站点域名&#39;],&#39;  avatar: &#39;+m[&#39;头像&#39;],&#39;  desc: &#39;+m[&#39;站点简介&#39;]].join(NL);
+    clip(md).then(function(){flash(all,&#39;✔ 已复制，粘贴到对方的 links 配置里&#39;)});
+  });
+})();
+&lt;/script&gt;
+</description>
         </item>
         
     </channel>
