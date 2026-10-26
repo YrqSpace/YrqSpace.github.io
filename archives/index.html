@@ -1829,5 +1829,219 @@ if (!window.__pjaxPagefindFix) {
   initCodeMoreBox();
 </script>
 
+
+
+
+<style>
+   
+  .friend-search-wrap {
+    margin: 1.4rem 0 0.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .friend-search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .friend-search-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.7rem 2.6rem 0.7rem 2.4rem;
+    font-size: 1.4rem;
+    color: var(--card-text-color-main);
+    background: var(--card-background);
+    border: 1px solid var(--card-separator-color, rgba(128, 128, 128, 0.25));
+    border-radius: 999px;
+    outline: none;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .friend-search-input:focus {
+    border-color: var(--accent-color, #3b82f6);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+  }
+
+  .friend-search-icon {
+    position: absolute;
+    left: 0.85rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    opacity: 0.5;
+    pointer-events: none;
+    color: var(--card-text-color-secondary);
+  }
+
+  .friend-search-clear {
+    position: absolute;
+    right: 0.6rem;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 1.8rem;
+    height: 1.8rem;
+    padding: 0;
+    font-size: 1.4rem;
+    line-height: 1;
+    color: var(--card-text-color-secondary);
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .friend-search-clear:hover {
+    background: rgba(128, 128, 128, 0.15);
+  }
+
+  .friend-search-wrap.has-value .friend-search-clear {
+    display: flex;
+  }
+
+  .friend-search-meta {
+    font-size: 1.2rem;
+    color: var(--card-text-color-tertiary);
+  }
+
+   
+  .friend-search-empty {
+    display: none;
+    padding: 2rem 0;
+    text-align: center;
+    font-size: 1.4rem;
+    color: var(--card-text-color-tertiary);
+  }
+
+  .friend-search-empty.is-on {
+    display: block;
+  }
+
+   
+  .article-list--compact.links > article {
+    transition: opacity 0.18s ease;
+  }
+
+  .article-list--compact.links.is-filtering > article.is-matched {
+    opacity: 1;
+  }
+</style>
+
+<script>
+  (function () {
+    "use strict";
+
+    
+    function shuffle(arr) {
+      for (var i = arr.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var t = arr[i];
+        arr[i] = arr[j];
+        arr[j] = t;
+      }
+      return arr;
+    }
+
+    
+    function initFriendSearch() {
+      var list = document.querySelector(".article-list--compact.links");
+      if (!list) return;                       
+      if (list.dataset.friendReady === "1") return;  
+      list.dataset.friendReady = "1";
+
+      var cards = Array.prototype.slice.call(list.querySelectorAll(":scope > article"));
+      if (!cards.length) return;
+
+      
+      cards.forEach(function (card) {
+        var titleEl = card.querySelector(".article-title");
+        var name = titleEl ? titleEl.textContent.trim() : "";
+        card.dataset.name = (name + " " + (card.getAttribute("data-name") || ""))
+          .toLowerCase().trim();
+      });
+
+      
+      shuffle(cards).forEach(function (card) {
+        list.appendChild(card);
+      });
+
+      
+      var wrap = document.createElement("div");
+      wrap.className = "friend-search-wrap";
+      wrap.innerHTML =
+        '<div class="friend-search-box">' +
+          '<svg class="friend-search-icon" viewBox="0 0 24 24" fill="none" ' +
+            'stroke="currentColor" stroke-width="2" stroke-linecap="round">' +
+            '<circle cx="11" cy="11" r="7"></circle>' +
+            '<line x1="16.5" y1="16.5" x2="21" y2="21"></line>' +
+          '</svg>' +
+          '<input type="text" class="friend-search-input" ' +
+            'placeholder="搜名字找友链，比如输入自己的博客名" ' +
+            'autocomplete="off" spellcheck="false" aria-label="搜索友链">' +
+          '<button type="button" class="friend-search-clear" aria-label="清空">×</button>' +
+        '</div>' +
+        '<div class="friend-search-meta"></div>';
+
+      var empty = document.createElement("div");
+      empty.className = "friend-search-empty";
+      empty.textContent = "没有找到这个友链，换个关键词试试～";
+
+      list.parentNode.insertBefore(wrap, list);
+      list.parentNode.insertBefore(empty, list.nextSibling);
+
+      var input = wrap.querySelector(".friend-search-input");
+      var clearBtn = wrap.querySelector(".friend-search-clear");
+      var meta = wrap.querySelector(".friend-search-meta");
+      var total = cards.length;
+
+      
+      function apply() {
+        var kw = input.value.trim().toLowerCase();
+        wrap.classList.toggle("has-value", kw.length > 0);
+        list.classList.toggle("is-filtering", kw.length > 0);
+
+        var shown = 0;
+        cards.forEach(function (card) {
+          var hit = !kw || (card.dataset.name || "").indexOf(kw) !== -1;
+          card.style.display = hit ? "" : "none";
+          card.classList.toggle("is-matched", hit);
+          if (hit) shown++;
+        });
+
+        empty.classList.toggle("is-on", shown === 0);
+        meta.textContent = kw
+          ? "找到 " + shown + " / " + total + " 个友链"
+          : "共 " + total + " 个友链 · 顺序每次进入都会打乱";
+      }
+
+      input.addEventListener("input", apply);
+      input.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") e.preventDefault();
+        if (e.key === "Escape") {
+          input.value = "";
+          apply();
+        }
+      });
+      clearBtn.addEventListener("click", function () {
+        input.value = "";
+        apply();
+        input.focus();
+      });
+
+      apply();
+    }
+
+    
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initFriendSearch);
+    } else {
+      initFriendSearch();
+    }
+    document.addEventListener("pjax:complete", initFriendSearch);
+  })();
+</script>
+
     </body>
 </html>
