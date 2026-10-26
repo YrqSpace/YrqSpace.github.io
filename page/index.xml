@@ -83,7 +83,7 @@ GitHub 上的 yrqspace 是我折腾各种项目的地方，欢迎来看看。
     });
     var NL=String.fromCharCode(10);
     var md=[&#39;- name: &#39;+m[&#39;站点名称&#39;],&#39;  url: &#39;+m[&#39;站点域名&#39;],&#39;  avatar: &#39;+m[&#39;头像&#39;],&#39;  desc: &#39;+m[&#39;站点简介&#39;]].join(NL);
-    clip(md).then(function(){flash(all,&#39;✔ 已复制，粘贴到对方的 links 配置里&#39;)});
+    clip(md).then(function(){flash(all,&#39;✔ 已复制，粘贴到您的的 友链 配置里&#39;)});
   });
 })();
 &lt;/script&gt;
