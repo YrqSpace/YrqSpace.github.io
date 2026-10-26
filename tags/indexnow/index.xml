@@ -7,7 +7,90 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>爱玩win11的me</copyright>
-        <lastBuildDate>Fri, 16 Oct 2026 13:00:00 +0800</lastBuildDate><atom:link href="https://yrqspace.github.io/tags/indexnow/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Mon, 26 Oct 2026 10:00:00 +0800</lastBuildDate><atom:link href="https://yrqspace.github.io/tags/indexnow/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Bing 收录成功记</title>
+        <link>https://yrqspace.github.io/p/bing-%E6%94%B6%E5%BD%95%E6%88%90%E5%8A%9F%E8%AE%B0/</link>
+        <pubDate>Mon, 26 Oct 2026 10:00:00 +0800</pubDate>
+        
+        <guid>https://yrqspace.github.io/p/bing-%E6%94%B6%E5%BD%95%E6%88%90%E5%8A%9F%E8%AE%B0/</guid>
+        <description>&lt;img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-26-cover.jpg" alt="Featured image of post Bing 收录成功记" /&gt;&lt;p&gt;上一篇《我的 Bing 收录折腾记》的结尾我写了句狠话：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;等 Bing 来敲门的那天，我再写一篇《收录成功记》。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;行吧，门响了。&lt;/p&gt;
+&lt;p&gt;但情况比&amp;quot;收录成功&amp;quot;这四个字要复杂一点，所以这篇不算庆祝文，算交作业。&lt;/p&gt;
+&lt;h2 id=&#34;后台那行字变了&#34;&gt;后台那行字变了
+&lt;/h2&gt;&lt;p&gt;十月中下旬的某天，照例打开 Bing Webmaster Tools 翻站点，URL 检查那里，状态从&amp;quot;已发现但未爬网&amp;quot;变成了——&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;已成功编制索引&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;当时没觉得这行字有多重要，也就没截图。现在写这篇的时候有点后悔：证据没了，只剩记忆和自己的一句话。&lt;/p&gt;
+&lt;h2 id=&#34;但我搜不到&#34;&gt;但我搜不到
+&lt;/h2&gt;&lt;p&gt;更离谱的是后续。&lt;/p&gt;
+&lt;p&gt;拿到&amp;quot;已成功编制索引&amp;quot;之后，我立刻去 Bing 搜 &lt;code&gt;site:yrqspace.github.io&lt;/code&gt;。结果——空的。&lt;/p&gt;
+&lt;p&gt;第一反应：合着你在耍我？&lt;/p&gt;
+&lt;p&gt;查了一圈才搞明白，这是两件不同的事：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;编制索引&lt;/strong&gt;：抓了、解析了、存进索引库了。这是后台的事实。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;能搜到&lt;/strong&gt;：搜索结果这一层，有自己的缓存和刷新节奏。这是前端的时间差。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;中间的延迟，几小时到一两天都正常。&lt;/p&gt;
+&lt;p&gt;换句话说，后台说&amp;quot;我知道你这个页面&amp;quot;，和前台说&amp;quot;我把它端给用户&amp;quot;，中间还隔着一道门。这道门不是你能推的，只能等它自己开。&lt;/p&gt;
+&lt;p&gt;顺带一个体会：Bing Webmaster 里的数据基本都不是实时的，它更像&amp;quot;昨天的我&amp;quot;。所以你看到的每一条，其实都是过去式。&lt;/p&gt;
+&lt;h2 id=&#34;顺手看到的未找到标记&#34;&gt;顺手看到的&amp;quot;未找到标记&amp;quot;
+&lt;/h2&gt;&lt;p&gt;翻报告的时候，看到一条提示，大意是这个页面&amp;quot;未找到标记&amp;quot;。&lt;/p&gt;
+&lt;p&gt;第一反应是自己哪里配错了，赶紧去查，才知道说的是&lt;strong&gt;结构化数据&lt;/strong&gt;——就是 Schema.org 那套 JSON-LD 标记，用来告诉搜索引擎&amp;quot;这是一篇文章、作者是谁、什么时候发的&amp;quot;。&lt;/p&gt;
+&lt;p&gt;结论很简单：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;它不是收录的必要条件，没有也照样能被抓、被索引。&lt;/li&gt;
+&lt;li&gt;它是加分项：有的话，搜索结果里可能显示得更&amp;quot;像样&amp;quot;一点（作者、时间、面包屑之类）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;所以不影响收录，优先级排在&amp;quot;多写几篇&amp;quot;后面。先记着，以后有空补。&lt;/p&gt;
+&lt;h2 id=&#34;反向链接为什么是无可用数据&#34;&gt;反向链接为什么是&amp;quot;无可用数据&amp;quot;
+&lt;/h2&gt;&lt;p&gt;这个我也纠结过一阵。&lt;/p&gt;
+&lt;p&gt;我明明已经有几条外链了：GitHub 上那个中文独立博客列表里有一行，博客大联盟挂上了，UpXuu 也互链了。&lt;/p&gt;
+&lt;p&gt;但 Bing 的反链报告，就是&amp;quot;无可用数据&amp;quot;。&lt;/p&gt;
+&lt;p&gt;原因大概两个：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;报告本身有延迟，而且只有它自己抓到的才算数。&lt;/li&gt;
+&lt;li&gt;Bing 的反链数据库覆盖范围，本来就比 Google 小得多。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;所以判断自己有没有外链，别信这个报告。直接去那个页面看链接还在不在，比什么都实在。&lt;/p&gt;
+&lt;h2 id=&#34;到底什么起了作用&#34;&gt;到底什么起了作用
+&lt;/h2&gt;&lt;p&gt;这是我最想写清楚的一段，也是我必须诚实的一段：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;我没法证明是哪一条起了作用。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;我能给的只有事实时间线：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;10 月 4 日，Bing 发现站点。&lt;/li&gt;
+&lt;li&gt;10 月 15 日，还是&amp;quot;已发现但未爬网&amp;quot;，整整 11 天没动静。&lt;/li&gt;
+&lt;li&gt;中间做了：补 &lt;code&gt;robots.txt&lt;/code&gt; 和 sitemap、IndexNow 手动提交、把 IndexNow 塞进上传脚本自动跑、持续发文章、加友链、提 PR 进公开列表。&lt;/li&gt;
+&lt;li&gt;之后某天，状态变成了&amp;quot;已成功编制索引&amp;quot;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;时间上是对得上的。但时间对得上，不等于因果成立。搜索引擎的收录是个黑盒，我只能把该做的一件件做完，然后等。&lt;/p&gt;
+&lt;p&gt;如果非要我自己排个序，我的判断是这样：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;内容量&lt;/strong&gt;。从最初那两篇，到后来陆续补上的几篇，站点终于&amp;quot;有东西可抓&amp;quot;了。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;外链&lt;/strong&gt;。有入口，爬虫才走得进来。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;IndexNow&lt;/strong&gt;。通知机制，让它知道什么时候该来。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;时间&lt;/strong&gt;。前三条加起来，也还是需要时间发酵。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;顺便说一句，我给 IndexNow 优化之后的那个版本，提交的是真实内容页的 URL，不再是 sitemap 文件地址。这个改动有没有用，我也证明不了——但从逻辑上讲，你告诉搜索引擎&amp;quot;这些页面更新了&amp;quot;，本来就该给页面地址。&lt;/p&gt;
+&lt;h2 id=&#34;留给同样在等的人&#34;&gt;留给同样在等的人
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;&amp;ldquo;已发现但未爬网&amp;quot;不是拒绝，是排队。&lt;/strong&gt; 新站 1~4 周是常态，别焦虑。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&amp;ldquo;已成功编制索引&amp;quot;不等于马上能搜到。&lt;/strong&gt; 后台和前台是两套系统，中间有缓存延迟。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&amp;ldquo;未找到标记&amp;quot;说的是结构化数据。&lt;/strong&gt; 不急，不加分也不扣分（至少不扣收录）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;反链报告&amp;quot;无可用数据&amp;quot;不代表你没有外链。&lt;/strong&gt; 去实地看页面更可靠。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;别盯着后台刷。&lt;/strong&gt; 去写文章——这是我唯一确定有用的事，也是上一篇写过、这一篇还想再写一遍的话。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;然后呢&#34;&gt;然后呢
+&lt;/h2&gt;&lt;p&gt;现在我还有两个坑没填：友链页附带的&amp;quot;关于&amp;quot;写得挺敷衍，结构化数据也还没加。&lt;/p&gt;
+&lt;p&gt;不过最近真正折腾的是另一个东西：我给博客配了个 Upptime 状态页，结果部署完打开一直转圈，一路排查到 GitHub API 限流，踩了一整套坑，文章已经写好了，等下篇。&lt;/p&gt;
+&lt;p&gt;所以下一篇大概会叫《给博客配了个状态页，结果它自己先挂了》。&lt;/p&gt;
+&lt;p&gt;最后说个小事。这篇标题叫&amp;quot;收录成功记&amp;rdquo;，但严格来说，它现在还没在搜索结果里出现。所以——&lt;/p&gt;
+&lt;p&gt;如果你是在 Bing 搜到这篇的，那这篇就名副其实了。
+如果你是别的渠道来的，那说明我写得比 Bing 快。&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>我的 Bing 收录折腾记</title>
         <link>https://yrqspace.github.io/p/%E6%88%91%E7%9A%84-bing-%E6%94%B6%E5%BD%95%E6%8A%98%E8%85%BE%E8%AE%B0/</link>
         <pubDate>Fri, 16 Oct 2026 13:00:00 +0800</pubDate>

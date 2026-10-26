@@ -1,0 +1,2127 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="上一篇留了句狠话：等 Bing 来敲门就写《收录成功记》。门确实响了，但'已编制索引'和'能搜到'之间还隔着一层东西。">
+<title>Bing 收录成功记</title>
+
+<link rel='canonical' href='https://yrqspace.github.io/p/bing-%E6%94%B6%E5%BD%95%E6%88%90%E5%8A%9F%E8%AE%B0/'>
+
+<link rel="stylesheet" href="/scss/style.min.b92b7f48815235b7c4db7410ccb18f5b9d3ad03efaa3db0551651ba9b3aa2559.css"><meta property='og:title' content="Bing 收录成功记">
+<meta property='og:description' content="上一篇留了句狠话：等 Bing 来敲门就写《收录成功记》。门确实响了，但'已编制索引'和'能搜到'之间还隔着一层东西。">
+<meta property='og:url' content='https://yrqspace.github.io/p/bing-%E6%94%B6%E5%BD%95%E6%88%90%E5%8A%9F%E8%AE%B0/'>
+<meta property='og:site_name' content='爱玩win11的me'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Bing' /><meta property='article:tag' content='IndexNow' /><meta property='article:tag' content='SEO' /><meta property='article:tag' content='Hugo' /><meta property='article:published_time' content='2026-10-26T10:00:00&#43;08:00'/><meta property='article:modified_time' content='2026-10-26T10:00:00&#43;08:00'/><meta property='og:image' content='https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-26-cover.jpg' />
+<meta name="twitter:title" content="Bing 收录成功记">
+<meta name="twitter:description" content="上一篇留了句狠话：等 Bing 来敲门就写《收录成功记》。门确实响了，但'已编制索引'和'能搜到'之间还隔着一层东西。"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-26-cover.jpg' />
+    <link rel="shortcut icon" href="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/yuansu/favicon.ico" />
+
+  
+
+
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
+<script>
+    (function () {
+        
+        var KEY = 'turnstile-passed';
+        var passed = false;
+        try { passed = sessionStorage.getItem(KEY) === '1'; } catch (e) { passed = false; }
+        
+        window.__turnstilePassed = passed;
+        if (passed) {
+            
+            document.documentElement.classList.add('turnstile-passed');
+        } else {
+            document.documentElement.classList.add('is-loading');
+        }
+    })();
+</script>
+<div class="loading">
+    <div class="spinner">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <div class="captcha-prepare" id="captchaPrepare">正在准备人机验证...</div>
+    <div class="captcha-box" id="captchaBox"></div>
+    <div class="captcha-after" id="captchaAfter">请稍后,正在请求blog-turnstile接口</div>
+</div>
+
+<style>
+    .loading {
+        position: fixed;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 99;
+         
+        background-color: var(--body-background, #f5f5fa);
+         
+        transition: opacity 0.1s ease;
+    }
+
+     
+    .loading.is-hidden {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+     
+    html.turnstile-passed .loading {
+        display: none !important;
+    }
+
+     
+    html[data-scheme="light"] .loading {
+        background-color: #f5f5fa;
+    }
+    html[data-scheme="dark"] .loading {
+        background-color: #303030;
+    }
+    @media (prefers-color-scheme: dark) {
+        .loading {
+            background-color: #303030;
+        }
+    }
+
+     
+    html.is-loading .aplayer {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+     
+    .aplayer {
+        transition: opacity 0.4s ease;
+    }
+
+    .spinner {
+        --gap: 5px;
+        --clr: #3b82f6;    
+        --height: 23px;
+        width: 100px;
+        height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--gap);
+        transition: opacity 0.35s ease;
+    }
+     
+    .spinner.is-hidden {
+        opacity: 0;
+    }
+
+    .spinner span {
+        background: var(--clr);
+        width: 6px;
+        height: var(--height);
+        animation: grow 1s ease-in-out infinite;
+    }
+    .spinner span:nth-child(2) { animation: grow 1s ease-in-out 0.15s infinite; }
+    .spinner span:nth-child(3) { animation: grow 1s ease-in-out 0.3s infinite; }
+    .spinner span:nth-child(4) { animation: grow 1s ease-in-out 0.475s infinite; }
+
+    @keyframes grow {
+        0%, 100% { transform: scaleY(1); }
+        50% { transform: scaleY(1.8); }
+    }
+
+     
+    .captcha-prepare {
+        display: none;
+        margin-top: 6px;
+        font-size: 14px;
+        letter-spacing: 1px;
+        color: var(--body-text-color, #555);
+    }
+    .captcha-prepare.is-show {
+        display: block;
+        animation: captchaSlideIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+     
+    .captcha-box {
+        display: none;
+        margin-top: 6px;
+        min-height: 65px;
+    }
+    .captcha-box.is-show {
+        display: block;
+        animation: captchaSlideIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+     
+    .captcha-after {
+        display: none;
+        margin-top: 6px;
+        font-size: 14px;
+        letter-spacing: 1px;
+        color: var(--body-text-color, #555);
+    }
+    .captcha-after.is-show {
+        display: block;
+        animation: captchaSlideIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+     
+    @keyframes captchaSlideIn {
+        from { opacity: 0; transform: translateX(60px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+</style>
+
+<script>
+    function initLoading() {
+        var loading = document.querySelector(".loading");
+        var hidden = false;
+        var captchaStarted = false;
+
+        
+        if (window.__turnstilePassed) {
+            if (loading) {
+                loading.style.display = "none";
+            }
+            document.documentElement.classList.remove("is-loading");
+            return;
+        }
+
+        
+        function hideLoading() {
+            if (!loading || hidden) {
+                return;
+            }
+            hidden = true;
+            
+            loading.classList.add("is-hidden");
+            
+            setTimeout(function () {
+                loading.style.display = "none";
+                
+                document.documentElement.classList.remove("is-loading");
+            }, 500);
+        }
+
+        
+        
+        function startCaptcha() {
+            if (captchaStarted) {
+                return;
+            }
+            captchaStarted = true;
+
+            var spinner = document.querySelector(".loading .spinner");
+            var prepare = document.getElementById("captchaPrepare");
+            var box = document.getElementById("captchaBox");
+
+            
+            if (spinner) {
+                spinner.classList.add("is-hidden");
+            }
+            
+            if (prepare) {
+                prepare.classList.add("is-show");
+            }
+
+            
+            setTimeout(function () {
+                if (prepare) {
+                    prepare.classList.remove("is-show");
+                }
+                if (box) {
+                    box.classList.add("is-show");
+                }
+                renderTurnstile(box);
+            }, 500);
+        }
+
+        
+        function renderTurnstile(box) {
+            if (!box) {
+                return;
+            }
+            var waited = 0;
+            var timer = setInterval(function () {
+                if (window.turnstile && typeof window.turnstile.render === "function") {
+                    clearInterval(timer);
+                    doRender(box);
+                } else if (waited >= 8000) {
+                    clearInterval(timer);
+                    box.innerHTML = '<p style="margin:0 0 12px;font-size:13px;text-align:center;">验证组件加载失败，请检查网络后重试</p>';
+                    var btn = document.createElement("button");
+                    btn.textContent = "重新加载";
+                    btn.style.cssText = "display:block;margin:0 auto;padding:8px 18px;border:0;border-radius:8px;background:var(--accent-color,#3b82f6);color:#fff;cursor:pointer;";
+                    btn.onclick = function () {
+                        location.reload();
+                    };
+                    box.appendChild(btn);
+                }
+                waited += 200;
+            }, 200);
+        }
+
+        function doRender(box) {
+            var scheme = document.documentElement.getAttribute("data-scheme");
+            var theme = scheme === "dark" ? "dark" : (scheme === "light" ? "light" : "auto");
+            try {
+                window.turnstile.render(box, {
+                    sitekey: "0x4AAAAAAFMoHgJeuUgOvCLv",
+                    theme: theme,
+                    callback: function () {
+                        
+                        try { sessionStorage.setItem("turnstile-passed", "1"); } catch (e) {}
+                        
+                        var prepare = document.getElementById("captchaPrepare");
+                        var after = document.getElementById("captchaAfter");
+                        if (box) { box.classList.remove("is-show"); }
+                        if (prepare) { prepare.classList.remove("is-show"); }
+                        if (after) { after.classList.add("is-show"); }
+                        setTimeout(hideLoading, 800);
+                    }
+                });
+            } catch (e) {
+                box.innerHTML = '<p style="margin:0;font-size:13px;text-align:center;">验证初始化失败，请刷新页面重试</p>';
+            }
+        }
+
+        
+        function whenImageReady(img, callback) {
+            if (!img) {
+                callback();
+                return;
+            }
+            
+            try { img.loading = "eager"; } catch (e) {}
+            if (img.complete && img.naturalWidth !== 0) {
+                callback();
+                return;
+            }
+            img.addEventListener("load", callback, { once: true });
+            img.addEventListener("error", callback, { once: true });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            var avatar = document.querySelector(".site-avatar img, img.site-logo");
+
+            
+            var articles = document.querySelectorAll(".article-list > article, .article-list .article-item");
+            var total = articles.length;
+            var need = Math.ceil(total / 2);
+
+            var avatarDone = false;
+            var articleDone = 0;
+            var startScheduled = false;
+
+            function maybeStart() {
+                if (avatarDone && articleDone >= need && !startScheduled) {
+                    startScheduled = true;
+                    
+                    setTimeout(startCaptcha, 1000);
+                }
+            }
+
+            
+            whenImageReady(avatar, function () {
+                avatarDone = true;
+                maybeStart();
+            });
+
+            if (need === 0) {
+                maybeStart();
+            } else {
+                var counted = 0;
+                Array.prototype.forEach.call(articles, function (article) {
+                    if (counted >= need) {
+                        return;
+                    }
+                    counted++;
+                    whenImageReady(article.querySelector("img"), function () {
+                        articleDone++;
+                        maybeStart();
+                    });
+                });
+            }
+
+            
+            setTimeout(startCaptcha, 15000);
+        });
+    }
+
+    initLoading();
+</script>
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu3149871140739389790.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🤔</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">爱玩win11的me</a></h1>
+            <h2 class="site-description">欢迎来到我的博客</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://linkexpander.thebestmotherfuckingweb.site/i1WLQ0w3WtDoMwDl8HHo13bOqS8FFPWvLHOdWeJ4Yxbla1bdvdOTkuZ56RAGIFEU1ncgSSBhWy56tnCnyhG8czX8S8wEManos0UnuF1IfLVDBUHzjWY9DvE6L49BSERnU4K8PXIYW0bzrcNpTbe6o9oNIkUFDqjisNEvWavVBJQE4NxQuHIOmwpWMI1TyU52S9qFtLjeR4829QspiaiCWzsDQks3Bdt3dnlHz4jXRvFqTLLVtAKmRBQidLoQrbYr5TwkIAtpi1pyVyIvd3doFGiEzSeQUA11i90eoktbeZMElsU2DxhTPs4EOsLuT2PYrugqIrbBsDJEiIQGZXbJ1YLJsQdhwr5x9ts44KDivsePeY3YX0yVfaaUBKQWp1VUwM2b1uTSMDKEA8z0gNYf6a8yh7ZzQCXAGyt6nDWUdtHRMXGg1VxwPVGzVaQNKsZ8B3oQUvyhhJCw51yl1Kd1J8tVcTPam4LoVgn6BGFpDLSl1pAz4wKXvwWLLLGkHG8bxzd0TOgOmPmOrYsQcmUCVqLIsZLB013aoNE1m0yBC5rF2cvXBbUdfmqwQbeib0h6tw50cH1MWddyPUxBcahWKf6nQsH8IxWs1mFDwsM07zAXrqlpJKtupEGcOhhJm0B2l9xJtqRTVI0rx2x6ANGN5P3XrvDY5EdkD6fxmvtNBGdyHn5NbBtEtR5DGOlRV6CztGXw464936hA08jYdhhRFwR3RyqCPUfDQH8KLi6QRvmfT443FMA601AwkMePfOoK8A1u0Ntbi5BWYIMgAUIchJGV2QQWJ5PEfyStUBi0M07LizF1joF0gfnzTBHSOBpavuiWut9dFS7kf4i8ibS2Pe4EmtV6INLdZRlF0oVyVGsW9VQJBQ7zd5P9txqXgY8XsD9h9EM1Hxj9oEtDVutrVUSxUIpqwV59Pfn0hgo28NR2Yb4aCp0vo472ZyQEKqwjcwl7ikB0ruKxOvBaoFAeR2oi3LSBjbC9U7oJaSx6X87Rjl54H1KrlzCgqrHDJKCVAhQMUQVeptI3QIzVtg5IFPPFuLHHsdZfWAVKqq4Z0KQYhejapeQDHOsxeqkiEnmjoc1Ia2TSlEAsfepFN9VS9TbdwFgpnmQGe8F6mZu5hSJPQpwhk4ak2mMHWCTAIvZEIVLb9sLs4Ur9Tz0oqQe2P6oX9xb5r8wuoKm2bNmfZlPKDsFXy6XeDst6HusFJO54MmtBhYxsXG8YdHqKAPWdZqnCkPpZ2IYnZwhe4d2q8KmAln2Yqfq3kponISoop1xPpMDrX0uCbdXkbSjBnZdDy058jc99pP2xzz9C7IIH6lzLcrXMzAtshv68MEqPcMr9l6RyMnCUbqChSVuGxPCPe52jfsKGo2dEJ6g5BqKCdGaeZfAgYVBg3w3pg2CWvyURglZ4t2UV3AbNbnACcAJzH2bGa3LaDHC1tT2PLkYNGlEVZVfBZHwxhIzPIt2g7qZOBbeIOKBCLRNcRg6HAlTixhTZuRGUHtBMI9EnqeEo9EXmoZZ75I34mybS0uEBcPf1f71zP4Pf9KSd3lECa2nI9qzxAsCucOtvk1M6tJgyfDr8Sb6hhPXk0dMFUoYftt9roU9kU0lqqerq6nCH8LiQlkSjvHek342OKGYOwGJ57g20n56MN6TpZC9Wp00tGYC80pv5zEJyOKh7W3oX8KhIDQ3EZDYOUGI3Hfby0yyppXMjE1ZHVCVBAX6Rxly5zawvKnW50gpc8b8FgwyULl0xa9mp56ATwpMLkFM0Wqu7rJeI1fpfF5wwEc1G1h4kx91esfnQduF4uHrNXjRMv3O031TW1KVSO3ZLECKtj8odYmAEfYNa5G65wNuumurFij2lopjg9MgP1rh9eRP4HYDGxgDxKDxCfkpChznhg1gknwVvvxSZus9pyaafnnlkwS6WoXhO1b39ZdGhMAmiIz9oZD77yjaCzc'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-brand-bilibili"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M3 10a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-6" /><path d="M8 3l2 3" /><path d="M16 3l-2 3" /><path d="M9 13v-2" /><path d="M15 11v2" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://linkexpander.thebestmotherfuckingweb.site/I1BKwkw3WtDoMwDl8HTukjQKujwHlDS8YHQbRqa74IRwuAxEYgrVTpVVXqvl1ZqMmHLrwnVkBVoBwsBdCPd6AFhpgy7zIxPy5cPhHFNBil8t9qrOEamyMzEwwiHlJwy9r3yG4stK0Nif9UEcM0DXJkD2CFs6rQdXXQHMkULCHqzYX1BWjoJK0M02ySTuV01jjmNlpRRNsJxba14kQfU1PtfWu6Ld0s8g95dJu8Uj8IQaDkpU1egqW76cdSeSTCWbWbxQom5UAgMgZY0ajG6cymkzxVcs7XtmOshgeQPBOp0R81sPD4qj0iUqOInLbokS2Cbt2MlgOnBjXwWlCNEUsElkoHo2E9gSyJlN4o7BQVQrdjUZW4wiLk4RMXa1CtcMhhVrH7tOXL6aTES3TG2EsAiZsEovob0X3lAYujB30U1T8Qh9K3PEgZTBsdWVDhSROXlQmP0Ms48Wr6Tn4THuOd8kUXFPzZJSer1B00R2ibk2CIcTcSX1pI4v252xbPyk2eNHabtH9LcoKZlF2IMmqxDp9hAOjfpx86H8DjqT5bhngOEBXbSbl9UsLOJat9oW4kpR9sRlWMx9Vvd9Ftv6uDspOvTsmbZESjdX5pRvKs46wzb88j5kIrO3CFgniUSOUHbzDLBOWz47pj0WqtyU9Icy0IyKvIHql0Wdu7xTa2yedF1M7pHO1NoB2X6YoIF1tAGkEfVDDOakN6b10bO59yq8d4Mi5PXFaTuW3PfuOZua6FvSQDKVs9RfIptlfgq4o1XXAAi9QVgZjQF5alZo4qHEPnol5p4oWaYmjkZNb2fM3uvVUTq2lHR7qJOrbaNvVlLqMG5N89FqMIDGPTLo96qcTgfJddD717J0gqRTPdtyFxjaMkTwEahFgtKDlN6grNKgNsH7GRnsuZM15N9TrweVjtuh4DLQkhFGMMA2l73qp8lpJLcf88sGRZVbPNPdkksH12IrxG9LQv7iDq4Hz79BoP6QRufSdQpyTi1saZHg43FW4WPakvMsTvUL7wYJF7HKaZD9p8cxXt3XeVNFhz8UvjJ9Ap3RsR5ryORo0nOJJkstiXtvfiBgRDeeSMUW1npdHAO5zfNpGNSUya3AWVD8oldJMSWEjF0JdSuUSgDQrHy9UioE37uEAvYhfNSoiw4K72vw1aXH8gjg6S0RU91WvXVSuPmFnfqySK3A4IGoJglsPjtpiP3bsg3Vay6Rcf4rGkKUu5FBqb0ZhLUpvG1V2n8k92imUz5VuwYGOi80hjbsHrksEjVNwp3HKyhz2dXCaNDz5yltPIwcJPRORUfiqbdl3gpTtqS440iOZhM3behhH6Wqx12cpgs5h2Demj8uewhW2KyPLsEve9Llb3YC3NUiAsrlqOTuMW738zpNDwjs5ri0ypDpOekxSpjo16Iu1dhz3YNH6jFoSlJIjFZdrqfw3O90NlsrA1ewQJt50xxVfiyJQBv7PRVJzKDEl2dDdNvZlSbY7VevSjgaUeWG6IMXNyMWnKCwrojKsZqWzZMhZXYjq1EpJpXIqfQQbEpKc8eva84G4CLXVYWb5GBZYLrGu6ybryVADmNhqkoA9VgQomWJjfPgnuUYlnmwJdxGiIJk2bMViZHzEbofpXAVlFum5tlGA0IOAIi0wglTiJvafAHzsuI31muABpOruvcIj1A9DWMhCo0JfdyJ6oFksKPEUZxQ0O4Gl5lQjimIZ6ESqQJaTqG6JtBaD7oiKvHNedsnGCPv8OOTdvLISwHS392fDuwZkN7j2a3gBHp7PlONZw9Ia3iXljtPiuysQPaNg1GI9JJyTim1sGzcAtTxxzE2uWv0E2eKZtB1FxRVbKikP0Py6Tl58LcCAvS6MHgwICqDE6AjboYF6Ebv1dxxVzqnkVRRxhpendJC9PeF0l3th4lDZmzsC7WqqCWCgbZwFwn36JGL0ZFqXhZ7nKqRyZYL6G'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友情链接</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/bing-%E6%94%B6%E5%BD%95%E6%88%90%E5%8A%9F%E8%AE%B0/">
+                
+                    <img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-26-cover.jpg" loading="lazy" alt="Featured image of post Bing 收录成功记" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E9%9A%8F%E5%BF%83%E8%AE%B0/" style="background-color: #c62a97; color: #fff;">
+                随心记
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title" data-pagefind-meta="title" data-pagefind-weight="10">
+            <a href="/p/bing-%E6%94%B6%E5%BD%95%E6%88%90%E5%8A%9F%E8%AE%B0/">Bing 收录成功记</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            上一篇留了句狠话：等 Bing 来敲门就写《收录成功记》。门确实响了，但&#39;已编制索引&#39;和&#39;能搜到&#39;之间还隔着一层东西。
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2026-10-26</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 4 分钟
+                </time>
+            </div>
+        
+
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>上一篇《我的 Bing 收录折腾记》的结尾我写了句狠话：</p>
+<blockquote>
+<p>等 Bing 来敲门的那天，我再写一篇《收录成功记》。</p>
+</blockquote>
+<p>行吧，门响了。</p>
+<p>但情况比&quot;收录成功&quot;这四个字要复杂一点，所以这篇不算庆祝文，算交作业。</p>
+<h2 id="后台那行字变了">后台那行字变了
+</h2><p>十月中下旬的某天，照例打开 Bing Webmaster Tools 翻站点，URL 检查那里，状态从&quot;已发现但未爬网&quot;变成了——</p>
+<p><strong>已成功编制索引</strong>。</p>
+<p>当时没觉得这行字有多重要，也就没截图。现在写这篇的时候有点后悔：证据没了，只剩记忆和自己的一句话。</p>
+<h2 id="但我搜不到">但我搜不到
+</h2><p>更离谱的是后续。</p>
+<p>拿到&quot;已成功编制索引&quot;之后，我立刻去 Bing 搜 <code>site:yrqspace.github.io</code>。结果——空的。</p>
+<p>第一反应：合着你在耍我？</p>
+<p>查了一圈才搞明白，这是两件不同的事：</p>
+<ul>
+<li><strong>编制索引</strong>：抓了、解析了、存进索引库了。这是后台的事实。</li>
+<li><strong>能搜到</strong>：搜索结果这一层，有自己的缓存和刷新节奏。这是前端的时间差。</li>
+</ul>
+<p>中间的延迟，几小时到一两天都正常。</p>
+<p>换句话说，后台说&quot;我知道你这个页面&quot;，和前台说&quot;我把它端给用户&quot;，中间还隔着一道门。这道门不是你能推的，只能等它自己开。</p>
+<p>顺带一个体会：Bing Webmaster 里的数据基本都不是实时的，它更像&quot;昨天的我&quot;。所以你看到的每一条，其实都是过去式。</p>
+<h2 id="顺手看到的未找到标记">顺手看到的&quot;未找到标记&quot;
+</h2><p>翻报告的时候，看到一条提示，大意是这个页面&quot;未找到标记&quot;。</p>
+<p>第一反应是自己哪里配错了，赶紧去查，才知道说的是<strong>结构化数据</strong>——就是 Schema.org 那套 JSON-LD 标记，用来告诉搜索引擎&quot;这是一篇文章、作者是谁、什么时候发的&quot;。</p>
+<p>结论很简单：</p>
+<ul>
+<li>它不是收录的必要条件，没有也照样能被抓、被索引。</li>
+<li>它是加分项：有的话，搜索结果里可能显示得更&quot;像样&quot;一点（作者、时间、面包屑之类）。</li>
+</ul>
+<p>所以不影响收录，优先级排在&quot;多写几篇&quot;后面。先记着，以后有空补。</p>
+<h2 id="反向链接为什么是无可用数据">反向链接为什么是&quot;无可用数据&quot;
+</h2><p>这个我也纠结过一阵。</p>
+<p>我明明已经有几条外链了：GitHub 上那个中文独立博客列表里有一行，博客大联盟挂上了，UpXuu 也互链了。</p>
+<p>但 Bing 的反链报告，就是&quot;无可用数据&quot;。</p>
+<p>原因大概两个：</p>
+<ol>
+<li>报告本身有延迟，而且只有它自己抓到的才算数。</li>
+<li>Bing 的反链数据库覆盖范围，本来就比 Google 小得多。</li>
+</ol>
+<p>所以判断自己有没有外链，别信这个报告。直接去那个页面看链接还在不在，比什么都实在。</p>
+<h2 id="到底什么起了作用">到底什么起了作用
+</h2><p>这是我最想写清楚的一段，也是我必须诚实的一段：</p>
+<p><strong>我没法证明是哪一条起了作用。</strong></p>
+<p>我能给的只有事实时间线：</p>
+<ul>
+<li>10 月 4 日，Bing 发现站点。</li>
+<li>10 月 15 日，还是&quot;已发现但未爬网&quot;，整整 11 天没动静。</li>
+<li>中间做了：补 <code>robots.txt</code> 和 sitemap、IndexNow 手动提交、把 IndexNow 塞进上传脚本自动跑、持续发文章、加友链、提 PR 进公开列表。</li>
+<li>之后某天，状态变成了&quot;已成功编制索引&quot;。</li>
+</ul>
+<p>时间上是对得上的。但时间对得上，不等于因果成立。搜索引擎的收录是个黑盒，我只能把该做的一件件做完，然后等。</p>
+<p>如果非要我自己排个序，我的判断是这样：</p>
+<ol>
+<li><strong>内容量</strong>。从最初那两篇，到后来陆续补上的几篇，站点终于&quot;有东西可抓&quot;了。</li>
+<li><strong>外链</strong>。有入口，爬虫才走得进来。</li>
+<li><strong>IndexNow</strong>。通知机制，让它知道什么时候该来。</li>
+<li><strong>时间</strong>。前三条加起来，也还是需要时间发酵。</li>
+</ol>
+<p>顺便说一句，我给 IndexNow 优化之后的那个版本，提交的是真实内容页的 URL，不再是 sitemap 文件地址。这个改动有没有用，我也证明不了——但从逻辑上讲，你告诉搜索引擎&quot;这些页面更新了&quot;，本来就该给页面地址。</p>
+<h2 id="留给同样在等的人">留给同样在等的人
+</h2><ol>
+<li><strong>&ldquo;已发现但未爬网&quot;不是拒绝，是排队。</strong> 新站 1~4 周是常态，别焦虑。</li>
+<li><strong>&ldquo;已成功编制索引&quot;不等于马上能搜到。</strong> 后台和前台是两套系统，中间有缓存延迟。</li>
+<li><strong>&ldquo;未找到标记&quot;说的是结构化数据。</strong> 不急，不加分也不扣分（至少不扣收录）。</li>
+<li><strong>反链报告&quot;无可用数据&quot;不代表你没有外链。</strong> 去实地看页面更可靠。</li>
+<li><strong>别盯着后台刷。</strong> 去写文章——这是我唯一确定有用的事，也是上一篇写过、这一篇还想再写一遍的话。</li>
+</ol>
+<h2 id="然后呢">然后呢
+</h2><p>现在我还有两个坑没填：友链页附带的&quot;关于&quot;写得挺敷衍，结构化数据也还没加。</p>
+<p>不过最近真正折腾的是另一个东西：我给博客配了个 Upptime 状态页，结果部署完打开一直转圈，一路排查到 GitHub API 限流，踩了一整套坑，文章已经写好了，等下篇。</p>
+<p>所以下一篇大概会叫《给博客配了个状态页，结果它自己先挂了》。</p>
+<p>最后说个小事。这篇标题叫&quot;收录成功记&rdquo;，但严格来说，它现在还没在搜索结果里出现。所以——</p>
+<p>如果你是在 Bing 搜到这篇的，那这篇就名副其实了。
+如果你是别的渠道来的，那说明我写得比 Bing 快。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/bing/">Bing</a>
+        
+            <a href="/tags/indexnow/">IndexNow</a>
+        
+            <a href="/tags/seo/">SEO</a>
+        
+            <a href="/tags/hugo/">Hugo</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>根据 CC BY-NC-SA 4.0 协议许可</span>
+    </section>
+    </footer>
+
+
+    <style>
+.article-prevnext {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin: 24px 0 8px;
+    padding: 0;
+}
+.article-prevnext a {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 14px 16px;
+    border-radius: var(--card-border-radius, 12px);
+    background: var(--card-background);
+    box-shadow: var(--shadow-l1);
+    text-decoration: none;
+    color: var(--card-text-color-main);
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+.article-prevnext a:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-l2);
+}
+.article-prevnext a.next {
+    text-align: right;
+}
+.article-prevnext .label {
+    font-size: 13px;
+    color: var(--card-text-color-secondary);
+}
+.article-prevnext .title {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+.article-prevnext .placeholder {
+    flex: 1;
+}
+@media (max-width: 640px) {
+    .article-prevnext {
+        flex-direction: column;
+    }
+    .article-prevnext a.next {
+        text-align: left;
+    }
+    .article-prevnext .placeholder {
+        display: none;
+    }
+}
+</style>
+<div class="article-prevnext">
+    <a class="prev" href="https://yrqspace.github.io/p/%E7%BB%99%E5%8D%9A%E5%AE%A2%E9%85%8D%E4%BA%86%E4%B8%AA%E7%8A%B6%E6%80%81%E9%A1%B5%E7%BB%93%E6%9E%9C%E5%AE%83%E8%87%AA%E5%B7%B1%E5%85%88%E6%8C%82%E4%BA%86/">
+        <span class="label">← 上一篇</span>
+        <span class="title">给博客配了个状态页，结果它自己先挂了</span>
+    </a>
+    <span class="placeholder"></span>
+</div>
+
+    
+</article>
+
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/%E6%88%91%E7%9A%84-bing-%E6%94%B6%E5%BD%95%E6%8A%98%E8%85%BE%E8%AE%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-16-cover.jpg" loading="lazy" alt="Featured image of post 我的 Bing 收录折腾记" data-key="" data-hash="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-16-cover.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">我的 Bing 收录折腾记</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/%E7%BB%99%E5%8D%9A%E5%AE%A2%E5%8A%A0%E4%B8%8A%E5%8D%9A%E5%AE%A2%E5%A4%A7%E8%81%94%E7%9B%9F%E6%8A%8A%E5%B1%95%E7%A4%BA%E6%9D%83%E9%87%8D%E5%88%B7%E5%88%B0-113/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-23-cover.jpg" loading="lazy" alt="Featured image of post 给博客加上博客大联盟，把展示权重刷到 113" data-key="" data-hash="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-23-cover.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">给博客加上博客大联盟，把展示权重刷到 113</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/%E7%BB%99%E5%8D%9A%E5%AE%A2%E9%85%8D%E4%BA%86%E4%B8%AA%E7%8A%B6%E6%80%81%E9%A1%B5%E7%BB%93%E6%9E%9C%E5%AE%83%E8%87%AA%E5%B7%B1%E5%85%88%E6%8C%82%E4%BA%86/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-25-cover.jpg" loading="lazy" alt="Featured image of post 给博客配了个状态页，结果它自己先挂了" data-key="" data-hash="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-25-cover.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">给博客配了个状态页，结果它自己先挂了</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%BB%99%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E6%8F%90-pr/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-22-cover.jpg" loading="lazy" alt="Featured image of post 第一次给开源项目提 PR" data-key="" data-hash="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-22-cover.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">第一次给开源项目提 PR</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/%E4%BD%A0%E5%A5%BD%E4%B8%96%E7%95%8C/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/09/2026-09-18-cover.jpg" loading="lazy" alt="Featured image of post 你好,世界" data-key="你好,世界" data-hash="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/09/2026-09-18-cover.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">你好,世界</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <style>
+    .waline-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+         
+        --waline-font-size: var(--article-font-size, 1.6rem);
+    }
+
+     
+    .waline-container,
+    .waline-container input,
+    .waline-container textarea,
+    .waline-container button,
+    .waline-container select {
+        font-family: var(--article-font-family, var(--base-font-family));
+    }
+
+    .waline-container .wl-count {
+        color: var(--card-text-color-main);
+    }
+</style>
+<div id="waline" class="waline-container"></div>
+
+    
+
+    <footer class="site-footer">
+    <section class="site-stats">
+        <span>共 7 篇文章</span>
+        <span class="dot">·</span>
+        <span>约 1.0 万字</span>
+        <span class="dot">·</span>
+        <span>运行 38 天</span>
+    </section>
+
+    <section class="copyright">
+        &copy; 
+        
+            2024 - 
+        
+        2026 爱玩win11的me
+    </section>
+    
+    <section class="powerby">
+        Build using Hugo <br />
+        
+    </section>
+</footer>
+
+<style>
+    .site-footer .site-stats {
+        text-align: center;
+        font-size: 14px;
+        color: var(--card-text-color-secondary);
+        margin-bottom: 8px;
+    }
+    .site-footer .site-stats .dot {
+        margin: 0 6px;
+        opacity: .6;
+    }
+</style>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdmirror.com/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdmirror.com/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdmirror.com/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdmirror.com/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdmirror.com/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.loli.net/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+<style>
+    .welcome-toast {
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        max-width: 440px;
+        padding: 16px 38px 16px 16px;
+        background: var(--card-background);
+        color: var(--card-text-color-main);
+        border: 1px solid var(--card-separator-color);
+        border-radius: var(--card-border-radius, 12px);
+        box-shadow: 0 10px 34px rgba(0, 0, 0, 0.18);
+        transform: translateX(130%);
+        opacity: 0;
+        pointer-events: none;
+        transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.45s ease;
+    }
+
+    .welcome-toast.is-show {
+        transform: translateX(0);
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .welcome-toast__wave {
+        flex-shrink: 0;
+        font-size: 4rem;
+        line-height: 1;
+        display: inline-block;
+        transform-origin: 70% 70%;
+        animation: welcome-wave 1.8s ease-in-out infinite;
+    }
+
+    @keyframes welcome-wave {
+
+        0%,
+        100% {
+            transform: rotate(0deg);
+        }
+
+        20% {
+            transform: rotate(18deg);
+        }
+
+        40% {
+            transform: rotate(-10deg);
+        }
+
+        60% {
+            transform: rotate(14deg);
+        }
+
+        80% {
+            transform: rotate(-6deg);
+        }
+    }
+
+    .welcome-toast__body {
+        min-width: 0;
+    }
+
+    .welcome-toast__greet {
+        margin: 0 0 8px;
+        font-size: 1.4rem;
+        line-height: 1.55;
+        color: var(--card-text-color-main);
+    }
+
+    .welcome-toast__greet b {
+        color: var(--accent-color);
+        font-weight: 600;
+    }
+
+    .welcome-toast__link {
+        display: inline-block;
+        font-size: 1.3rem;
+        line-height: 1.5;
+        white-space: nowrap;
+        color: var(--accent-color);
+        text-decoration: none !important;
+        border-bottom: 1px dashed var(--accent-color);
+        padding-bottom: 1px;
+        transition: opacity 0.2s ease;
+    }
+
+    .welcome-toast__link:hover {
+        opacity: 0.75;
+    }
+
+    .welcome-toast__close {
+        position: absolute;
+        top: 8px;
+        right: 10px;
+        width: 22px;
+        height: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        border: none;
+        background: none;
+        color: var(--card-text-color-secondary);
+        font-size: 1.8rem;
+        line-height: 1;
+        cursor: pointer;
+        transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    .welcome-toast__close:hover {
+        color: var(--card-text-color-main);
+        transform: scale(1.15);
+    }
+
+    @media (max-width: 640px) {
+        .welcome-toast {
+            left: 12px;
+            right: 12px;
+            bottom: 12px;
+            max-width: none;
+        }
+    }
+</style>
+
+<div id="welcome-toast" class="welcome-toast" role="dialog" aria-live="polite" aria-label="欢迎通知">
+    <button class="welcome-toast__close" type="button" aria-label="关闭">&times;</button>
+    <span class="welcome-toast__wave" aria-hidden="true">👋</span>
+    <div class="welcome-toast__body">
+        <p class="welcome-toast__greet">泥嚎！来自 <b id="welcome-browser">你的浏览器</b> 的朋友，欢迎来到我的 blog</p>
+        <a class="welcome-toast__link" href="https://github.com/YrqSpace/YrqSpace.github.io/issues/1" target="_blank" rel="noopener">👉 觉得文章有意思？点这里去 GitHub 订阅</a>
+    </div>
+</div>
+
+<script>
+    (function () {
+        function detectBrowser() {
+            var ua = navigator.userAgent;
+            if (/Edg\//.test(ua) || /EdgiOS\//.test(ua)) return 'Edge';
+            if (/OPR\//.test(ua) || /Opera/.test(ua)) return 'Opera';
+            if (/Firefox\//.test(ua) || /FxiOS\//.test(ua)) return 'Firefox';
+            if (/Chrome\//.test(ua) || /CriOS\//.test(ua)) return 'Chrome';
+            if (/Safari\//.test(ua)) return 'Safari';
+            return '浏览器';
+        }
+
+        
+        
+        var KEY = 'welcome-shown';
+
+        function alreadyShown() {
+            try { return sessionStorage.getItem(KEY) === '1'; } catch (e) { return false; }
+        }
+
+        function markShown() {
+            try { sessionStorage.setItem(KEY, '1'); } catch (e) { }
+        }
+
+        function showWelcome() {
+            var toast = document.getElementById('welcome-toast');
+            if (!toast) return;
+
+            
+            if (alreadyShown()) return;
+
+            var browserSpan = document.getElementById('welcome-browser');
+            if (browserSpan) browserSpan.textContent = detectBrowser();
+
+            var closeBtn = toast.querySelector('.welcome-toast__close');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', function () {
+                    toast.classList.remove('is-show');
+                });
+            }
+
+            
+            function reveal() {
+                toast.classList.add('is-show');
+                markShown();
+            }
+
+            function loadingDone() {
+                return !document.documentElement.classList.contains('is-loading');
+            }
+
+            if (loadingDone()) {
+                setTimeout(reveal, 300);
+                return;
+            }
+
+            var done = false;
+            var observer = new MutationObserver(function () {
+                if (!done && loadingDone()) {
+                    done = true;
+                    observer.disconnect();
+                    setTimeout(reveal, 300);
+                }
+            });
+            observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
+            
+            setTimeout(function () {
+                if (!done) {
+                    done = true;
+                    observer.disconnect();
+                    reveal();
+                }
+            }, 20000);
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', showWelcome);
+        } else {
+            showWelcome();
+        }
+    })();
+</script>
+
+    <script src="https://cdn.jsdmirror.com/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    <div id="aplayer"></div>
+
+    <script>
+        const home = "https://yrqspace.github.io/"
+        const ap = new APlayer({
+            container: document.getElementById('aplayer'),
+            fixed: true,
+            lrcType: 0,
+            audio: [
+    {
+        name: '清空',
+        artist: '王忻辰 苏星婕',
+        url: '/music/qingkong/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/qingkong.jpg',
+    },
+    {
+        name: '云烟成雨',
+        artist: '房东的猫',
+        url: '/music/yunyanchengyu/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/yunyanchengyu.jpg',
+    },
+    {
+        name: '带我去找夜生活',
+        artist: '告五人',
+        url: '/music/daiwoquzhaoyeshenghuo/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/daiwoquzhaoyeshenghuo.jpg',
+    },
+    {
+        name: '等一场雨',
+        artist: '苏星婕',
+        url: '/music/dengyichangyu/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/dengyichangyu.jpg',
+    },
+    {
+        name: 'river flows in you',
+        artist: 'Yiruma',
+        url: '/music/river-flows-in-you/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/river-flows-in-you.jpg',
+    },
+    {
+        name: 'Kiss The Rain',
+        artist: 'Yiruma',
+        url: '/music/Kiss-The-Rain/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/Kiss-The-Rain.jpg',
+    },
+    {
+        name: 'Maybe',
+        artist: 'Yiruma',
+        url: '/music/maybe/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/maybe.jpg',
+    },
+    {
+        name: 'Summer',
+        artist: '久石让',
+        url: '/music/summer/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/summer.jpg',
+    },
+    {
+        name: 'Merry Christmas Mr. Lawrence',
+        artist: '坂本龙一',
+        url: '/music/merrychristmasmrlawrence/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/merrychristmasmrlawrence.jpg',
+    },
+    {
+        name: 'My Soul',
+        artist: 'July',
+        url: '/music/mysoul/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/mysoul.jpg',
+    },
+    {
+        name: 'Una Mattina',
+        artist: 'Ludovico Einaudi',
+        url: '/music/unamattina/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/unamattina.jpg',
+    },
+    {
+        name: '夜的钢琴曲五',
+        artist: '石进',
+        url: '/music/yedegangqinquwu/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/yedegangqinquwu.jpg',
+    },
+    {
+        name: 'Flower Dance',
+        artist: 'DJ Okawari',
+        url: '/music/flowerdance/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/flowerdance.jpg',
+    },
+    {
+        name: 'Harbor',
+        artist: 'Tomppabeats',
+        url: '/music/harbor/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/harbor.jpg',
+    },
+    {
+        name: 'Controlla',
+        artist: 'Drake',
+        url: '/music/controlla/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/controlla.jpg',
+    }
+]
+
+    });
+
+
+   
+
+    window.onbeforeunload = () => {
+        
+        const playInfo = {
+            index: ap.list.index,
+            currentTime: ap.audio.currentTime,
+            paused: ap.paused
+        };
+        localStorage.setItem("playInfo", JSON.stringify(playInfo));
+    };
+
+    
+
+    window.onload = () => {
+        
+        const playInfo = JSON.parse(localStorage.getItem("playInfo"));
+        if (!playInfo) {
+            return;
+        }
+        
+        ap.list.switch(playInfo.index);
+        
+        setTimeout(() => {
+            
+            ap.seek(playInfo.currentTime);
+            
+            if (!playInfo.paused) {
+                ap.play()
+            }
+        }, 500);
+    };
+
+
+
+    </script>
+
+<script src="/js/pjax.min.js"></script>
+<script src="/js/topbar.min.js"></script>
+<script>
+  window.__giscusConfig = {
+    repo: "YrqSpace/Giscus",
+    repoId: "R_kgDOUhG6JA",
+    category: "Announcements",
+    categoryId: "DIC_kwDOUhG6JM4DF78m",
+    mapping: "pathname",
+    strict: 0,
+    reactionsEnabled: 1,
+    emitMetadata: 0,
+    inputPosition: "top",
+    lightTheme: "light",
+    darkTheme: "dark",
+    lang: "zh-CN"
+  };
+</script><link rel="stylesheet" href="/vendor/waline/waline.css">
+<script>
+window.__walineCfg = {"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji":["https://unpkg.com/@waline/emojis@1.4.0/bmoji","https://unpkg.com/@waline/emojis@1.4.0/bilibili"],"lang":"zh-CN","locale":{"admin":"Admin"},"requiredMeta":["name","email","url"],"serverURL":"https://yrq1622.cc.cd"};
+(function () {
+  var WALINE_URL = '\/vendor\/waline\/waline.js';
+  var bootAttempts = 0;
+
+  function loadModule() {
+    
+    if (!window.__walineModulePromise) {
+      window.__walineModulePromise = import(WALINE_URL);
+    }
+    return window.__walineModulePromise;
+  }
+
+  window.__walineBoot = function () {
+    var el = document.getElementById('waline');
+    if (!el) {
+      
+      if (bootAttempts < 40) {
+        bootAttempts++;
+        setTimeout(window.__walineBoot, 200);
+      }
+      return;
+    }
+    if (el.dataset.wlMounted === '1' || el.dataset.wlMounting === '1') return;
+
+    el.dataset.wlMounting = '1';
+    loadModule().then(function (m) {
+      var init = (m && (m.init || (m.default && m.default.init))) || (window.Waline && window.Waline.init);
+      if (typeof init !== 'function') throw new Error('waline init not found');
+      
+      var mountEl = document.getElementById('waline');
+      if (!mountEl) {
+        el.dataset.wlMounting = '';
+        return;
+      }
+      mountEl.innerHTML = '';
+      init(window.__walineCfg);
+      
+      mountEl.dataset.wlMounted = '1';
+      mountEl.dataset.wlMounting = '';
+      bootAttempts = 0;
+    }).catch(function (e) {
+      
+      window.__walineModulePromise = null;
+      var mountEl = document.getElementById('waline');
+      if (mountEl) mountEl.dataset.wlMounting = '';
+      console.error('[waline] load failed', e);
+    });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { window.__walineBoot(); });
+  } else {
+    window.__walineBoot();
+  }
+})();
+</script><script>
+(function () {
+  
+  if (typeof Pjax === "undefined") {
+    console.warn("[pjax] 库未加载，已跳过无刷新初始化");
+    return;
+  }
+
+  var pjax = new Pjax({
+    selectors: [".main-container"],
+    
+    timeout: 15000
+  });
+
+  
+  
+  window.pjax = pjax;
+
+  
+  var rawHandleResponse = pjax.handleResponse.bind(pjax);
+
+  
+  pjax.handleResponse = function (responseText, request, href, options) {
+    try {
+      var newDom = new DOMParser().parseFromString(responseText, "text/html");
+      if (newDom && newDom.body) {
+        if (newDom.body.className) {
+          document.body.setAttribute("class", newDom.body.className);
+        }
+        window.__pjaxHasComments = !!newDom.body.querySelector('script[src="https://giscus.app/client.js"]');
+      }
+    } catch (e) {
+      console.warn("[pjax] 同步 body class 失败", e);
+    }
+    
+    return rawHandleResponse(responseText, request, href, options);
+  };
+
+  
+  if (window.topbar && typeof topbar.config === "function") {
+    topbar.config({
+      barColors: {
+        "0": "rgba(255,  255, 255, 1)", 
+        "1.0": "rgba(0, 149, 234,  1)" 
+      }
+    });
+  }
+
+  document.addEventListener("pjax:send", function () {
+    if (window.topbar && typeof topbar.show === "function") topbar.show();
+  });
+
+  document.addEventListener("pjax:complete", function () {
+    if (window.Stack && typeof Stack.init === "function") Stack.init();
+    if (window.topbar && typeof topbar.hide === "function") topbar.hide();
+
+    
+    if (typeof initScrollTop === "function") initScrollTop();
+    if (typeof initTocHide === "function") initTocHide();
+
+    
+    if (window.__walineBoot) window.__walineBoot();
+
+    var cfg = window.__giscusConfig;
+    if (!cfg || !window.__pjaxHasComments) return;
+    var main = document.querySelector(".main-container main") || document.querySelector("main");
+    if (!main) return;
+    main.querySelectorAll(".giscus").forEach(function (el) { el.remove(); });
+    var oldScript = main.querySelector('script[src="https://giscus.app/client.js"]');
+    var script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.setAttribute("data-repo", cfg.repo);
+    script.setAttribute("data-repo-id", cfg.repoId);
+    script.setAttribute("data-category", cfg.category);
+    script.setAttribute("data-category-id", cfg.categoryId);
+    script.setAttribute("data-mapping", cfg.mapping);
+    script.setAttribute("data-strict", cfg.strict);
+    script.setAttribute("data-reactions-enabled", cfg.reactionsEnabled);
+    script.setAttribute("data-emit-metadata", cfg.emitMetadata);
+    script.setAttribute("data-input-position", cfg.inputPosition);
+    script.setAttribute("data-theme", document.documentElement.dataset.scheme === "dark" ? cfg.darkTheme : cfg.lightTheme);
+    script.setAttribute("data-lang", cfg.lang);
+    script.setAttribute("crossorigin", "anonymous");
+    script.async = true;
+    if (oldScript) {
+      oldScript.parentNode.insertBefore(script, oldScript);
+      oldScript.parentNode.removeChild(oldScript);
+    } else {
+      var anchor = main.querySelector(".site-footer");
+      if (anchor) {
+        main.insertBefore(script, anchor);
+      } else {
+        main.appendChild(script);
+      }
+    }
+  });
+})();
+</script>
+
+
+
+<style>
+     
+    #TableOfContents ul,
+    #TableOfContents ol {
+        display: block;
+    }
+</style>
+
+<script>
+    function initTocHide() {
+        
+        let toc = document.querySelector(".widget--toc");
+        if (!toc) {
+            return;
+        }
+        
+        window.addEventListener('scroll', function() {
+            
+            let openUl = document.querySelectorAll(".open");
+            if (openUl.length > 0) {
+              openUl.forEach((ul) => {
+                ul.classList.remove("open")
+              })
+            }
+            
+            let currentLi = document.querySelector(".active-class");
+            if (!currentLi) {
+                return
+            }
+            
+            if (currentLi.children.length > 1) {
+                currentLi.children[1].classList.add("open")
+            }
+            
+            let ul = currentLi.parentElement;
+            do {
+                ul.classList.add("open");
+                ul = ul.parentElement.parentElement
+            } while (ul !== undefined && (ul.localName === 'ul' || ul.localName === 'ol'))
+        });
+    }
+    initTocHide()
+</script>
+
+
+
+<style>
+    #backTopBtn {
+        display: none;
+        position: fixed;
+        bottom: 30px;
+        z-index: 99;
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        background-image: url(https://yrqspace.github.io/icons/backTop.svg);
+    }
+</style>
+
+<script>
+    
+
+    function initScrollTop() {
+        
+        let rightSideBar = document.querySelector(".right-sidebar");
+        
+        document.querySelectorAll("#backTopBtn").forEach(function (el) { el.remove(); });
+        let btn = document.createElement("div");
+        btn.id = "backTopBtn";
+        btn.onclick = backToTop;
+        if (rightSideBar) {
+            rightSideBar.appendChild(btn);
+        } else {
+            
+            btn.style.right = "30px";
+            document.body.appendChild(btn);
+        }
+        
+        function updateBackTop() {
+            
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                btn.style.display = "block";
+            } else {
+                btn.style.display = "none";
+            }
+        }
+        
+        window.removeEventListener("scroll", window.__backTopScroll);
+        window.__backTopScroll = updateBackTop;
+        window.addEventListener("scroll", window.__backTopScroll);
+        updateBackTop();
+    }
+
+    
+
+    function backToTop(){
+        window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    initScrollTop();
+</script>
+
+
+<div id="particles-js"></div>
+
+<script src=/background/particles.min.08f2e0aff5b71bc59b17ee2aacf0f5d68b77a9d20a185cff1df07f7916db5f44.js></script>
+<script>
+    particlesJS.load('particles-js', "/background/particlesjs-config.2368193f537c13d79c72a08b7586e884f75c953cb6c55079ac09d35b1ccc6dbe.json", function() {
+        console.log('particles.js loaded - callback');
+    });
+</script>
+
+<style>
+    #particles-js {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        pointer-events: none;
+    }
+</style>
+
+
+<script src=/background/fish.d5921750081cfe1813aedc5c17c35818046aabe25d2c45cd39f25df21e346fb3.js></script>
+
+
+<script src=/js/holiday-eggs.7a4718c6824e19a216478c1d657ca7e5382ad719f644faed143a55e9a990412c.js></script>
+
+
+
+
+
+<script>
+(function () {
+    var PF_CSS = '/pagefind/pagefind-ui.css';
+    var PF_JS = '/pagefind/pagefind-ui.js';
+    var TRANSLATIONS = {
+        placeholder: "搜索文章…",
+        clear_search: "清空",
+        load_more: "加载更多结果",
+        search_label: "搜索本站",
+        filters_label: "筛选",
+        zero_results: "没有找到与 “[SEARCH_TERM]” 相关的内容",
+        many_results: "找到 [COUNT] 条与 “[SEARCH_TERM]” 相关的结果",
+        one_result: "找到 1 条与 “[SEARCH_TERM]” 相关的结果",
+        alt_search: "未找到 “[SEARCH_TERM]”，改为显示 “[DIFFERENT_TERM]” 的结果",
+        search_suggestion: "未找到 “[SEARCH_TERM]”，请尝试以下关键词之一：",
+        searching: "搜索中…"
+    };
+
+    function ensureCss() {
+        if (document.querySelector('link[href="' + PF_CSS + '"]')) return;
+        var l = document.createElement('link');
+        l.rel = 'stylesheet';
+        l.href = PF_CSS;
+        document.head.appendChild(l);
+    }
+
+    function whenReady(cb) {
+        if (typeof window.PagefindUI !== 'undefined') { cb(true); return; }
+        
+        var tries = 0;
+        (function loop() {
+            if (typeof window.PagefindUI !== 'undefined') { cb(true); return; }
+            if (tries++ > 100) { cb(false); return; } 
+            setTimeout(loop, 100);
+        })();
+    }
+
+    function ensureScript(cb) {
+        if (typeof window.PagefindUI !== 'undefined') { cb(true); return; }
+        if (!document.querySelector('script[data-pf-ui]')) {
+            var s = document.createElement('script');
+            s.src = PF_JS;
+            s.setAttribute('data-pf-ui', '1');
+            s.onload = function () { whenReady(cb); };
+            s.onerror = function () { cb(false); };
+            document.head.appendChild(s);
+            return;
+        }
+        whenReady(cb);
+    }
+
+    function getTerm() {
+        try {
+            var p = new URLSearchParams(window.location.search);
+            return p.get('keyword') || p.get('q') || '';
+        } catch (e) { return ''; }
+    }
+
+    function mount() {
+        var el = document.getElementById('search');
+        if (!el) return; 
+
+        ensureCss();     
+
+        ensureScript(function (ok) {
+            var box = document.getElementById('search');
+            if (!box) return;
+            var hint = document.getElementById('pf-hint');
+
+            if (!ok || typeof window.PagefindUI === 'undefined') {
+                if (hint) {
+                    hint.style.display = 'block';
+                    hint.textContent = '对不起，搜索资源加载失败，请刷新页面重试。';
+                }
+                return;
+            }
+
+            if (box.dataset.pfMounted !== '1') {
+                box.innerHTML = '';
+                new window.PagefindUI({
+                    element: "#search",
+                    showSubResults: true,
+                    showImages: false,
+                    resetStyles: false,
+                    translations: TRANSLATIONS
+                });
+                box.dataset.pfMounted = '1';
+            }
+            if (hint) hint.style.display = 'none';
+
+            
+            var term = getTerm();
+            if (term) {
+                var input = box.querySelector('.pagefind-ui__search-input');
+                if (input && input.value !== term) {
+                    input.value = term;
+                    input.dispatchEvent(new Event('input', { bubbles: true }));
+                    try { input.focus(); } catch (e) {}
+                }
+            }
+        });
+    }
+
+    window.__pfEnsure = mount;
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () { setTimeout(mount, 0); });
+    } else {
+        setTimeout(mount, 0);
+    }
+    
+    document.addEventListener('pjax:complete', function () { setTimeout(mount, 0); });
+})();
+</script>
+
+
+<script>
+(function () {
+    function buildAlt(img) {
+        if (img.getAttribute('alt') !== null && img.getAttribute('alt').trim() !== '') return null;
+
+        if (img.dataset && img.dataset.key && img.dataset.key.trim()) return img.dataset.key.trim();
+
+        var sec = img.closest('.section-card');
+        if (sec) {
+            var term = sec.querySelector('.section-term');
+            if (term && term.textContent.trim()) return term.textContent.trim();
+            var desc = sec.querySelector('.section-description');
+            if (desc && desc.textContent.trim()) return desc.textContent.trim();
+            var h = sec.querySelector('h1, h2');
+            if (h && h.textContent.trim()) return h.textContent.trim();
+        }
+
+        var art = img.closest('article') || img.closest('.article-details');
+        if (art) {
+            var t = art.querySelector('.article-title');
+            if (t && t.textContent.trim()) return t.textContent.trim();
+        }
+
+        var src = img.getAttribute('src') || '';
+        var base = decodeURIComponent(src.split('/').pop().split('?')[0]).replace(/\.[a-z0-9]+$/i, '');
+        base = base.replace(/[-_]+/g, ' ').replace(/\s+/g, ' ').trim();
+        var pt = document.querySelector('.article-title, h1');
+        var pageTitle = pt ? pt.textContent.trim() : '';
+        if (base && !/^[\d\s]+$/.test(base)) return base;
+        return (pageTitle ? pageTitle + ' ' : '') + '配图';
+    }
+
+    function runAltFix() {
+        var imgs = document.querySelectorAll('img:not([alt])');
+        Array.prototype.forEach.call(imgs, function (img) {
+            var a = buildAlt(img);
+            if (a) img.setAttribute('alt', a);
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', runAltFix);
+    } else {
+        runAltFix();
+    }
+    ['pjax:complete', 'pjax:end', 'pjax:success'].forEach(function (e) {
+        document.addEventListener(e, runAltFix);
+    });
+    window.addEventListener('load', runAltFix);
+    setTimeout(runAltFix, 1500);
+    setTimeout(runAltFix, 3000);
+})();
+</script>
+
+
+
+<style>
+#cookie-modal-backdrop{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.45);z-index:9997;opacity:0;visibility:hidden;transition:opacity .3s ease,visibility .3s ease;}
+#cookie-modal-backdrop.is-show{opacity:1;visibility:visible;}
+#cookie-modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.92);width:90%;max-width:520px;height:60vh;background:var(--card-background);border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,.25);z-index:9998;opacity:0;visibility:hidden;display:flex;flex-direction:column;overflow:hidden;transition:transform .3s cubic-bezier(.22,1,.36,1),opacity .3s ease,visibility .3s ease;}
+#cookie-modal.is-show{transform:translate(-50%,-50%) scale(1);opacity:1;visibility:visible;}
+#cookie-modal.is-hide{transform:translate(-50%,-50%) scale(.95) translateY(8px);opacity:0;visibility:hidden;}
+#cookie-modal .cookie-head{padding:16px 20px;border-bottom:1px solid var(--card-separator-color);font-size:18px;font-weight:700;color:var(--card-text-color-main);}
+#cookie-modal .cookie-body{flex:1;overflow-y:auto;padding:16px 20px;font-size:14px;line-height:1.8;color:var(--card-text-color-main);}
+#cookie-modal .cookie-foot{padding:12px 20px;border-top:1px solid var(--card-separator-color);display:flex;justify-content:flex-end;align-items:center;}
+#cookie-modal .btn{background:#3b82f6;color:#fff;border:0;border-radius:8px;padding:8px 24px;cursor:pointer;font-size:14px;}
+</style>
+
+<div id="cookie-modal-backdrop"></div>
+<div id="cookie-modal" role="dialog" aria-modal="true">
+    <div class="cookie-head">使用您的 Cookie</div>
+    <div class="cookie-body">
+        <p>您好，感谢您访问本站！为了提供更便捷的体验，如记住您的主题偏好、播放进度等功能，本站会使用少量 Cookie 及浏览器本地存储。这些数据仅用于站内功能正常运行，不会被用于广告追踪，也不会出售给任何第三方。</p>
+        <p>您可以随时在浏览器设置中管理或禁用 Cookies，具体操作方法可参考浏览器的帮助文档。我们尊重您的选择，并承诺保护您的隐私。</p>
+        <p><strong>关于第三方服务：</strong></p>
+        <p>本站使用 Cloudflare 、CDN 服务、以及 Waline 评论系统。这些服务可能会设置必要的技术性 Cookie，以保障验证与评论功能正常。它们的使用受其自身隐私政策的约束。</p>
+        <p>如果您同意我们使用 Cookie，即可正常使用本站各项功能。如果您选择禁用 Cookies，部分功能(如评论、主题记忆)可能无法使用，但浏览文章不受影响。</p>
+        <p>我们承诺严格遵循隐私政策处理所有 Cookie 信息，确保您的个人信息安全。</p>
+    </div>
+    <div class="cookie-foot">
+        <button class="btn" onclick="closeCookieModal()">可以</button>
+    </div>
+</div>
+
+<script>
+function closeCookieModal() {
+    var m = document.getElementById('cookie-modal');
+    var b = document.getElementById('cookie-modal-backdrop');
+    if (!m) return;
+    localStorage.setItem('cookie-ok', '1');
+    m.classList.add('is-hide');
+    if (b) b.classList.remove('is-show');
+    setTimeout(function () {
+        m.classList.remove('is-show', 'is-hide');
+    }, 320);
+}
+(function () {
+    function showModal() {
+        var m = document.getElementById('cookie-modal');
+        var b = document.getElementById('cookie-modal-backdrop');
+        if (!m) return;
+        if (localStorage.getItem('cookie-ok')) return;
+        m.classList.add('is-show');
+        if (b) b.classList.add('is-show');
+    }
+    function isPassed() {
+        try { return sessionStorage.getItem('turnstile-passed') === '1'; } catch (e) { return false; }
+    }
+    var timer = setInterval(function () {
+        if (isPassed()) {
+            clearInterval(timer);
+            setTimeout(showModal, 800);
+        }
+    }, 300);
+    if (window.__turnstilePassed || document.documentElement.classList.contains('turnstile-passed')) {
+        setTimeout(showModal, 500);
+    }
+})();
+</script>
+
+
+
+
+<script>
+if (!window.__pjaxPagefindFix) {
+    window.__pjaxPagefindFix = true;
+    document.addEventListener('click', function (e) {
+        var link = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+        if (!link || !window.pjax) return;
+        if (!link.closest('.pagefind-ui')) return;
+        if (link.target === '_blank' || link.getAttribute('rel') === 'external') return;
+        var url = link.getAttribute('href');
+        if (!url || url.charAt(0) === '#') return;
+        e.preventDefault();
+        if (typeof window.pjax.loadUrl === 'function') {
+            window.pjax.loadUrl(link.href);
+        } else {
+            location.href = link.href;
+        }
+    }, true);
+}
+</script>
+
+
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 78px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+        
+        window.dispatchEvent(new Event('resize'))
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://yrqspace.github.io/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+    </body>
+</html>
