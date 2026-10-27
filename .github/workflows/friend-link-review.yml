@@ -1,0 +1,57 @@
+name: 友链审核
+
+# 分工：机器人只审核 + 留言告诉你结论，友链由你本人手动添加。
+# 本流程不修改源码仓库、不修改友链页面，只发评论和打标签。
+
+on:
+  issues:
+    types: [opened, edited, reopened]
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: '要重新审核的 Issue 编号'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: friend-link-review-${{ github.event.issue.number || inputs.issue_number }}
+  cancel-in-progress: true
+
+jobs:
+  review:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      contains(github.event.issue.title || '', '友链') ||
+      contains(github.event.issue.title || '', '友情链接')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+
+      - name: 确保标签存在
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          for L in "友链申请" "友链-通过" "友链-不通过" "友链-待人工"; do
+            gh label create "$L" --repo "${{ github.repository }}" \
+              --color "c2e0c6" --force >/dev/null 2>&1 || true
+          done
+
+      - name: 审核并留言
+        env:
+          GIT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_REPO: ${{ github.repository }}
+          ISSUE_NO: ${{ github.event.issue.number || inputs.issue_number }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_USER: ${{ github.event.issue.user.login }}
+          PUB_PAGE: 友情链接/index.html
+          SITE_HOST: yrqspace.github.io
+          SITE_NAME: 爱玩win11的me
+          OWNER_HANDLE: YrqSpace
+          MIN_ACCOUNT_DAYS: '3'
+        run: python3 .github/scripts/review_friend_link.py
