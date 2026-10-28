@@ -54,6 +54,14 @@ GitHub 上的 yrqspace 是我折腾各种项目的地方，欢迎来看看。
     一键复制本站信息 &lt;kbd&gt;YAML&lt;/kbd&gt;
   &lt;/button&gt;
 &lt;/div&gt;
+&lt;div class=&#34;fl-card&#34; style=&#34;margin-top:1.4rem;&#34;&gt;
+&lt;div class=&#34;fl-hd&#34;&gt;&lt;i style=&#34;background:var(--accent-color);&#34;&gt;&lt;/i&gt;&lt;h3&gt;申请友链&lt;/h3&gt;&lt;span&gt;Apply&lt;/span&gt;&lt;/div&gt;
+&lt;p style=&#34;margin:0;font-size:1.4rem;line-height:1.8;color:var(--card-text-color-secondary);&#34;&gt;想和我交换友链？先复制上面的「本站信息」加到你的友链页，再点下面的按钮提交申请。机器人会自动初审，结果直接回复在你提交的 Issue 里。&lt;/p&gt;
+&lt;a class=&#34;fl-all&#34; style=&#34;text-decoration:none;&#34; href=&#34;https://github.com/YrqSpace/YrqSpace.github.io/issues/new?template=friend-request.yml&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;
+&lt;svg viewBox=&#34;0 0 24 24&#34;&gt;&lt;path d=&#34;M12 5v14M5 12h14&#34;&gt;&lt;/path&gt;&lt;/svg&gt;
+申请友链&lt;kbd&gt;GitHub&lt;/kbd&gt;
+&lt;/a&gt;
+&lt;/div&gt;
 &lt;script&gt;
 (function(){
   var box=document.getElementById(&#39;fl-info&#39;); if(!box) return;
