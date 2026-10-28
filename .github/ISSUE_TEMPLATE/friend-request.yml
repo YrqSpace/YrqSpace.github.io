@@ -1,6 +1,6 @@
 name: 申请友链
 description: 提交你的站点，机器人会自动审核并告知结果
-title: "[申请友链] 这里写你的站点名称"
+title: "[申请友链]"
 labels: ["友链申请"]
 body:
   - type: markdown
