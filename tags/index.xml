@@ -7,20 +7,36 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>爱玩win11的me</copyright>
-        <lastBuildDate>Mon, 26 Oct 2026 10:00:00 +0800</lastBuildDate><atom:link href="https://yrqspace.github.io/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Mon, 26 Oct 2026 23:00:00 +0800</lastBuildDate><atom:link href="https://yrqspace.github.io/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Hugo</title>
+        <link>https://yrqspace.github.io/tags/hugo/</link>
+        <pubDate>Mon, 26 Oct 2026 23:00:00 +0800</pubDate>
+        
+        <guid>https://yrqspace.github.io/tags/hugo/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>独立博客</title>
+        <link>https://yrqspace.github.io/tags/%E7%8B%AC%E7%AB%8B%E5%8D%9A%E5%AE%A2/</link>
+        <pubDate>Mon, 26 Oct 2026 23:00:00 +0800</pubDate>
+        
+        <guid>https://yrqspace.github.io/tags/%E7%8B%AC%E7%AB%8B%E5%8D%9A%E5%AE%A2/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>友链</title>
+        <link>https://yrqspace.github.io/tags/%E5%8F%8B%E9%93%BE/</link>
+        <pubDate>Mon, 26 Oct 2026 23:00:00 +0800</pubDate>
+        
+        <guid>https://yrqspace.github.io/tags/%E5%8F%8B%E9%93%BE/</guid>
+        <description></description>
+        </item>
+        <item>
         <title>Bing</title>
         <link>https://yrqspace.github.io/tags/bing/</link>
         <pubDate>Mon, 26 Oct 2026 10:00:00 +0800</pubDate>
         
         <guid>https://yrqspace.github.io/tags/bing/</guid>
-        <description></description>
-        </item>
-        <item>
-        <title>Hugo</title>
-        <link>https://yrqspace.github.io/tags/hugo/</link>
-        <pubDate>Mon, 26 Oct 2026 10:00:00 +0800</pubDate>
-        
-        <guid>https://yrqspace.github.io/tags/hugo/</guid>
         <description></description>
         </item>
         <item>
@@ -72,11 +88,11 @@
         <description></description>
         </item>
         <item>
-        <title>独立博客</title>
-        <link>https://yrqspace.github.io/tags/%E7%8B%AC%E7%AB%8B%E5%8D%9A%E5%AE%A2/</link>
+        <title>随心记</title>
+        <link>https://yrqspace.github.io/tags/%E9%9A%8F%E5%BF%83%E8%AE%B0/</link>
         <pubDate>Fri, 23 Oct 2026 22:40:00 +0800</pubDate>
         
-        <guid>https://yrqspace.github.io/tags/%E7%8B%AC%E7%AB%8B%E5%8D%9A%E5%AE%A2/</guid>
+        <guid>https://yrqspace.github.io/tags/%E9%9A%8F%E5%BF%83%E8%AE%B0/</guid>
         <description></description>
         </item>
         <item>
@@ -109,6 +125,70 @@
         <pubDate>Thu, 22 Oct 2026 13:00:00 +0800</pubDate>
         
         <guid>https://yrqspace.github.io/tags/%E5%BC%80%E6%BA%90/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>薅羊毛</title>
+        <link>https://yrqspace.github.io/tags/%E8%96%85%E7%BE%8A%E6%AF%9B/</link>
+        <pubDate>Fri, 02 Oct 2026 00:00:00 +0000</pubDate>
+        
+        <guid>https://yrqspace.github.io/tags/%E8%96%85%E7%BE%8A%E6%AF%9B/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>教程</title>
+        <link>https://yrqspace.github.io/tags/%E6%95%99%E7%A8%8B/</link>
+        <pubDate>Fri, 02 Oct 2026 00:00:00 +0000</pubDate>
+        
+        <guid>https://yrqspace.github.io/tags/%E6%95%99%E7%A8%8B/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>云电脑</title>
+        <link>https://yrqspace.github.io/tags/%E4%BA%91%E7%94%B5%E8%84%91/</link>
+        <pubDate>Fri, 02 Oct 2026 00:00:00 +0000</pubDate>
+        
+        <guid>https://yrqspace.github.io/tags/%E4%BA%91%E7%94%B5%E8%84%91/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Cloudflare</title>
+        <link>https://yrqspace.github.io/tags/cloudflare/</link>
+        <pubDate>Fri, 25 Sep 2026 00:00:00 +0000</pubDate>
+        
+        <guid>https://yrqspace.github.io/tags/cloudflare/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Turnstile</title>
+        <link>https://yrqspace.github.io/tags/turnstile/</link>
+        <pubDate>Fri, 25 Sep 2026 00:00:00 +0000</pubDate>
+        
+        <guid>https://yrqspace.github.io/tags/turnstile/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>人机验证</title>
+        <link>https://yrqspace.github.io/tags/%E4%BA%BA%E6%9C%BA%E9%AA%8C%E8%AF%81/</link>
+        <pubDate>Fri, 25 Sep 2026 00:00:00 +0000</pubDate>
+        
+        <guid>https://yrqspace.github.io/tags/%E4%BA%BA%E6%9C%BA%E9%AA%8C%E8%AF%81/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>建站</title>
+        <link>https://yrqspace.github.io/tags/%E5%BB%BA%E7%AB%99/</link>
+        <pubDate>Sat, 19 Sep 2026 00:00:00 +0000</pubDate>
+        
+        <guid>https://yrqspace.github.io/tags/%E5%BB%BA%E7%AB%99/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>随笔</title>
+        <link>https://yrqspace.github.io/tags/%E9%9A%8F%E7%AC%94/</link>
+        <pubDate>Sat, 19 Sep 2026 00:00:00 +0000</pubDate>
+        
+        <guid>https://yrqspace.github.io/tags/%E9%9A%8F%E7%AC%94/</guid>
         <description></description>
         </item>
         

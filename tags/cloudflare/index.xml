@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Cloudflare on 爱玩win11的me</title>
+        <link>https://yrqspace.github.io/tags/cloudflare/</link>
+        <description>Recent content in Cloudflare on 爱玩win11的me</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>爱玩win11的me</copyright>
+        <lastBuildDate>Fri, 25 Sep 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://yrqspace.github.io/tags/cloudflare/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>人机验证折腾记</title>
+        <link>https://yrqspace.github.io/p/%E4%BA%BA%E6%9C%BA%E9%AA%8C%E8%AF%81%E6%8A%98%E8%85%BE%E8%AE%B0/</link>
+        <pubDate>Fri, 25 Sep 2026 00:00:00 +0000</pubDate>
+        
+        <guid>https://yrqspace.github.io/p/%E4%BA%BA%E6%9C%BA%E9%AA%8C%E8%AF%81%E6%8A%98%E8%85%BE%E8%AE%B0/</guid>
+        <description>&lt;img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/09/2026-09-25-cover.jpg" alt="Featured image of post 人机验证折腾记" /&gt;&lt;p&gt;折腾了整整两天，终于给我的博客加上了一道像样的人机验证。这篇把全过程记下来，也给想在 GitHub Pages 上加验证的朋友一条现成的路。&lt;/p&gt;
+&lt;h2 id=&#34;为什么要加&#34;&gt;为什么要加
+&lt;/h2&gt;&lt;p&gt;我的博客是 Hugo + Stack 主题，托管在 GitHub Pages 上，纯静态、没有后端。访客进来先看到一段加载动画，动画结束后就可以直接访问——总觉得少了点仪式感，又怕被脚本刷，就想加一道人机验证，顺便让加载流程变得更有&amp;quot;设计感&amp;quot;。&lt;/p&gt;
+&lt;h2 id=&#34;第一版自制滑块&#34;&gt;第一版：自制滑块
+&lt;/h2&gt;&lt;p&gt;最开始想用滑块验证：加载完成后弹出一个面板，把滑块拖到最右边就放行。代码都写好了，效果也确实能跑，但仔细一想——纯前端的滑块，说白了就是自己画了个好看的门，访客拖一下、脚本根本不理你。而且我自己用着都嫌麻烦，果断放弃。&lt;/p&gt;
+&lt;h2 id=&#34;第二版各种山寨方案&#34;&gt;第二版：各种&amp;quot;山寨&amp;quot;方案
+&lt;/h2&gt;&lt;p&gt;不要滑块，那换成什么？试了一圈：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;点击按钮式&lt;/strong&gt;：点一下&amp;quot;完成验证&amp;quot;，变绿打勾——太假了，谁看不出来这是摆设？&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;算术题式&lt;/strong&gt;：弹个&amp;quot;3 + 5 = ?&amp;quot;——更假，而且打扰人。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;点选图标式&lt;/strong&gt;：弹张图让你点某个物体——倒是像回事，但图库太小，刷两次就撞见同一张，露馅。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;试完一圈得出一个结论：自制验证码，做得越像真的越费劲，本质上还是挡不住脚本。要么上真货，要么就别上。&lt;/p&gt;
+&lt;h2 id=&#34;最终版cloudflare-turnstile&#34;&gt;最终版：Cloudflare Turnstile
+&lt;/h2&gt;&lt;p&gt;后来查了一圈，发现 GitHub Pages 这种纯静态站其实有一个正牌选择——&lt;strong&gt;Cloudflare Turnstile&lt;/strong&gt;。它在&amp;quot;托管模式&amp;quot;（Managed）下整个验证过程都跑在 Cloudflare 的节点上，不需要你自己的服务器，前端只插一个组件就行，免费。这是唯一能真正接进纯静态博客的第三方人机验证。&lt;/p&gt;
+&lt;p&gt;接入后的完整流程变成了：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;资源加载齐 → 四根柱子淡出 → 显示「正在准备人机验证...」
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;→ 等 0.5 秒 → 弹出 Turnstile → 验证通过 → 「请稍后...」
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;→ 遮罩渐隐 → 进入站点
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;核心代码就一小段：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;script&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;src&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&amp;#34;&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;async&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;defer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;script&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;div&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;id&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;captchaBox&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;div&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;script&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;turnstile&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;render&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;captchaBox&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nx&#34;&gt;sitekey&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;你的 Site Key&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nx&#34;&gt;callback&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;token&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      &lt;span class=&#34;nx&#34;&gt;hideLoading&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;// 验证通过才移除加载遮罩，放行访问
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;p&#34;&gt;});&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;script&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Site Key 在 Cloudflare 控制台的 Turnstile 页面创建小组件后就能拿到，免费的额度个人博客完全够用。&lt;/p&gt;
+&lt;h2 id=&#34;踩坑刷新一次弹一次&#34;&gt;踩坑：刷新一次弹一次
+&lt;/h2&gt;&lt;p&gt;上线后立刻发现一个烦人的问题：&lt;strong&gt;每刷新一次页面，就要重新验证一次&lt;/strong&gt;。我自己写博客调样式的时候，刷一下就卡一道验证，心态爆炸。&lt;/p&gt;
+&lt;p&gt;解决办法很简单：验证通过后，把状态写进 &lt;code&gt;sessionStorage&lt;/code&gt;。同一标签页里再刷新，直接跳过验证、正常放行；只有关掉标签页重新打开才需要再验证一次。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;!&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;sessionStorage&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;getItem&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;turnstile-passed&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;c1&#34;&gt;// 弹验证，通过后写入标记
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;  &lt;span class=&#34;nx&#34;&gt;turnstile&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;render&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(...)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;else&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;hideLoading&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;// 已验证过，直接跳过
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;收尾&#34;&gt;收尾
+&lt;/h2&gt;&lt;p&gt;验证通过后我还在遮罩里加了一句「请稍后&amp;hellip;」，停顿约 0.8 秒再淡出，节奏刚刚好；侧栏的时钟也改成了等验证结束、遮罩消失后才开始走动，整个加载流程现在是自洽的。&lt;/p&gt;
+&lt;h2 id=&#34;小结&#34;&gt;小结
+&lt;/h2&gt;&lt;p&gt;给同样折腾 GitHub Pages 的朋友一句话总结：&lt;strong&gt;没有后端的静态站，人机验证只有 Cloudflare Turnstile 的托管模式是正路&lt;/strong&gt;，别在自制滑块、自制字母验证码上浪费时间——做得再像也是摆设。验证码挡得住手动刷子和垃圾骚扰，挡不住真懂技术的人，个人博客图个安心和个性就足够了。&lt;/p&gt;
+&lt;p&gt;折腾完这道坎，博客又完善了一块。下次想折腾啥，继续。&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
