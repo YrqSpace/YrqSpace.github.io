@@ -1,0 +1,2466 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="用 Giscus 给纯静态博客加上评论，踩坑全在 PJAX 无刷新跳转——评论区换页不重新加载。">
+<title>给博客接上 Giscus 评论，结果栽在无刷新跳转上</title>
+
+<link rel='canonical' href='https://yrqspace.github.io/p/%E5%8D%9A%E5%AE%A2%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%8A%98%E8%85%BE%E8%AE%B0/'>
+
+<link rel="stylesheet" href="/scss/style.min.1b561fd2416d06f0c4c93d7104ded670f5158cb30558f6954381b97814d4b1f4.css"><meta property='og:title' content="给博客接上 Giscus 评论，结果栽在无刷新跳转上">
+<meta property='og:description' content="用 Giscus 给纯静态博客加上评论，踩坑全在 PJAX 无刷新跳转——评论区换页不重新加载。">
+<meta property='og:url' content='https://yrqspace.github.io/p/%E5%8D%9A%E5%AE%A2%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%8A%98%E8%85%BE%E8%AE%B0/'>
+<meta property='og:site_name' content='爱玩win11的me'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Giscus' /><meta property='article:tag' content='评论系统' /><meta property='article:tag' content='Hugo' /><meta property='article:tag' content='独立博客' /><meta property='article:published_time' content='2026-09-26T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2026-09-26T00:00:00&#43;00:00'/><meta property='og:image' content='https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/09/2026-09-26-cover.jpg' />
+<meta name="twitter:title" content="给博客接上 Giscus 评论，结果栽在无刷新跳转上">
+<meta name="twitter:description" content="用 Giscus 给纯静态博客加上评论，踩坑全在 PJAX 无刷新跳转——评论区换页不重新加载。"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/09/2026-09-26-cover.jpg' />
+    <link rel="shortcut icon" href="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/yuansu/favicon.ico" />
+
+  
+
+
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
+<script>
+    (function () {
+        
+        var KEY = 'turnstile-passed';
+        var passed = false;
+        try { passed = sessionStorage.getItem(KEY) === '1'; } catch (e) { passed = false; }
+        
+        window.__turnstilePassed = passed;
+        if (passed) {
+            
+            document.documentElement.classList.add('turnstile-passed');
+        } else {
+            document.documentElement.classList.add('is-loading');
+        }
+    })();
+</script>
+<div class="loading">
+    <div class="spinner">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <div class="captcha-prepare" id="captchaPrepare">正在准备人机验证...</div>
+    <div class="captcha-box" id="captchaBox"></div>
+    <div class="captcha-after" id="captchaAfter">请稍后,正在请求blog-turnstile接口</div>
+</div>
+
+<style>
+    .loading {
+        position: fixed;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 99;
+         
+        background-color: var(--body-background, #f5f5fa);
+         
+        transition: opacity 0.1s ease;
+    }
+
+     
+    .loading.is-hidden {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+     
+    html.turnstile-passed .loading {
+        display: none !important;
+    }
+
+     
+    html[data-scheme="light"] .loading {
+        background-color: #f5f5fa;
+    }
+    html[data-scheme="dark"] .loading {
+        background-color: #303030;
+    }
+    @media (prefers-color-scheme: dark) {
+        .loading {
+            background-color: #303030;
+        }
+    }
+
+     
+    html.is-loading .aplayer {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+     
+    .aplayer {
+        transition: opacity 0.4s ease;
+    }
+
+    .spinner {
+        --gap: 5px;
+        --clr: #3b82f6;    
+        --height: 23px;
+        width: 100px;
+        height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--gap);
+        transition: opacity 0.35s ease;
+    }
+     
+    .spinner.is-hidden {
+        opacity: 0;
+    }
+
+    .spinner span {
+        background: var(--clr);
+        width: 6px;
+        height: var(--height);
+        animation: grow 1s ease-in-out infinite;
+    }
+    .spinner span:nth-child(2) { animation: grow 1s ease-in-out 0.15s infinite; }
+    .spinner span:nth-child(3) { animation: grow 1s ease-in-out 0.3s infinite; }
+    .spinner span:nth-child(4) { animation: grow 1s ease-in-out 0.475s infinite; }
+
+    @keyframes grow {
+        0%, 100% { transform: scaleY(1); }
+        50% { transform: scaleY(1.8); }
+    }
+
+     
+    .captcha-prepare {
+        display: none;
+        margin-top: 6px;
+        font-size: 14px;
+        letter-spacing: 1px;
+        color: var(--body-text-color, #555);
+    }
+    .captcha-prepare.is-show {
+        display: block;
+        animation: captchaSlideIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+     
+    .captcha-box {
+        display: none;
+        margin-top: 6px;
+        min-height: 65px;
+    }
+    .captcha-box.is-show {
+        display: block;
+        animation: captchaSlideIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+     
+    .captcha-after {
+        display: none;
+        margin-top: 6px;
+        font-size: 14px;
+        letter-spacing: 1px;
+        color: var(--body-text-color, #555);
+    }
+    .captcha-after.is-show {
+        display: block;
+        animation: captchaSlideIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+     
+    @keyframes captchaSlideIn {
+        from { opacity: 0; transform: translateX(60px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+</style>
+
+<script>
+    function initLoading() {
+        var loading = document.querySelector(".loading");
+        var hidden = false;
+        var captchaStarted = false;
+
+        
+        if (window.__turnstilePassed) {
+            if (loading) {
+                loading.style.display = "none";
+            }
+            document.documentElement.classList.remove("is-loading");
+            return;
+        }
+
+        
+        function hideLoading() {
+            if (!loading || hidden) {
+                return;
+            }
+            hidden = true;
+            
+            loading.classList.add("is-hidden");
+            
+            setTimeout(function () {
+                loading.style.display = "none";
+                
+                document.documentElement.classList.remove("is-loading");
+            }, 500);
+        }
+
+        
+        
+        function startCaptcha() {
+            if (captchaStarted) {
+                return;
+            }
+            captchaStarted = true;
+
+            var spinner = document.querySelector(".loading .spinner");
+            var prepare = document.getElementById("captchaPrepare");
+            var box = document.getElementById("captchaBox");
+
+            
+            if (spinner) {
+                spinner.classList.add("is-hidden");
+            }
+            
+            if (prepare) {
+                prepare.classList.add("is-show");
+            }
+
+            
+            setTimeout(function () {
+                if (prepare) {
+                    prepare.classList.remove("is-show");
+                }
+                if (box) {
+                    box.classList.add("is-show");
+                }
+                renderTurnstile(box);
+            }, 500);
+        }
+
+        
+        function renderTurnstile(box) {
+            if (!box) {
+                return;
+            }
+            var waited = 0;
+            var timer = setInterval(function () {
+                if (window.turnstile && typeof window.turnstile.render === "function") {
+                    clearInterval(timer);
+                    doRender(box);
+                } else if (waited >= 8000) {
+                    clearInterval(timer);
+                    box.innerHTML = '<p style="margin:0 0 12px;font-size:13px;text-align:center;">验证组件加载失败，请检查网络后重试</p>';
+                    var btn = document.createElement("button");
+                    btn.textContent = "重新加载";
+                    btn.style.cssText = "display:block;margin:0 auto;padding:8px 18px;border:0;border-radius:8px;background:var(--accent-color,#3b82f6);color:#fff;cursor:pointer;";
+                    btn.onclick = function () {
+                        location.reload();
+                    };
+                    box.appendChild(btn);
+                }
+                waited += 200;
+            }, 200);
+        }
+
+        function doRender(box) {
+            var scheme = document.documentElement.getAttribute("data-scheme");
+            var theme = scheme === "dark" ? "dark" : (scheme === "light" ? "light" : "auto");
+            try {
+                window.turnstile.render(box, {
+                    sitekey: "0x4AAAAAAFMoHgJeuUgOvCLv",
+                    theme: theme,
+                    callback: function () {
+                        
+                        try { sessionStorage.setItem("turnstile-passed", "1"); } catch (e) {}
+                        
+                        var prepare = document.getElementById("captchaPrepare");
+                        var after = document.getElementById("captchaAfter");
+                        if (box) { box.classList.remove("is-show"); }
+                        if (prepare) { prepare.classList.remove("is-show"); }
+                        if (after) { after.classList.add("is-show"); }
+                        setTimeout(hideLoading, 800);
+                    }
+                });
+            } catch (e) {
+                box.innerHTML = '<p style="margin:0;font-size:13px;text-align:center;">验证初始化失败，请刷新页面重试</p>';
+            }
+        }
+
+        
+        function whenImageReady(img, callback) {
+            if (!img) {
+                callback();
+                return;
+            }
+            
+            try { img.loading = "eager"; } catch (e) {}
+            if (img.complete && img.naturalWidth !== 0) {
+                callback();
+                return;
+            }
+            img.addEventListener("load", callback, { once: true });
+            img.addEventListener("error", callback, { once: true });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            var avatar = document.querySelector(".site-avatar img, img.site-logo");
+
+            
+            var articles = document.querySelectorAll(".article-list > article, .article-list .article-item");
+            var total = articles.length;
+            var need = Math.ceil(total / 2);
+
+            var avatarDone = false;
+            var articleDone = 0;
+            var startScheduled = false;
+
+            function maybeStart() {
+                if (avatarDone && articleDone >= need && !startScheduled) {
+                    startScheduled = true;
+                    
+                    setTimeout(startCaptcha, 1000);
+                }
+            }
+
+            
+            whenImageReady(avatar, function () {
+                avatarDone = true;
+                maybeStart();
+            });
+
+            if (need === 0) {
+                maybeStart();
+            } else {
+                var counted = 0;
+                Array.prototype.forEach.call(articles, function (article) {
+                    if (counted >= need) {
+                        return;
+                    }
+                    counted++;
+                    whenImageReady(article.querySelector("img"), function () {
+                        articleDone++;
+                        maybeStart();
+                    });
+                });
+            }
+
+            
+            setTimeout(startCaptcha, 15000);
+        });
+    }
+
+    initLoading();
+</script>
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu3149871140739389790.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🤔</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">爱玩win11的me</a></h1>
+            <h2 class="site-description">欢迎来到我的博客</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://linkexpander.thebestmotherfuckingweb.site/i1WLQ0w3WtDoMwDl8HHo13bOqS8FFPWvLHOdWeJ4Yxbla1bdvdOTkuZ56RAGIFEU1ncgSSBhWy56tnCnyhG8czX8S8wEManos0UnuF1IfLVDBUHzjWY9DvE6L49BSERnU4K8PXIYW0bzrcNpTbe6o9oNIkUFDqjisNEvWavVBJQE4NxQuHIOmwpWMI1TyU52S9qFtLjeR4829QspiaiCWzsDQks3Bdt3dnlHz4jXRvFqTLLVtAKmRBQidLoQrbYr5TwkIAtpi1pyVyIvd3doFGiEzSeQUA11i90eoktbeZMElsU2DxhTPs4EOsLuT2PYrugqIrbBsDJEiIQGZXbJ1YLJsQdhwr5x9ts44KDivsePeY3YX0yVfaaUBKQWp1VUwM2b1uTSMDKEA8z0gNYf6a8yh7ZzQCXAGyt6nDWUdtHRMXGg1VxwPVGzVaQNKsZ8B3oQUvyhhJCw51yl1Kd1J8tVcTPam4LoVgn6BGFpDLSl1pAz4wKXvwWLLLGkHG8bxzd0TOgOmPmOrYsQcmUCVqLIsZLB013aoNE1m0yBC5rF2cvXBbUdfmqwQbeib0h6tw50cH1MWddyPUxBcahWKf6nQsH8IxWs1mFDwsM07zAXrqlpJKtupEGcOhhJm0B2l9xJtqRTVI0rx2x6ANGN5P3XrvDY5EdkD6fxmvtNBGdyHn5NbBtEtR5DGOlRV6CztGXw464936hA08jYdhhRFwR3RyqCPUfDQH8KLi6QRvmfT443FMA601AwkMePfOoK8A1u0Ntbi5BWYIMgAUIchJGV2QQWJ5PEfyStUBi0M07LizF1joF0gfnzTBHSOBpavuiWut9dFS7kf4i8ibS2Pe4EmtV6INLdZRlF0oVyVGsW9VQJBQ7zd5P9txqXgY8XsD9h9EM1Hxj9oEtDVutrVUSxUIpqwV59Pfn0hgo28NR2Yb4aCp0vo472ZyQEKqwjcwl7ikB0ruKxOvBaoFAeR2oi3LSBjbC9U7oJaSx6X87Rjl54H1KrlzCgqrHDJKCVAhQMUQVeptI3QIzVtg5IFPPFuLHHsdZfWAVKqq4Z0KQYhejapeQDHOsxeqkiEnmjoc1Ia2TSlEAsfepFN9VS9TbdwFgpnmQGe8F6mZu5hSJPQpwhk4ak2mMHWCTAIvZEIVLb9sLs4Ur9Tz0oqQe2P6oX9xb5r8wuoKm2bNmfZlPKDsFXy6XeDst6HusFJO54MmtBhYxsXG8YdHqKAPWdZqnCkPpZ2IYnZwhe4d2q8KmAln2Yqfq3kponISoop1xPpMDrX0uCbdXkbSjBnZdDy058jc99pP2xzz9C7IIH6lzLcrXMzAtshv68MEqPcMr9l6RyMnCUbqChSVuGxPCPe52jfsKGo2dEJ6g5BqKCdGaeZfAgYVBg3w3pg2CWvyURglZ4t2UV3AbNbnACcAJzH2bGa3LaDHC1tT2PLkYNGlEVZVfBZHwxhIzPIt2g7qZOBbeIOKBCLRNcRg6HAlTixhTZuRGUHtBMI9EnqeEo9EXmoZZ75I34mybS0uEBcPf1f71zP4Pf9KSd3lECa2nI9qzxAsCucOtvk1M6tJgyfDr8Sb6hhPXk0dMFUoYftt9roU9kU0lqqerq6nCH8LiQlkSjvHek342OKGYOwGJ57g20n56MN6TpZC9Wp00tGYC80pv5zEJyOKh7W3oX8KhIDQ3EZDYOUGI3Hfby0yyppXMjE1ZHVCVBAX6Rxly5zawvKnW50gpc8b8FgwyULl0xa9mp56ATwpMLkFM0Wqu7rJeI1fpfF5wwEc1G1h4kx91esfnQduF4uHrNXjRMv3O031TW1KVSO3ZLECKtj8odYmAEfYNa5G65wNuumurFij2lopjg9MgP1rh9eRP4HYDGxgDxKDxCfkpChznhg1gknwVvvxSZus9pyaafnnlkwS6WoXhO1b39ZdGhMAmiIz9oZD77yjaCzc'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-brand-bilibili"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M3 10a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-6" /><path d="M8 3l2 3" /><path d="M16 3l-2 3" /><path d="M9 13v-2" /><path d="M15 11v2" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://linkexpander.thebestmotherfuckingweb.site/I1BKwkw3WtDoMwDl8HTukjQKujwHlDS8YHQbRqa74IRwuAxEYgrVTpVVXqvl1ZqMmHLrwnVkBVoBwsBdCPd6AFhpgy7zIxPy5cPhHFNBil8t9qrOEamyMzEwwiHlJwy9r3yG4stK0Nif9UEcM0DXJkD2CFs6rQdXXQHMkULCHqzYX1BWjoJK0M02ySTuV01jjmNlpRRNsJxba14kQfU1PtfWu6Ld0s8g95dJu8Uj8IQaDkpU1egqW76cdSeSTCWbWbxQom5UAgMgZY0ajG6cymkzxVcs7XtmOshgeQPBOp0R81sPD4qj0iUqOInLbokS2Cbt2MlgOnBjXwWlCNEUsElkoHo2E9gSyJlN4o7BQVQrdjUZW4wiLk4RMXa1CtcMhhVrH7tOXL6aTES3TG2EsAiZsEovob0X3lAYujB30U1T8Qh9K3PEgZTBsdWVDhSROXlQmP0Ms48Wr6Tn4THuOd8kUXFPzZJSer1B00R2ibk2CIcTcSX1pI4v252xbPyk2eNHabtH9LcoKZlF2IMmqxDp9hAOjfpx86H8DjqT5bhngOEBXbSbl9UsLOJat9oW4kpR9sRlWMx9Vvd9Ftv6uDspOvTsmbZESjdX5pRvKs46wzb88j5kIrO3CFgniUSOUHbzDLBOWz47pj0WqtyU9Icy0IyKvIHql0Wdu7xTa2yedF1M7pHO1NoB2X6YoIF1tAGkEfVDDOakN6b10bO59yq8d4Mi5PXFaTuW3PfuOZua6FvSQDKVs9RfIptlfgq4o1XXAAi9QVgZjQF5alZo4qHEPnol5p4oWaYmjkZNb2fM3uvVUTq2lHR7qJOrbaNvVlLqMG5N89FqMIDGPTLo96qcTgfJddD717J0gqRTPdtyFxjaMkTwEahFgtKDlN6grNKgNsH7GRnsuZM15N9TrweVjtuh4DLQkhFGMMA2l73qp8lpJLcf88sGRZVbPNPdkksH12IrxG9LQv7iDq4Hz79BoP6QRufSdQpyTi1saZHg43FW4WPakvMsTvUL7wYJF7HKaZD9p8cxXt3XeVNFhz8UvjJ9Ap3RsR5ryORo0nOJJkstiXtvfiBgRDeeSMUW1npdHAO5zfNpGNSUya3AWVD8oldJMSWEjF0JdSuUSgDQrHy9UioE37uEAvYhfNSoiw4K72vw1aXH8gjg6S0RU91WvXVSuPmFnfqySK3A4IGoJglsPjtpiP3bsg3Vay6Rcf4rGkKUu5FBqb0ZhLUpvG1V2n8k92imUz5VuwYGOi80hjbsHrksEjVNwp3HKyhz2dXCaNDz5yltPIwcJPRORUfiqbdl3gpTtqS440iOZhM3behhH6Wqx12cpgs5h2Demj8uewhW2KyPLsEve9Llb3YC3NUiAsrlqOTuMW738zpNDwjs5ri0ypDpOekxSpjo16Iu1dhz3YNH6jFoSlJIjFZdrqfw3O90NlsrA1ewQJt50xxVfiyJQBv7PRVJzKDEl2dDdNvZlSbY7VevSjgaUeWG6IMXNyMWnKCwrojKsZqWzZMhZXYjq1EpJpXIqfQQbEpKc8eva84G4CLXVYWb5GBZYLrGu6ybryVADmNhqkoA9VgQomWJjfPgnuUYlnmwJdxGiIJk2bMViZHzEbofpXAVlFum5tlGA0IOAIi0wglTiJvafAHzsuI31muABpOruvcIj1A9DWMhCo0JfdyJ6oFksKPEUZxQ0O4Gl5lQjimIZ6ESqQJaTqG6JtBaD7oiKvHNedsnGCPv8OOTdvLISwHS392fDuwZkN7j2a3gBHp7PlONZw9Ia3iXljtPiuysQPaNg1GI9JJyTim1sGzcAtTxxzE2uWv0E2eKZtB1FxRVbKikP0Py6Tl58LcCAvS6MHgwICqDE6AjboYF6Ebv1dxxVzqnkVRRxhpendJC9PeF0l3th4lDZmzsC7WqqCWCgbZwFwn36JGL0ZFqXhZ7nKqRyZYL6G'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友情链接</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    
+
+<header class="article-header">
+        <div class="article-image">
+            <a href="/p/%E5%8D%9A%E5%AE%A2%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%8A%98%E8%85%BE%E8%AE%B0/">
+                
+                    <img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/09/2026-09-26-cover.jpg" loading="lazy" alt="Featured image of post 给博客接上 Giscus 评论，结果栽在无刷新跳转上" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-tags">
+        
+            <a href="/tags/giscus/">
+                Giscus
+            </a>
+        
+            <a href="/tags/%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F/">
+                评论系统
+            </a>
+        
+            <a href="/tags/hugo/">
+                Hugo
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title" data-pagefind-meta="title" data-pagefind-weight="10">
+            <a href="/p/%E5%8D%9A%E5%AE%A2%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%8A%98%E8%85%BE%E8%AE%B0/">给博客接上 Giscus 评论，结果栽在无刷新跳转上</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            用 Giscus 给纯静态博客加上评论，踩坑全在 PJAX 无刷新跳转——评论区换页不重新加载。
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2026-09-26</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 4 分钟
+                </time>
+            </div>
+        
+
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+
+
+    <section class="article-content">
+    
+    
+    <h2 id="为什么选-giscus">为什么选 Giscus
+</h2><p>纯静态博客没有后端，评论只能靠第三方。常见的几个方案我都看了一遍：</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>方案</th>
+<th>数据存在哪</th>
+<th>要不要后端</th>
+<th>我的顾虑</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Giscus</td>
+<td>GitHub Discussions</td>
+<td>不用</td>
+<td>访客得登录 GitHub</td>
+</tr>
+<tr>
+<td>Waline</td>
+<td>自己的数据库</td>
+<td>要</td>
+<td>得买服务器或云函数</td>
+</tr>
+<tr>
+<td>Disqus</td>
+<td>厂商服务器</td>
+<td>不用</td>
+<td>国内访问慢，还挂广告</td>
+</tr>
+<tr>
+<td>自建评论</td>
+<td>自己管</td>
+<td>要</td>
+<td>维护成本直接翻倍</td>
+</tr>
+</tbody>
+</table></div>
+<p>选 Giscus 的理由很直接：<strong>它把评论存进 GitHub Discussions，我不用买任何服务器，数据还留在自己仓库里</strong>，哪天不想用了，评论也不会跟着跑掉。</p>
+<p>缺点也认了——访客必须登录 GitHub 才能评论。对技术类博客来说勉强能接受，反正读者大概率本来就有账号。</p>
+<h2 id="第一步把仓库和-discussions-准备好">第一步：把仓库和 Discussions 准备好
+</h2><p>Giscus 的评论不是存在 issue 里，而是 <strong>Discussions</strong>，这两者别搞混。</p>
+<ol>
+<li>新建一个仓库专门放评论，我建的是 <code>YrqSpace/Giscus</code>（公开仓库，私有仓库 Giscus 读不到）</li>
+<li>进仓库 <strong>Settings → General → Features</strong>，把 <strong>Discussions</strong> 勾上</li>
+<li>在这个仓库的 Discussions 里建一个分类，我用的是 <code>Announcements</code> 类型</li>
+</ol>
+<p>第 3 步的分类很关键，后面配置要引用它的 ID。</p>
+<h2 id="第二步装-giscus-app">第二步：装 Giscus App
+</h2><p>光有仓库不够，还要让 Giscus 有权限往你的 Discussions 里写。去 <a class="link" href="https://github.com/apps/giscus"  target="_blank" rel="noopener"
+    >github.com/apps/giscus</a> 安装，授权范围选刚才那个评论仓库就行，不用给全账号权限。</p>
+<h2 id="第三步在-giscusapp-拿到配置">第三步：在 giscus.app 拿到配置
+</h2><p>打开 <a class="link" href="https://giscus.app"  target="_blank" rel="noopener"
+    >giscus.app</a>，填仓库名 <code>YrqSpace/Giscus</code>，它会自动校验并给出四个值：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">data-repo=&#34;YrqSpace/Giscus&#34;
+</span></span><span class="line"><span class="cl">data-repo-id=&#34;R_kgDOUhG6JA&#34;
+</span></span><span class="line"><span class="cl">data-category=&#34;Announcements&#34;
+</span></span><span class="line"><span class="cl">data-category-id=&#34;DIC_kwDOUhG6JM4DF78m&#34;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>repo-id</code> 和 <code>category-id</code> 这两串看着像乱码的东西别手抄，直接从页面复制，抄错一个字符评论区就是空白。</p>
+<p>**映射方式（mapping）**我选了 <code>pathname</code>，也就是按 URL 路径区分文章。这样同一篇文章换标题不会丢评论，缺点是改 slug 会变成新的一页。</p>
+<h2 id="第四步写进-hugo-配置">第四步：写进 Hugo 配置
+</h2><p>Stack 主题原生支持 Giscus，不用自己拼 HTML，在 <code>hugo.yaml</code> 里填就行：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">comments</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">provider</span><span class="p">:</span><span class="w"> </span><span class="l">giscus</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">giscus</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l">YrqSpace/Giscus</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">repoID</span><span class="p">:</span><span class="w"> </span><span class="l">R_kgDOUhG6JA</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">category</span><span class="p">:</span><span class="w"> </span><span class="l">Announcements</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">categoryID</span><span class="p">:</span><span class="w"> </span><span class="l">DIC_kwDOUhG6JM4DF78m</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">mapping</span><span class="p">:</span><span class="w"> </span><span class="l">pathname</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">strict</span><span class="p">:</span><span class="w"> </span><span class="m">0</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">reactionsEnabled</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">emitMetadata</span><span class="p">:</span><span class="w"> </span><span class="m">0</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">inputPosition</span><span class="p">:</span><span class="w"> </span><span class="l">top</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">lightTheme</span><span class="p">:</span><span class="w"> </span><span class="l">light</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">darkTheme</span><span class="p">:</span><span class="w"> </span><span class="l">dark</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">lang</span><span class="p">:</span><span class="w"> </span><span class="l">zh-CN</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>几个参数值得说一下：</p>
+<ul>
+<li><code>strict: 0</code>：按 pathname 模糊匹配，找不到对应 discussion 时自动新建</li>
+<li><code>inputPosition: top</code>：输入框放最上面。默认在底部，读者看完评论还得往下滚才能说话，体验很差</li>
+<li><code>lightTheme</code> / <code>darkTheme</code>：跟着主题的明暗模式自动切换，这里填的是 Giscus 内置主题名</li>
+<li><code>lang: zh-CN</code>：界面文案中文化</li>
+</ul>
+<p>改完跑一遍 <code>hugo</code>，推上去，评论区就出来了。</p>
+<h2 id="真正的坑pjax-换页后评论不刷新">真正的坑：PJAX 换页后评论不刷新
+</h2><p>到这里按理说就完事了。但我的站点开了无刷新跳转（PJAX），第一次点进文章评论区正常，<strong>再点另一篇文章，评论还是上一篇的</strong>，得手动刷新整页才对。</p>
+<p>原因不难想：PJAX 换页只是把 <code>.main-container</code> 的 HTML 替换掉，<strong>里面的 <code>&lt;script&gt;</code> 不会被浏览器重新执行</strong>。Giscus 的客户端脚本是 <code>&lt;script src=&quot;https://giscus.app/client.js&quot;&gt;</code>，它在首次加载时把评论 iframe 注入进去，换页后这段脚本躺在新 HTML 里但没人去跑它，评论区自然一片空白或者残留旧内容。</p>
+<h3 id="修法换页后手动重建脚本">修法：换页后手动重建脚本
+</h3><p>思路很笨但有效——<strong>换页时把旧的 giscus 脚本和 iframe 全删掉，再重新插一个新的 <code>&lt;script&gt;</code></strong>，浏览器看到新的 script 元素就会去执行。</p>
+<p>我改了主题的 <code>footer/pjax.html</code>，大致流程：</p>
+<ol>
+<li>首次加载时把 giscus 的配置存到 <code>window.__giscusConfig</code>，免得换页后拿不到</li>
+<li>监听 <code>pjax:complete</code>，检查新页面里还有没有评论区（<code>.giscus</code> 或 <code>#comments</code>）</li>
+<li>有的话，先删掉旧的 iframe、旧 script 节点</li>
+<li>新建一个 script，把 <code>data-repo</code>、<code>data-repo-id</code>、<code>data-category</code>、<code>data-category-id</code>、<code>data-mapping</code> 等属性全挂上去</li>
+<li>暗色模式下顺手把 <code>data-theme</code> 设成 <code>dark</code>，在 <code>document.documentElement.dataset.scheme === &quot;dark&quot;</code> 时判断</li>
+</ol>
+<p>代码本质就是这段：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">reloadGiscus</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">var</span> <span class="nx">host</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">&#39;.giscus&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">host</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>                      <span class="c1">// 这页没评论区，什么都不做
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">host</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>                    <span class="c1">// 清掉旧的 iframe
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">var</span> <span class="nx">old</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">&#39;script[src*=&#34;giscus.app/client.js&#34;]&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">old</span><span class="p">)</span> <span class="nx">old</span><span class="p">.</span><span class="nx">remove</span><span class="p">();</span>                  <span class="c1">// 清掉旧脚本，否则新脚本插进去也不会跑
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;script&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">s</span><span class="p">.</span><span class="nx">src</span> <span class="o">=</span> <span class="s1">&#39;https://giscus.app/client.js&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">s</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s1">&#39;data-repo&#39;</span><span class="p">,</span> <span class="nx">cfg</span><span class="p">.</span><span class="nx">repo</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">s</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s1">&#39;data-repo-id&#39;</span><span class="p">,</span> <span class="nx">cfg</span><span class="p">.</span><span class="nx">repoId</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// ……其余 data-* 属性照抄
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">s</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s1">&#39;data-loading&#39;</span><span class="p">,</span> <span class="s1">&#39;lazy&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;pjax:complete&#39;</span><span class="p">,</span> <span class="nx">reloadGiscus</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>关键就在<strong>把旧 script 删掉</strong>这一步。只替换 iframe 不删脚本，浏览器会认为这个脚本&quot;已经加载过了&quot;，不会重新执行，白忙一场。</p>
+<h2 id="顺手解决的两个小问题">顺手解决的两个小问题
+</h2><p>调试过程中还发现两件事，一起记下来：</p>
+<p><strong>一是评论区出现重复。</strong> PJAX 回调如果触发了两次，就会插两个 script，页面上出现两个评论框。加一个标记位判断当前是不是已经有实例，重复调用直接 return。</p>
+<p><strong>二是暗色主题不跟随。</strong> Giscus 的主题是在脚本加载那一刻定死的，站点切换暗色它不会自己变。要么监听主题切换再重建一次，要么就在 iframe 上做透明度适配。我选了前者，反正重建的代码已经写好了，复用一下就行。</p>
+<h2 id="小结">小结
+</h2><p>Giscus 本身接起来十分钟的事，配置四个值、写进 <code>hugo.yaml</code> 就完事。真正花时间的是 <strong>PJAX 和第三方脚本的兼容</strong>——凡是靠 <code>&lt;script&gt;</code> 注入的第三方组件（评论、统计、分享按钮），在无刷新的站点上都要单独处理一遍。</p>
+<p>记住那条规则就行：<strong>换页后要重跑脚本，必须先删旧 script 节点，再插新的</strong>。</p>
+<blockquote>
+<p>参考：<a class="link" href="https://giscus.app"  target="_blank" rel="noopener"
+    >giscus.app</a> 官方配置页</p>
+</blockquote>
+
+</section>
+
+
+    
+<footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/giscus/">Giscus</a>
+        
+            <a href="/tags/%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F/">评论系统</a>
+        
+            <a href="/tags/hugo/">Hugo</a>
+        
+            <a href="/tags/%E7%8B%AC%E7%AB%8B%E5%8D%9A%E5%AE%A2/">独立博客</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>根据 CC BY-NC-SA 4.0 协议许可</span>
+    </section>
+    </footer>
+
+
+
+    <style>
+.article-prevnext {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin: 24px 0 8px;
+    padding: 0;
+}
+.article-prevnext a {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 14px 16px;
+    border-radius: var(--card-border-radius, 12px);
+    background: var(--card-background);
+    box-shadow: var(--shadow-l1);
+    text-decoration: none;
+    color: var(--card-text-color-main);
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+.article-prevnext a:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-l2);
+}
+.article-prevnext a.next {
+    text-align: right;
+}
+.article-prevnext .label {
+    font-size: 13px;
+    color: var(--card-text-color-secondary);
+}
+.article-prevnext .title {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+.article-prevnext .placeholder {
+    flex: 1;
+}
+@media (max-width: 640px) {
+    .article-prevnext {
+        flex-direction: column;
+    }
+    .article-prevnext a.next {
+        text-align: left;
+    }
+    .article-prevnext .placeholder {
+        display: none;
+    }
+}
+</style>
+<div class="article-prevnext">
+    <a class="prev" href="https://yrqspace.github.io/p/%E4%BA%BA%E6%9C%BA%E9%AA%8C%E8%AF%81%E6%8A%98%E8%85%BE%E8%AE%B0/">
+        <span class="label">← 上一篇</span>
+        <span class="title">人机验证折腾记</span>
+    </a>
+    <a class="next" href="https://yrqspace.github.io/p/%E7%AB%99%E5%86%85%E6%90%9C%E7%B4%A2%E6%8A%98%E8%85%BE%E8%AE%B0/">
+        <span class="label">下一篇 →</span>
+        <span class="title">给 Hugo 博客装上 Pagefind 站内搜索，中文分词和样式都踩了一遍</span>
+    </a>
+</div>
+
+    
+</article>
+
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/%E5%8F%8B%E9%93%BE%E9%A1%B5-diy-%E8%AE%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-28-cover.jpg" loading="lazy" alt="Featured image of post 友链页 DIY 记" data-key="友链页 DIY 记" data-hash="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-28-cover.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">友链页 DIY 记</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/%E7%BB%99%E5%8D%9A%E5%AE%A2%E5%8A%A0%E4%B8%8A%E5%8D%9A%E5%AE%A2%E5%A4%A7%E8%81%94%E7%9B%9F%E6%8A%8A%E5%B1%95%E7%A4%BA%E6%9D%83%E9%87%8D%E5%88%B7%E5%88%B0-113/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-23-cover.jpg" loading="lazy" alt="Featured image of post 给博客加上博客大联盟，把展示权重刷到 113" data-key="" data-hash="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-23-cover.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">给博客加上博客大联盟，把展示权重刷到 113</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/bing-%E6%94%B6%E5%BD%95%E6%88%90%E5%8A%9F%E8%AE%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-26-cover.jpg" loading="lazy" alt="Featured image of post Bing 收录成功记" data-key="" data-hash="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-26-cover.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Bing 收录成功记</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%BB%99%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E6%8F%90-pr/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-22-cover.jpg" loading="lazy" alt="Featured image of post 第一次给开源项目提 PR" data-key="" data-hash="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-22-cover.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">第一次给开源项目提 PR</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/%E6%88%91%E7%9A%84-bing-%E6%94%B6%E5%BD%95%E6%8A%98%E8%85%BE%E8%AE%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-16-cover.jpg" loading="lazy" alt="Featured image of post 我的 Bing 收录折腾记" data-key="" data-hash="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-16-cover.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">我的 Bing 收录折腾记</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <style>
+    .waline-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+         
+        --waline-font-size: var(--article-font-size, 1.6rem);
+    }
+
+     
+    .waline-container,
+    .waline-container input,
+    .waline-container textarea,
+    .waline-container button,
+    .waline-container select {
+        font-family: var(--article-font-family, var(--base-font-family));
+    }
+
+    .waline-container .wl-count {
+        color: var(--card-text-color-main);
+    }
+</style>
+<div id="waline" class="waline-container"></div>
+
+    
+
+    <footer class="site-footer">
+    <section class="site-stats">
+        <span>共 11 篇文章</span>
+        <span class="dot">·</span>
+        <span>约 1.8 万字</span>
+        <span class="dot">·</span>
+        <span>运行 40 天</span>
+    </section>
+
+    <section class="copyright">
+        &copy; 
+        
+            2024 - 
+        
+        2026 爱玩win11的me
+    </section>
+    
+    <section class="powerby">
+        Build using Hugo <br />
+        
+    </section>
+</footer>
+
+<style>
+    .site-footer .site-stats {
+        text-align: center;
+        font-size: 14px;
+        color: var(--card-text-color-secondary);
+        margin-bottom: 8px;
+    }
+    .site-footer .site-stats .dot {
+        margin: 0 6px;
+        opacity: .6;
+    }
+</style>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdmirror.com/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdmirror.com/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdmirror.com/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdmirror.com/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdmirror.com/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.loli.net/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+<style>
+    .welcome-toast {
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        max-width: 440px;
+        padding: 16px 38px 16px 16px;
+        background: var(--card-background);
+        color: var(--card-text-color-main);
+        border: 1px solid var(--card-separator-color);
+        border-radius: var(--card-border-radius, 12px);
+        box-shadow: 0 10px 34px rgba(0, 0, 0, 0.18);
+        transform: translateX(130%);
+        opacity: 0;
+        pointer-events: none;
+        transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.45s ease;
+    }
+
+    .welcome-toast.is-show {
+        transform: translateX(0);
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .welcome-toast__wave {
+        flex-shrink: 0;
+        font-size: 4rem;
+        line-height: 1;
+        display: inline-block;
+        transform-origin: 70% 70%;
+        animation: welcome-wave 1.8s ease-in-out infinite;
+    }
+
+    @keyframes welcome-wave {
+
+        0%,
+        100% {
+            transform: rotate(0deg);
+        }
+
+        20% {
+            transform: rotate(18deg);
+        }
+
+        40% {
+            transform: rotate(-10deg);
+        }
+
+        60% {
+            transform: rotate(14deg);
+        }
+
+        80% {
+            transform: rotate(-6deg);
+        }
+    }
+
+    .welcome-toast__body {
+        min-width: 0;
+    }
+
+    .welcome-toast__greet {
+        margin: 0 0 8px;
+        font-size: 1.4rem;
+        line-height: 1.55;
+        color: var(--card-text-color-main);
+    }
+
+    .welcome-toast__greet b {
+        color: var(--accent-color);
+        font-weight: 600;
+    }
+
+    .welcome-toast__link {
+        display: inline-block;
+        font-size: 1.3rem;
+        line-height: 1.5;
+        white-space: nowrap;
+        color: var(--accent-color);
+        text-decoration: none !important;
+        border-bottom: 1px dashed var(--accent-color);
+        padding-bottom: 1px;
+        transition: opacity 0.2s ease;
+    }
+
+    .welcome-toast__link:hover {
+        opacity: 0.75;
+    }
+
+    .welcome-toast__close {
+        position: absolute;
+        top: 8px;
+        right: 10px;
+        width: 22px;
+        height: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        border: none;
+        background: none;
+        color: var(--card-text-color-secondary);
+        font-size: 1.8rem;
+        line-height: 1;
+        cursor: pointer;
+        transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    .welcome-toast__close:hover {
+        color: var(--card-text-color-main);
+        transform: scale(1.15);
+    }
+
+    @media (max-width: 640px) {
+        .welcome-toast {
+            left: 12px;
+            right: 12px;
+            bottom: 12px;
+            max-width: none;
+        }
+    }
+</style>
+
+<div id="welcome-toast" class="welcome-toast" role="dialog" aria-live="polite" aria-label="欢迎通知">
+    <button class="welcome-toast__close" type="button" aria-label="关闭">&times;</button>
+    <span class="welcome-toast__wave" aria-hidden="true">👋</span>
+    <div class="welcome-toast__body">
+        <p class="welcome-toast__greet">泥嚎！来自 <b id="welcome-browser">你的浏览器</b> 的朋友，欢迎来到我的 blog</p>
+        <a class="welcome-toast__link" href="https://github.com/YrqSpace/YrqSpace.github.io/issues/1" target="_blank" rel="noopener">👉 觉得文章有意思？点这里去 GitHub 订阅</a>
+    </div>
+</div>
+
+<script>
+    (function () {
+        function detectBrowser() {
+            var ua = navigator.userAgent;
+            if (/Edg\//.test(ua) || /EdgiOS\//.test(ua)) return 'Edge';
+            if (/OPR\//.test(ua) || /Opera/.test(ua)) return 'Opera';
+            if (/Firefox\//.test(ua) || /FxiOS\//.test(ua)) return 'Firefox';
+            if (/Chrome\//.test(ua) || /CriOS\//.test(ua)) return 'Chrome';
+            if (/Safari\//.test(ua)) return 'Safari';
+            return '浏览器';
+        }
+
+        
+        
+        var KEY = 'welcome-shown';
+
+        function alreadyShown() {
+            try { return sessionStorage.getItem(KEY) === '1'; } catch (e) { return false; }
+        }
+
+        function markShown() {
+            try { sessionStorage.setItem(KEY, '1'); } catch (e) { }
+        }
+
+        function showWelcome() {
+            var toast = document.getElementById('welcome-toast');
+            if (!toast) return;
+
+            
+            if (alreadyShown()) return;
+
+            var browserSpan = document.getElementById('welcome-browser');
+            if (browserSpan) browserSpan.textContent = detectBrowser();
+
+            var closeBtn = toast.querySelector('.welcome-toast__close');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', function () {
+                    toast.classList.remove('is-show');
+                });
+            }
+
+            
+            function reveal() {
+                toast.classList.add('is-show');
+                markShown();
+            }
+
+            function loadingDone() {
+                return !document.documentElement.classList.contains('is-loading');
+            }
+
+            if (loadingDone()) {
+                setTimeout(reveal, 300);
+                return;
+            }
+
+            var done = false;
+            var observer = new MutationObserver(function () {
+                if (!done && loadingDone()) {
+                    done = true;
+                    observer.disconnect();
+                    setTimeout(reveal, 300);
+                }
+            });
+            observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
+            
+            setTimeout(function () {
+                if (!done) {
+                    done = true;
+                    observer.disconnect();
+                    reveal();
+                }
+            }, 20000);
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', showWelcome);
+        } else {
+            showWelcome();
+        }
+    })();
+</script>
+
+    <script src="https://cdn.jsdmirror.com/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    <div id="aplayer"></div>
+
+    <script>
+        const home = "https://yrqspace.github.io/"
+        const ap = new APlayer({
+            container: document.getElementById('aplayer'),
+            fixed: true,
+            lrcType: 0,
+            audio: [
+    {
+        name: '清空',
+        artist: '王忻辰 苏星婕',
+        url: '/music/qingkong/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/qingkong.jpg',
+    },
+    {
+        name: '云烟成雨',
+        artist: '房东的猫',
+        url: '/music/yunyanchengyu/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/yunyanchengyu.jpg',
+    },
+    {
+        name: '带我去找夜生活',
+        artist: '告五人',
+        url: '/music/daiwoquzhaoyeshenghuo/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/daiwoquzhaoyeshenghuo.jpg',
+    },
+    {
+        name: '等一场雨',
+        artist: '苏星婕',
+        url: '/music/dengyichangyu/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/dengyichangyu.jpg',
+    },
+    {
+        name: 'river flows in you',
+        artist: 'Yiruma',
+        url: '/music/river-flows-in-you/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/river-flows-in-you.jpg',
+    },
+    {
+        name: 'Kiss The Rain',
+        artist: 'Yiruma',
+        url: '/music/Kiss-The-Rain/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/Kiss-The-Rain.jpg',
+    },
+    {
+        name: 'Maybe',
+        artist: 'Yiruma',
+        url: '/music/maybe/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/maybe.jpg',
+    },
+    {
+        name: 'Summer',
+        artist: '久石让',
+        url: '/music/summer/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/summer.jpg',
+    },
+    {
+        name: 'Merry Christmas Mr. Lawrence',
+        artist: '坂本龙一',
+        url: '/music/merrychristmasmrlawrence/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/merrychristmasmrlawrence.jpg',
+    },
+    {
+        name: 'My Soul',
+        artist: 'July',
+        url: '/music/mysoul/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/mysoul.jpg',
+    },
+    {
+        name: 'Una Mattina',
+        artist: 'Ludovico Einaudi',
+        url: '/music/unamattina/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/unamattina.jpg',
+    },
+    {
+        name: '夜的钢琴曲五',
+        artist: '石进',
+        url: '/music/yedegangqinquwu/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/yedegangqinquwu.jpg',
+    },
+    {
+        name: 'Flower Dance',
+        artist: 'DJ Okawari',
+        url: '/music/flowerdance/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/flowerdance.jpg',
+    },
+    {
+        name: 'Harbor',
+        artist: 'Tomppabeats',
+        url: '/music/harbor/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/harbor.jpg',
+    },
+    {
+        name: 'Controlla',
+        artist: 'Drake',
+        url: '/music/controlla/song.mp3',
+        cover: 'https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/music/controlla.jpg',
+    }
+]
+
+    });
+
+
+   
+
+    window.onbeforeunload = () => {
+        
+        const playInfo = {
+            index: ap.list.index,
+            currentTime: ap.audio.currentTime,
+            paused: ap.paused
+        };
+        localStorage.setItem("playInfo", JSON.stringify(playInfo));
+    };
+
+    
+
+    window.onload = () => {
+        
+        const playInfo = JSON.parse(localStorage.getItem("playInfo"));
+        if (!playInfo) {
+            return;
+        }
+        
+        ap.list.switch(playInfo.index);
+        
+        setTimeout(() => {
+            
+            ap.seek(playInfo.currentTime);
+            
+            if (!playInfo.paused) {
+                ap.play()
+            }
+        }, 500);
+    };
+
+
+
+    </script>
+
+<script src="/js/pjax.min.js"></script>
+<script src="/js/topbar.min.js"></script>
+<script>
+  window.__giscusConfig = {
+    repo: "YrqSpace/Giscus",
+    repoId: "R_kgDOUhG6JA",
+    category: "Announcements",
+    categoryId: "DIC_kwDOUhG6JM4DF78m",
+    mapping: "pathname",
+    strict: 0,
+    reactionsEnabled: 1,
+    emitMetadata: 0,
+    inputPosition: "top",
+    lightTheme: "light",
+    darkTheme: "dark",
+    lang: "zh-CN"
+  };
+</script><link rel="stylesheet" href="/vendor/waline/waline.css">
+<script>
+window.__walineCfg = {"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji":["https://unpkg.com/@waline/emojis@1.4.0/bmoji","https://unpkg.com/@waline/emojis@1.4.0/bilibili"],"lang":"zh-CN","locale":{"admin":"Admin"},"requiredMeta":["name","email","url"],"serverURL":"https://yrq1622.cc.cd"};
+(function () {
+  var WALINE_URL = '\/vendor\/waline\/waline.js';
+  var bootAttempts = 0;
+
+  function loadModule() {
+    
+    if (!window.__walineModulePromise) {
+      window.__walineModulePromise = import(WALINE_URL);
+    }
+    return window.__walineModulePromise;
+  }
+
+  window.__walineBoot = function () {
+    var el = document.getElementById('waline');
+    if (!el) {
+      
+      if (bootAttempts < 40) {
+        bootAttempts++;
+        setTimeout(window.__walineBoot, 200);
+      }
+      return;
+    }
+    if (el.dataset.wlMounted === '1' || el.dataset.wlMounting === '1') return;
+
+    el.dataset.wlMounting = '1';
+    loadModule().then(function (m) {
+      var init = (m && (m.init || (m.default && m.default.init))) || (window.Waline && window.Waline.init);
+      if (typeof init !== 'function') throw new Error('waline init not found');
+      
+      var mountEl = document.getElementById('waline');
+      if (!mountEl) {
+        el.dataset.wlMounting = '';
+        return;
+      }
+      mountEl.innerHTML = '';
+      init(window.__walineCfg);
+      
+      mountEl.dataset.wlMounted = '1';
+      mountEl.dataset.wlMounting = '';
+      bootAttempts = 0;
+    }).catch(function (e) {
+      
+      window.__walineModulePromise = null;
+      var mountEl = document.getElementById('waline');
+      if (mountEl) mountEl.dataset.wlMounting = '';
+      console.error('[waline] load failed', e);
+    });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { window.__walineBoot(); });
+  } else {
+    window.__walineBoot();
+  }
+})();
+</script><script>
+(function () {
+  
+  if (typeof Pjax === "undefined") {
+    console.warn("[pjax] 库未加载，已跳过无刷新初始化");
+    return;
+  }
+
+  var pjax = new Pjax({
+    selectors: [".main-container"],
+    
+    timeout: 15000
+  });
+
+  
+  
+  window.pjax = pjax;
+
+  
+  var rawHandleResponse = pjax.handleResponse.bind(pjax);
+
+  
+  pjax.handleResponse = function (responseText, request, href, options) {
+    try {
+      var newDom = new DOMParser().parseFromString(responseText, "text/html");
+      if (newDom && newDom.body) {
+        if (newDom.body.className) {
+          document.body.setAttribute("class", newDom.body.className);
+        }
+        window.__pjaxHasComments = !!newDom.body.querySelector('script[src="https://giscus.app/client.js"]');
+      }
+    } catch (e) {
+      console.warn("[pjax] 同步 body class 失败", e);
+    }
+    
+    return rawHandleResponse(responseText, request, href, options);
+  };
+
+  
+  if (window.topbar && typeof topbar.config === "function") {
+    topbar.config({
+      barColors: {
+        "0": "rgba(255,  255, 255, 1)", 
+        "1.0": "rgba(0, 149, 234,  1)" 
+      }
+    });
+  }
+
+  document.addEventListener("pjax:send", function () {
+    if (window.topbar && typeof topbar.show === "function") topbar.show();
+  });
+
+  document.addEventListener("pjax:complete", function () {
+    if (window.Stack && typeof Stack.init === "function") Stack.init();
+    if (window.topbar && typeof topbar.hide === "function") topbar.hide();
+
+    
+    if (typeof initScrollTop === "function") initScrollTop();
+    if (typeof initTocHide === "function") initTocHide();
+
+    
+    if (window.__walineBoot) window.__walineBoot();
+
+    var cfg = window.__giscusConfig;
+    if (!cfg || !window.__pjaxHasComments) return;
+    var main = document.querySelector(".main-container main") || document.querySelector("main");
+    if (!main) return;
+    main.querySelectorAll(".giscus").forEach(function (el) { el.remove(); });
+    var oldScript = main.querySelector('script[src="https://giscus.app/client.js"]');
+    var script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.setAttribute("data-repo", cfg.repo);
+    script.setAttribute("data-repo-id", cfg.repoId);
+    script.setAttribute("data-category", cfg.category);
+    script.setAttribute("data-category-id", cfg.categoryId);
+    script.setAttribute("data-mapping", cfg.mapping);
+    script.setAttribute("data-strict", cfg.strict);
+    script.setAttribute("data-reactions-enabled", cfg.reactionsEnabled);
+    script.setAttribute("data-emit-metadata", cfg.emitMetadata);
+    script.setAttribute("data-input-position", cfg.inputPosition);
+    script.setAttribute("data-theme", document.documentElement.dataset.scheme === "dark" ? cfg.darkTheme : cfg.lightTheme);
+    script.setAttribute("data-lang", cfg.lang);
+    script.setAttribute("crossorigin", "anonymous");
+    script.async = true;
+    if (oldScript) {
+      oldScript.parentNode.insertBefore(script, oldScript);
+      oldScript.parentNode.removeChild(oldScript);
+    } else {
+      var anchor = main.querySelector(".site-footer");
+      if (anchor) {
+        main.insertBefore(script, anchor);
+      } else {
+        main.appendChild(script);
+      }
+    }
+  });
+})();
+</script>
+
+
+
+<style>
+     
+    #TableOfContents ul,
+    #TableOfContents ol {
+        display: block;
+    }
+</style>
+
+<script>
+    function initTocHide() {
+        
+        let toc = document.querySelector(".widget--toc");
+        if (!toc) {
+            return;
+        }
+        
+        window.addEventListener('scroll', function() {
+            
+            let openUl = document.querySelectorAll(".open");
+            if (openUl.length > 0) {
+              openUl.forEach((ul) => {
+                ul.classList.remove("open")
+              })
+            }
+            
+            let currentLi = document.querySelector(".active-class");
+            if (!currentLi) {
+                return
+            }
+            
+            if (currentLi.children.length > 1) {
+                currentLi.children[1].classList.add("open")
+            }
+            
+            let ul = currentLi.parentElement;
+            do {
+                ul.classList.add("open");
+                ul = ul.parentElement.parentElement
+            } while (ul !== undefined && (ul.localName === 'ul' || ul.localName === 'ol'))
+        });
+    }
+    initTocHide()
+</script>
+
+
+
+<style>
+    #backTopBtn {
+        display: none;
+        position: fixed;
+        bottom: 30px;
+        z-index: 99;
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        background-image: url(https://yrqspace.github.io/icons/backTop.svg);
+    }
+</style>
+
+<script>
+    
+
+    function initScrollTop() {
+        
+        let rightSideBar = document.querySelector(".right-sidebar");
+        
+        document.querySelectorAll("#backTopBtn").forEach(function (el) { el.remove(); });
+        let btn = document.createElement("div");
+        btn.id = "backTopBtn";
+        btn.onclick = backToTop;
+        if (rightSideBar) {
+            rightSideBar.appendChild(btn);
+        } else {
+            
+            btn.style.right = "30px";
+            document.body.appendChild(btn);
+        }
+        
+        function updateBackTop() {
+            
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                btn.style.display = "block";
+            } else {
+                btn.style.display = "none";
+            }
+        }
+        
+        window.removeEventListener("scroll", window.__backTopScroll);
+        window.__backTopScroll = updateBackTop;
+        window.addEventListener("scroll", window.__backTopScroll);
+        updateBackTop();
+    }
+
+    
+
+    function backToTop(){
+        window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    initScrollTop();
+</script>
+
+
+<div id="particles-js"></div>
+
+<script src=/background/particles.min.08f2e0aff5b71bc59b17ee2aacf0f5d68b77a9d20a185cff1df07f7916db5f44.js></script>
+<script>
+    particlesJS.load('particles-js', "/background/particlesjs-config.2368193f537c13d79c72a08b7586e884f75c953cb6c55079ac09d35b1ccc6dbe.json", function() {
+        console.log('particles.js loaded - callback');
+    });
+</script>
+
+<style>
+    #particles-js {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        pointer-events: none;
+    }
+</style>
+
+
+<script src=/background/fish.d5921750081cfe1813aedc5c17c35818046aabe25d2c45cd39f25df21e346fb3.js></script>
+
+
+<script src=/js/holiday-eggs.7a4718c6824e19a216478c1d657ca7e5382ad719f644faed143a55e9a990412c.js></script>
+
+
+
+
+
+<script>
+(function () {
+    var PF_CSS = '/pagefind/pagefind-ui.css';
+    var PF_JS = '/pagefind/pagefind-ui.js';
+    var TRANSLATIONS = {
+        placeholder: "搜索文章…",
+        clear_search: "清空",
+        load_more: "加载更多结果",
+        search_label: "搜索本站",
+        filters_label: "筛选",
+        zero_results: "没有找到与 “[SEARCH_TERM]” 相关的内容",
+        many_results: "找到 [COUNT] 条与 “[SEARCH_TERM]” 相关的结果",
+        one_result: "找到 1 条与 “[SEARCH_TERM]” 相关的结果",
+        alt_search: "未找到 “[SEARCH_TERM]”，改为显示 “[DIFFERENT_TERM]” 的结果",
+        search_suggestion: "未找到 “[SEARCH_TERM]”，请尝试以下关键词之一：",
+        searching: "搜索中…"
+    };
+
+    function ensureCss() {
+        if (document.querySelector('link[href="' + PF_CSS + '"]')) return;
+        var l = document.createElement('link');
+        l.rel = 'stylesheet';
+        l.href = PF_CSS;
+        document.head.appendChild(l);
+    }
+
+    function whenReady(cb) {
+        if (typeof window.PagefindUI !== 'undefined') { cb(true); return; }
+        
+        var tries = 0;
+        (function loop() {
+            if (typeof window.PagefindUI !== 'undefined') { cb(true); return; }
+            if (tries++ > 100) { cb(false); return; } 
+            setTimeout(loop, 100);
+        })();
+    }
+
+    function ensureScript(cb) {
+        if (typeof window.PagefindUI !== 'undefined') { cb(true); return; }
+        if (!document.querySelector('script[data-pf-ui]')) {
+            var s = document.createElement('script');
+            s.src = PF_JS;
+            s.setAttribute('data-pf-ui', '1');
+            s.onload = function () { whenReady(cb); };
+            s.onerror = function () { cb(false); };
+            document.head.appendChild(s);
+            return;
+        }
+        whenReady(cb);
+    }
+
+    function getTerm() {
+        try {
+            var p = new URLSearchParams(window.location.search);
+            return p.get('keyword') || p.get('q') || '';
+        } catch (e) { return ''; }
+    }
+
+    function mount() {
+        var el = document.getElementById('search');
+        if (!el) return; 
+
+        ensureCss();     
+
+        ensureScript(function (ok) {
+            var box = document.getElementById('search');
+            if (!box) return;
+            var hint = document.getElementById('pf-hint');
+
+            if (!ok || typeof window.PagefindUI === 'undefined') {
+                if (hint) {
+                    hint.style.display = 'block';
+                    hint.textContent = '对不起，搜索资源加载失败，请刷新页面重试。';
+                }
+                return;
+            }
+
+            if (box.dataset.pfMounted !== '1') {
+                box.innerHTML = '';
+                new window.PagefindUI({
+                    element: "#search",
+                    showSubResults: true,
+                    showImages: false,
+                    resetStyles: false,
+                    translations: TRANSLATIONS
+                });
+                box.dataset.pfMounted = '1';
+            }
+            if (hint) hint.style.display = 'none';
+
+            
+            var term = getTerm();
+            if (term) {
+                var input = box.querySelector('.pagefind-ui__search-input');
+                if (input && input.value !== term) {
+                    input.value = term;
+                    input.dispatchEvent(new Event('input', { bubbles: true }));
+                    try { input.focus(); } catch (e) {}
+                }
+            }
+        });
+    }
+
+    window.__pfEnsure = mount;
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () { setTimeout(mount, 0); });
+    } else {
+        setTimeout(mount, 0);
+    }
+    
+    document.addEventListener('pjax:complete', function () { setTimeout(mount, 0); });
+})();
+</script>
+
+
+<script>
+(function () {
+    function buildAlt(img) {
+        if (img.getAttribute('alt') !== null && img.getAttribute('alt').trim() !== '') return null;
+
+        if (img.dataset && img.dataset.key && img.dataset.key.trim()) return img.dataset.key.trim();
+
+        var sec = img.closest('.section-card');
+        if (sec) {
+            var term = sec.querySelector('.section-term');
+            if (term && term.textContent.trim()) return term.textContent.trim();
+            var desc = sec.querySelector('.section-description');
+            if (desc && desc.textContent.trim()) return desc.textContent.trim();
+            var h = sec.querySelector('h1, h2');
+            if (h && h.textContent.trim()) return h.textContent.trim();
+        }
+
+        var art = img.closest('article') || img.closest('.article-details');
+        if (art) {
+            var t = art.querySelector('.article-title');
+            if (t && t.textContent.trim()) return t.textContent.trim();
+        }
+
+        var src = img.getAttribute('src') || '';
+        var base = decodeURIComponent(src.split('/').pop().split('?')[0]).replace(/\.[a-z0-9]+$/i, '');
+        base = base.replace(/[-_]+/g, ' ').replace(/\s+/g, ' ').trim();
+        var pt = document.querySelector('.article-title, h1');
+        var pageTitle = pt ? pt.textContent.trim() : '';
+        if (base && !/^[\d\s]+$/.test(base)) return base;
+        return (pageTitle ? pageTitle + ' ' : '') + '配图';
+    }
+
+    function runAltFix() {
+        var imgs = document.querySelectorAll('img:not([alt])');
+        Array.prototype.forEach.call(imgs, function (img) {
+            var a = buildAlt(img);
+            if (a) img.setAttribute('alt', a);
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', runAltFix);
+    } else {
+        runAltFix();
+    }
+    ['pjax:complete', 'pjax:end', 'pjax:success'].forEach(function (e) {
+        document.addEventListener(e, runAltFix);
+    });
+    window.addEventListener('load', runAltFix);
+    setTimeout(runAltFix, 1500);
+    setTimeout(runAltFix, 3000);
+})();
+</script>
+
+
+
+<style>
+#cookie-modal-backdrop{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.45);z-index:9997;opacity:0;visibility:hidden;transition:opacity .3s ease,visibility .3s ease;}
+#cookie-modal-backdrop.is-show{opacity:1;visibility:visible;}
+#cookie-modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.92);width:90%;max-width:520px;height:60vh;background:var(--card-background);border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,.25);z-index:9998;opacity:0;visibility:hidden;display:flex;flex-direction:column;overflow:hidden;transition:transform .3s cubic-bezier(.22,1,.36,1),opacity .3s ease,visibility .3s ease;}
+#cookie-modal.is-show{transform:translate(-50%,-50%) scale(1);opacity:1;visibility:visible;}
+#cookie-modal.is-hide{transform:translate(-50%,-50%) scale(.95) translateY(8px);opacity:0;visibility:hidden;}
+#cookie-modal .cookie-head{padding:16px 20px;border-bottom:1px solid var(--card-separator-color);font-size:18px;font-weight:700;color:var(--card-text-color-main);}
+#cookie-modal .cookie-body{flex:1;overflow-y:auto;padding:16px 20px;font-size:14px;line-height:1.8;color:var(--card-text-color-main);}
+#cookie-modal .cookie-foot{padding:12px 20px;border-top:1px solid var(--card-separator-color);display:flex;justify-content:flex-end;align-items:center;}
+#cookie-modal .btn{background:#3b82f6;color:#fff;border:0;border-radius:8px;padding:8px 24px;cursor:pointer;font-size:14px;}
+</style>
+
+<div id="cookie-modal-backdrop"></div>
+<div id="cookie-modal" role="dialog" aria-modal="true">
+    <div class="cookie-head">使用您的 Cookie</div>
+    <div class="cookie-body">
+        <p>您好，感谢您访问本站！为了提供更便捷的体验，如记住您的主题偏好、播放进度等功能，本站会使用少量 Cookie 及浏览器本地存储。这些数据仅用于站内功能正常运行，不会被用于广告追踪，也不会出售给任何第三方。</p>
+        <p>您可以随时在浏览器设置中管理或禁用 Cookies，具体操作方法可参考浏览器的帮助文档。我们尊重您的选择，并承诺保护您的隐私。</p>
+        <p><strong>关于第三方服务：</strong></p>
+        <p>本站使用 Cloudflare 、CDN 服务、以及 Waline 评论系统。这些服务可能会设置必要的技术性 Cookie，以保障验证与评论功能正常。它们的使用受其自身隐私政策的约束。</p>
+        <p>如果您同意我们使用 Cookie，即可正常使用本站各项功能。如果您选择禁用 Cookies，部分功能(如评论、主题记忆)可能无法使用，但浏览文章不受影响。</p>
+        <p>我们承诺严格遵循隐私政策处理所有 Cookie 信息，确保您的个人信息安全。</p>
+    </div>
+    <div class="cookie-foot">
+        <button class="btn" onclick="closeCookieModal()">可以</button>
+    </div>
+</div>
+
+<script>
+function closeCookieModal() {
+    var m = document.getElementById('cookie-modal');
+    var b = document.getElementById('cookie-modal-backdrop');
+    if (!m) return;
+    localStorage.setItem('cookie-ok', '1');
+    m.classList.add('is-hide');
+    if (b) b.classList.remove('is-show');
+    setTimeout(function () {
+        m.classList.remove('is-show', 'is-hide');
+    }, 320);
+}
+(function () {
+    function showModal() {
+        var m = document.getElementById('cookie-modal');
+        var b = document.getElementById('cookie-modal-backdrop');
+        if (!m) return;
+        if (localStorage.getItem('cookie-ok')) return;
+        m.classList.add('is-show');
+        if (b) b.classList.add('is-show');
+    }
+    function isPassed() {
+        try { return sessionStorage.getItem('turnstile-passed') === '1'; } catch (e) { return false; }
+    }
+    var timer = setInterval(function () {
+        if (isPassed()) {
+            clearInterval(timer);
+            setTimeout(showModal, 800);
+        }
+    }, 300);
+    if (window.__turnstilePassed || document.documentElement.classList.contains('turnstile-passed')) {
+        setTimeout(showModal, 500);
+    }
+})();
+</script>
+
+
+
+
+<script>
+if (!window.__pjaxPagefindFix) {
+    window.__pjaxPagefindFix = true;
+    document.addEventListener('click', function (e) {
+        var link = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+        if (!link || !window.pjax) return;
+        if (!link.closest('.pagefind-ui')) return;
+        if (link.target === '_blank' || link.getAttribute('rel') === 'external') return;
+        var url = link.getAttribute('href');
+        if (!url || url.charAt(0) === '#') return;
+        e.preventDefault();
+        if (typeof window.pjax.loadUrl === 'function') {
+            window.pjax.loadUrl(link.href);
+        } else {
+            location.href = link.href;
+        }
+    }, true);
+}
+</script>
+
+
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 78px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+        
+        window.dispatchEvent(new Event('resize'))
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://yrqspace.github.io/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+
+
+
+<style>
+   
+  .friend-search-wrap {
+    margin: 1.2rem 0 0.8rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;       
+    gap: 0.45rem;
+  }
+
+  .friend-search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 22rem;            
+  }
+
+  .friend-search-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.42rem 2rem 0.42rem 2.1rem;    
+    font-size: 1.2rem;                        
+    color: var(--card-text-color-main);
+    background: var(--card-background);
+    border: 1px solid var(--card-separator-color, rgba(128, 128, 128, 0.25));
+    border-radius: 999px;
+    outline: none;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .friend-search-input:focus {
+    border-color: var(--accent-color, #3b82f6);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+  }
+
+  .friend-search-icon {
+    position: absolute;
+    left: 0.85rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    opacity: 0.5;
+    pointer-events: none;
+    color: var(--card-text-color-secondary);
+  }
+
+  .friend-search-clear {
+    position: absolute;
+    right: 0.6rem;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 1.8rem;
+    height: 1.8rem;
+    padding: 0;
+    font-size: 1.4rem;
+    line-height: 1;
+    color: var(--card-text-color-secondary);
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .friend-search-clear:hover {
+    background: rgba(128, 128, 128, 0.15);
+  }
+
+  .friend-search-wrap.has-value .friend-search-clear {
+    display: flex;
+  }
+
+  .friend-search-meta {
+    font-size: 1.2rem;
+    color: var(--card-text-color-tertiary);
+  }
+
+   
+  .friend-search-empty {
+    display: none;
+    padding: 2rem 0;
+    text-align: center;
+    font-size: 1.4rem;
+    color: var(--card-text-color-tertiary);
+  }
+
+  .friend-search-empty.is-on {
+    display: block;
+  }
+
+   
+  .article-list--compact.links > article {
+    transition: opacity 0.18s ease;
+  }
+
+  .article-list--compact.links.is-filtering > article.is-matched {
+    opacity: 1;
+  }
+</style>
+
+<script>
+  (function () {
+    "use strict";
+
+    
+    function shuffle(arr) {
+      for (var i = arr.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var t = arr[i];
+        arr[i] = arr[j];
+        arr[j] = t;
+      }
+      return arr;
+    }
+
+    
+    function initFriendSearch() {
+      var list = document.querySelector(".article-list--compact.links");
+      if (!list) return;                       
+      if (list.dataset.friendReady === "1") return;  
+      list.dataset.friendReady = "1";
+
+      var cards = Array.prototype.slice.call(list.querySelectorAll(":scope > article"));
+      if (!cards.length) return;
+
+      
+      cards.forEach(function (card) {
+        var titleEl = card.querySelector(".article-title");
+        var name = titleEl ? titleEl.textContent.trim() : "";
+        card.dataset.name = (name + " " + (card.getAttribute("data-name") || ""))
+          .toLowerCase().trim();
+      });
+
+      
+      shuffle(cards).forEach(function (card) {
+        list.appendChild(card);
+      });
+
+      
+      var wrap = document.createElement("div");
+      wrap.className = "friend-search-wrap";
+      wrap.innerHTML =
+        '<div class="friend-search-box">' +
+          '<svg class="friend-search-icon" viewBox="0 0 24 24" fill="none" ' +
+            'stroke="currentColor" stroke-width="2" stroke-linecap="round">' +
+            '<circle cx="11" cy="11" r="7"></circle>' +
+            '<line x1="16.5" y1="16.5" x2="21" y2="21"></line>' +
+          '</svg>' +
+          '<input type="text" class="friend-search-input" ' +
+            'placeholder="搜名字找友链，比如输入自己的博客名" ' +
+            'autocomplete="off" spellcheck="false" aria-label="搜索友链">' +
+          '<button type="button" class="friend-search-clear" aria-label="清空">×</button>' +
+        '</div>' +
+        '<div class="friend-search-meta"></div>';
+
+      var empty = document.createElement("div");
+      empty.className = "friend-search-empty";
+      empty.textContent = "没有找到这个友链，换个关键词试试～";
+
+      list.parentNode.insertBefore(wrap, list);
+      list.parentNode.insertBefore(empty, list.nextSibling);
+
+      var input = wrap.querySelector(".friend-search-input");
+      var clearBtn = wrap.querySelector(".friend-search-clear");
+      var meta = wrap.querySelector(".friend-search-meta");
+      var total = cards.length;
+
+      
+      function apply() {
+        var kw = input.value.trim().toLowerCase();
+        wrap.classList.toggle("has-value", kw.length > 0);
+        list.classList.toggle("is-filtering", kw.length > 0);
+
+        var shown = 0;
+        cards.forEach(function (card) {
+          var hit = !kw || (card.dataset.name || "").indexOf(kw) !== -1;
+          card.style.display = hit ? "" : "none";
+          card.classList.toggle("is-matched", hit);
+          if (hit) shown++;
+        });
+
+        empty.classList.toggle("is-on", shown === 0);
+        meta.textContent = kw
+          ? "找到 " + shown + " / " + total + " 个友链"
+          : "共 " + total + " 个友链 · 顺序每次进入都会打乱";
+      }
+
+      input.addEventListener("input", apply);
+      input.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") e.preventDefault();
+        if (e.key === "Escape") {
+          input.value = "";
+          apply();
+        }
+      });
+      clearBtn.addEventListener("click", function () {
+        input.value = "";
+        apply();
+        input.focus();
+      });
+
+      apply();
+    }
+
+    
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initFriendSearch);
+    } else {
+      initFriendSearch();
+    }
+    document.addEventListener("pjax:complete", initFriendSearch);
+  })();
+</script>
+
+    </body>
+</html>
