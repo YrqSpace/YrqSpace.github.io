@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>图床 on 爱玩win11的me</title>
+        <link>https://yrqspace.github.io/tags/%E5%9B%BE%E5%BA%8A/</link>
+        <description>Recent content in 图床 on 爱玩win11的me</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>爱玩win11的me</copyright>
+        <lastBuildDate>Thu, 29 Oct 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://yrqspace.github.io/tags/%E5%9B%BE%E5%BA%8A/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>图床折腾记：封面搬出仓库，结果栽在 jsDelivr 缓存上</title>
+        <link>https://yrqspace.github.io/p/%E5%9B%BE%E5%BA%8A%E6%8A%98%E8%85%BE%E8%AE%B0/</link>
+        <pubDate>Thu, 29 Oct 2026 00:00:00 +0000</pubDate>
+        
+        <guid>https://yrqspace.github.io/p/%E5%9B%BE%E5%BA%8A%E6%8A%98%E8%85%BE%E8%AE%B0/</guid>
+        <description>&lt;img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-29-cover.jpg" alt="Featured image of post 图床折腾记：封面搬出仓库，结果栽在 jsDelivr 缓存上" /&gt;&lt;h2 id=&#34;起因几张大图把仓库拖进了泥潭&#34;&gt;起因：几张大图把仓库拖进了泥潭
+&lt;/h2&gt;&lt;p&gt;一开始封面图是老老实实放站内的，路径在 &lt;code&gt;static/img/covers/&lt;/code&gt; 下面，构建的时候原样复制到 &lt;code&gt;public/&lt;/code&gt;，用起来最省心——不用管外链，不用管 CDN，&lt;code&gt;image:&lt;/code&gt; 写个相对路径就完事。&lt;/p&gt;
+&lt;p&gt;问题出在体积上。一张 1200×675 的 JPG，压到差不多 130KB 已经算克制了，但文章一篇篇往上加，图片就跟着一篇篇往下堆。等到某次 &lt;code&gt;上传.bat&lt;/code&gt; 跑完，我发现这个仓库越来越像半个相册：源码、主题、构建产物、图片全挤在一个 git 历史里，删都删不干净——git 不记得你删了什么，它只记得你曾经提交过什么。&lt;/p&gt;
+&lt;p&gt;更麻烦的是 &lt;code&gt;public&lt;/code&gt; 那个产物仓库。它是每次构建整份推上去的，图片在里面各存一份，源码仓库再存一份，等于同一张图占了两份配额。GitHub Pages 对仓库大小虽然不是硬卡，但推得越久越难受。&lt;/p&gt;
+&lt;p&gt;于是有了这次搬迁：&lt;strong&gt;图归图，文章归文章。&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&#34;选型为什么最后还是选了-github-仓库--jsdelivr&#34;&gt;选型：为什么最后还是选了 GitHub 仓库 + jsDelivr
+&lt;/h2&gt;&lt;p&gt;图床这事我盘了一圈，路子大概三类。&lt;/p&gt;
+&lt;p&gt;一类是纯第三方图床，注册就送空间。好处是省事，坏处是稳不稳定全看别人心情，哪天跑路或者开始限流，文章里的图就集体变白框——而且这种白框是历史文章里的，你很难一篇篇回头去换。&lt;/p&gt;
+&lt;p&gt;一类是对象存储，Cloudflare R2、又拍云、七牛这些。功能都对，但对一个纯静态博客来说有点重：要开账号、配密钥、设 CORS、算流量，我这种连域名都还没舍得买的人，为几张贴图去折腾一整套云服务，性价比不高。&lt;/p&gt;
+&lt;p&gt;最后一类就是&lt;strong&gt;拿一个公开的 GitHub 仓库当存储，再套一层 jsDelivr 做加速&lt;/strong&gt;。选它的理由很朴素：仓库本来就有，jsDelivr 免费、有全球节点、支持 &lt;code&gt;@版本号&lt;/code&gt; 和分支引用，而且因为它是&amp;quot;从 git 里读文件&amp;quot;，只要仓库是公开的，链接就永久有效，不会像某些图床那样过两年开始收费清图。&lt;/p&gt;
+&lt;p&gt;缺点也明摆着——jsDelivr 对 GitHub 源有缓存，而且是那种&amp;quot;缓存得挺认真&amp;quot;的类型。这一点后面坑了我一次。&lt;/p&gt;
+&lt;h2 id=&#34;目录按年月切别堆一层&#34;&gt;目录按年月切，别堆一层
+&lt;/h2&gt;&lt;p&gt;新建仓库 &lt;code&gt;hugo-pic-bed&lt;/code&gt;，公开，什么都不用配，README 随便写两句，然后开始定目录。&lt;/p&gt;
+&lt;p&gt;平铺一层是最省事的，但一年下来几百个文件名挤在一起，找起来眼睛疼。所以我按上传的年月分层：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;2026/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  09/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    2026-09-25-cover.jpg
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    2026-09-26-cover.jpg
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  10/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    2026-10-29-cover.jpg
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;文件名统一用 &lt;code&gt;日期-用途.jpg&lt;/code&gt;，好处是永远不会重名，排序天然按时间，而且看文件名就知道这张图是哪篇文章的。这个命名习惯后来救了我一次——见缓存那节。&lt;/p&gt;
+&lt;h2 id=&#34;上传从拖拽到-api-直传&#34;&gt;上传：从拖拽到 API 直传
+&lt;/h2&gt;&lt;p&gt;最开始是网页端手动传：打开仓库，点 Upload files，把图拖进去，写 commit message，提交。传一两张还行，赶上批量出封面的时候就有点烦，而且网页端对文件名里的空格和中文处理得不怎么友好。&lt;/p&gt;
+&lt;p&gt;后来改成走 GitHub 的 Contents API，&lt;code&gt;PUT /repos/{owner}/{repo}/contents/{path}&lt;/code&gt;，把图片 base64 编码塞进请求体，带 token 认证。好处是可以脚本化，传完顺手就能验证。限制也记一下：接口对单文件有大小上限，图片这种几百 KB 的量级完全够用，真要传大文件就该上 Git LFS 或者 Release 附件了。&lt;/p&gt;
+&lt;p&gt;有一点值得强调：&lt;strong&gt;base64 会让请求体膨胀约三分之一&lt;/strong&gt;，所以别拿它传几十兆的东西，会超时。&lt;/p&gt;
+&lt;h2 id=&#34;第一个坑jsdelivr-缓存不刷新&#34;&gt;第一个坑：jsDelivr 缓存不刷新
+&lt;/h2&gt;&lt;p&gt;图片传上去，链接拼出来是这种形式：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/09/2026-09-25-cover.jpg
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;第一次访问，正常。然后我改了同一张图（重新生成了一版封面），覆盖提交，刷新页面——还是旧的那张。&lt;/p&gt;
+&lt;p&gt;我一开始以为是浏览器缓存，&lt;code&gt;Ctrl+F5&lt;/code&gt;、无痕窗口、换设备，全试了，还是旧的。后来才想明白问题在哪：&lt;code&gt;@main&lt;/code&gt; 这种分支引用，jsDelivr 会缓存一段时间，你覆盖同名文件，CDN 那边并不知情。它甚至不是&amp;quot;没更新&amp;quot;，而是&amp;quot;根本不打算马上更新&amp;quot;。&lt;/p&gt;
+&lt;p&gt;这里有两个解法，我现在是两个一起用：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;一是给文件起唯一的名字。&lt;/strong&gt; 因为我的命名规则是 &lt;code&gt;日期-用途.jpg&lt;/code&gt;，每次重新生成要么换日期、要么加后缀，天然避开了&amp;quot;同名覆盖&amp;quot;这个动作。这是最省事的做法——不是去解决缓存，而是让缓存无从下手。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;二是主动清缓存。&lt;/strong&gt; jsDelivr 有专门的 purge 接口，访问一次对应路径就会让它去源站重新拉：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;https://purge.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/09/2026-09-25-cover.jpg
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;返回一段 JSON，说明清了几个节点。这个适合&amp;quot;文件名实在不想改&amp;quot;的场景。&lt;/p&gt;
+&lt;p&gt;顺带说一句，&lt;code&gt;@main&lt;/code&gt; 换成具体的 commit hash 也能绕过缓存，因为 URL 变了——但那意味着每次提交都要改文章里的链接，比改名还麻烦，我没用。&lt;/p&gt;
+&lt;h2 id=&#34;第二个坑两个节点给的东西不一样&#34;&gt;第二个坑：两个节点给的东西不一样
+&lt;/h2&gt;&lt;p&gt;排查缓存的时候，我还撞上一个更迷惑的现象：同一个文件，&lt;code&gt;gcore.jsdelivr.net&lt;/code&gt; 和 &lt;code&gt;cdn.jsdelivr.net&lt;/code&gt; 打开来不一样，一个已经是新的，一个是旧的。&lt;/p&gt;
+&lt;p&gt;原因是这两个域名解析到不同的节点，各自的缓存是独立的。你清了其中一个，另一个还是老样子。所以现在我的做法是&lt;strong&gt;固定用一个域名&lt;/strong&gt;，全站统一 &lt;code&gt;gcore.jsdelivr.net&lt;/code&gt;，别混着来——混用会导致&amp;quot;我这里看着是新的，别人那里是旧的&amp;quot;这种最难查的问题。&lt;/p&gt;
+&lt;p&gt;至于哪个节点快，取决于你所在地区，这个只能自己试。国内访问 jsDelivr 有时候会抽风，备选方案是把路径换成别的镜像，但那是另一个话题了。&lt;/p&gt;
+&lt;h2 id=&#34;怎么确认真的传上去了&#34;&gt;怎么确认真的传上去了
+&lt;/h2&gt;&lt;p&gt;这是整个流程里最容易被跳过、但也最该有的一步：&lt;strong&gt;别靠眼睛看，靠响应头。&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;curl -I https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/09/2026-09-25-cover.jpg
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;看三样东西：状态码是不是 &lt;code&gt;200&lt;/code&gt;，&lt;code&gt;content-length&lt;/code&gt; 是不是和本地文件对得上，&lt;code&gt;age&lt;/code&gt; 头是多少（缓存了多少秒）。内容长度对不上，八成就是读到旧缓存了。&lt;/p&gt;
+&lt;p&gt;因为封面是给文章 &lt;code&gt;image:&lt;/code&gt; 字段用的，一旦链接挂了就是文章顶部一片空白，所以每次传完我都会跑一次这个检查，确认字节数一致才去改 front matter。这个习惯比事后发现图裂再回头找要省事得多。&lt;/p&gt;
+&lt;h2 id=&#34;现在的流程&#34;&gt;现在的流程
+&lt;/h2&gt;&lt;p&gt;整理一下，现在是这样跑的：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;步骤&lt;/th&gt;
+&lt;th&gt;做什么&lt;/th&gt;
+&lt;th&gt;注意&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;本地生成封面，压到 130KB 左右&lt;/td&gt;
+&lt;td&gt;尺寸统一 1200×675&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;按 &lt;code&gt;年/月/日期-用途.jpg&lt;/code&gt; 命名&lt;/td&gt;
+&lt;td&gt;名字唯一，绕开缓存&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;走 API 上传到 &lt;code&gt;hugo-pic-bed&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;base64 编码，注意体积&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;curl -I&lt;/code&gt; 验证状态码和字节数&lt;/td&gt;
+&lt;td&gt;对不上就 purge&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;5&lt;/td&gt;
+&lt;td&gt;把 CDN 链接写进文章 &lt;code&gt;image:&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;固定用同一个节点域名&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;搬完之后舒服的地方很明显：博客仓库小了一圈，图片有独立的历史，删图不影响文章提交记录，CDN 那边还顺手把加载速度提了一点。坑也确实踩了——缓存和节点这两个，都属于&amp;quot;不知道的时候会怀疑人生，知道了就是一句话的事&amp;quot;。&lt;/p&gt;
+&lt;p&gt;下次再碰到图不更新，先别怀疑自己传错了，去 purge 一下、或者干脆换个文件名，八成就是它。&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
