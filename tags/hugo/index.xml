@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Hugo on 爱玩win11的me</title>
-        <link>https://aiwan-blog.cc.cd/tags/hugo/</link>
+        <link>https://yrqspace.github.io/tags/hugo/</link>
         <description>Recent content in Hugo on 爱玩win11的me</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>爱玩win11的me</copyright>
-        <lastBuildDate>Fri, 30 Oct 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://aiwan-blog.cc.cd/tags/hugo/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 30 Oct 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://yrqspace.github.io/tags/hugo/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Waline 评论系统折腾记：自托管、字体和 PJAX 的三重坑</title>
-        <link>https://aiwan-blog.cc.cd/p/waline%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%8A%98%E8%85%BE%E8%AE%B0/</link>
+        <link>https://yrqspace.github.io/p/waline%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%8A%98%E8%85%BE%E8%AE%B0/</link>
         <pubDate>Fri, 30 Oct 2026 00:00:00 +0000</pubDate>
         
-        <guid>https://aiwan-blog.cc.cd/p/waline%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%8A%98%E8%85%BE%E8%AE%B0/</guid>
+        <guid>https://yrqspace.github.io/p/waline%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%8A%98%E8%85%BE%E8%AE%B0/</guid>
         <description>&lt;img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-30-waline-cover.jpg" alt="Featured image of post Waline 评论系统折腾记：自托管、字体和 PJAX 的三重坑" /&gt;&lt;h2 id=&#34;为什么从-giscus-换过来&#34;&gt;为什么从 Giscus 换过来
 &lt;/h2&gt;&lt;p&gt;上一篇写的是 Giscus，那篇文章结论还挺满意：评论存 GitHub Discussions，不用买服务器，数据在自家仓库里。&lt;/p&gt;
 &lt;p&gt;用了一段时间，问题慢慢浮出来——&lt;strong&gt;门槛全在读者那边&lt;/strong&gt;。想留句话，得先有 GitHub 账号，还得授权一个 App，中间但凡卡一步就放弃了。我自己拿手机试了一遍，光是登录那一段就想关掉页面。&lt;/p&gt;
@@ -289,10 +289,10 @@
         </item>
         <item>
         <title>图床折腾记：封面搬出仓库，结果栽在 jsDelivr 缓存上</title>
-        <link>https://aiwan-blog.cc.cd/p/%E5%9B%BE%E5%BA%8A%E6%8A%98%E8%85%BE%E8%AE%B0/</link>
+        <link>https://yrqspace.github.io/p/%E5%9B%BE%E5%BA%8A%E6%8A%98%E8%85%BE%E8%AE%B0/</link>
         <pubDate>Thu, 29 Oct 2026 00:00:00 +0000</pubDate>
         
-        <guid>https://aiwan-blog.cc.cd/p/%E5%9B%BE%E5%BA%8A%E6%8A%98%E8%85%BE%E8%AE%B0/</guid>
+        <guid>https://yrqspace.github.io/p/%E5%9B%BE%E5%BA%8A%E6%8A%98%E8%85%BE%E8%AE%B0/</guid>
         <description>&lt;img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-29-cover.jpg" alt="Featured image of post 图床折腾记：封面搬出仓库，结果栽在 jsDelivr 缓存上" /&gt;&lt;h2 id=&#34;起因几张大图把仓库拖进了泥潭&#34;&gt;起因：几张大图把仓库拖进了泥潭
 &lt;/h2&gt;&lt;p&gt;一开始封面图是老老实实放站内的，路径在 &lt;code&gt;static/img/covers/&lt;/code&gt; 下面，构建的时候原样复制到 &lt;code&gt;public/&lt;/code&gt;，用起来最省心——不用管外链，不用管 CDN，&lt;code&gt;image:&lt;/code&gt; 写个相对路径就完事。&lt;/p&gt;
 &lt;p&gt;问题出在体积上。一张 1200×675 的 JPG，压到差不多 130KB 已经算克制了，但文章一篇篇往上加，图片就跟着一篇篇往下堆。等到某次 &lt;code&gt;上传.bat&lt;/code&gt; 跑完，我发现这个仓库越来越像半个相册：源码、主题、构建产物、图片全挤在一个 git 历史里，删都删不干净——git 不记得你删了什么，它只记得你曾经提交过什么。&lt;/p&gt;
@@ -415,10 +415,10 @@
         </item>
         <item>
         <title>友链页 DIY 记</title>
-        <link>https://aiwan-blog.cc.cd/p/%E5%8F%8B%E9%93%BE%E9%A1%B5-diy-%E8%AE%B0/</link>
+        <link>https://yrqspace.github.io/p/%E5%8F%8B%E9%93%BE%E9%A1%B5-diy-%E8%AE%B0/</link>
         <pubDate>Mon, 26 Oct 2026 23:00:00 +0800</pubDate>
         
-        <guid>https://aiwan-blog.cc.cd/p/%E5%8F%8B%E9%93%BE%E9%A1%B5-diy-%E8%AE%B0/</guid>
+        <guid>https://yrqspace.github.io/p/%E5%8F%8B%E9%93%BE%E9%A1%B5-diy-%E8%AE%B0/</guid>
         <description>&lt;img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-28-cover.jpg" alt="Featured image of post 友链页 DIY 记" /&gt;&lt;p&gt;友链页是独立博客的脸面之一，但我一开始只有一张孤零零的 GitHub 卡片。这篇记录我怎么把它改造成一个「自助交换站」：交换须知、本站信息一键复制、友链随机排序、按名字搜索。&lt;/p&gt;
 &lt;h2 id=&#34;起点一张孤零零的卡片&#34;&gt;起点：一张孤零零的卡片
 &lt;/h2&gt;&lt;p&gt;Stack 主题自带友链支持，只要在页面的 front matter 里写 &lt;code&gt;links:&lt;/code&gt; 数组，主题就会渲染成卡片列表。我最早的友链页就是这样：三条友链、一片空白，访客来了也不知道该不该申请、怎么申请。&lt;/p&gt;
@@ -551,10 +551,10 @@
         </item>
         <item>
         <title>Bing 收录成功记</title>
-        <link>https://aiwan-blog.cc.cd/p/bing-%E6%94%B6%E5%BD%95%E6%88%90%E5%8A%9F%E8%AE%B0/</link>
+        <link>https://yrqspace.github.io/p/bing-%E6%94%B6%E5%BD%95%E6%88%90%E5%8A%9F%E8%AE%B0/</link>
         <pubDate>Mon, 26 Oct 2026 10:00:00 +0800</pubDate>
         
-        <guid>https://aiwan-blog.cc.cd/p/bing-%E6%94%B6%E5%BD%95%E6%88%90%E5%8A%9F%E8%AE%B0/</guid>
+        <guid>https://yrqspace.github.io/p/bing-%E6%94%B6%E5%BD%95%E6%88%90%E5%8A%9F%E8%AE%B0/</guid>
         <description>&lt;img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-26-cover.jpg" alt="Featured image of post Bing 收录成功记" /&gt;&lt;p&gt;上一篇《我的 Bing 收录折腾记》的结尾我写了句狠话：&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;等 Bing 来敲门的那天，我再写一篇《收录成功记》。&lt;/p&gt;
@@ -634,10 +634,10 @@
         </item>
         <item>
         <title>给博客加上博客大联盟，把展示权重刷到 113</title>
-        <link>https://aiwan-blog.cc.cd/p/%E7%BB%99%E5%8D%9A%E5%AE%A2%E5%8A%A0%E4%B8%8A%E5%8D%9A%E5%AE%A2%E5%A4%A7%E8%81%94%E7%9B%9F%E6%8A%8A%E5%B1%95%E7%A4%BA%E6%9D%83%E9%87%8D%E5%88%B7%E5%88%B0-113/</link>
+        <link>https://yrqspace.github.io/p/%E7%BB%99%E5%8D%9A%E5%AE%A2%E5%8A%A0%E4%B8%8A%E5%8D%9A%E5%AE%A2%E5%A4%A7%E8%81%94%E7%9B%9F%E6%8A%8A%E5%B1%95%E7%A4%BA%E6%9D%83%E9%87%8D%E5%88%B7%E5%88%B0-113/</link>
         <pubDate>Fri, 23 Oct 2026 22:40:00 +0800</pubDate>
         
-        <guid>https://aiwan-blog.cc.cd/p/%E7%BB%99%E5%8D%9A%E5%AE%A2%E5%8A%A0%E4%B8%8A%E5%8D%9A%E5%AE%A2%E5%A4%A7%E8%81%94%E7%9B%9F%E6%8A%8A%E5%B1%95%E7%A4%BA%E6%9D%83%E9%87%8D%E5%88%B7%E5%88%B0-113/</guid>
+        <guid>https://yrqspace.github.io/p/%E7%BB%99%E5%8D%9A%E5%AE%A2%E5%8A%A0%E4%B8%8A%E5%8D%9A%E5%AE%A2%E5%A4%A7%E8%81%94%E7%9B%9F%E6%8A%8A%E5%B1%95%E7%A4%BA%E6%9D%83%E9%87%8D%E5%88%B7%E5%88%B0-113/</guid>
         <description>&lt;img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-23-cover.jpg" alt="Featured image of post 给博客加上博客大联盟，把展示权重刷到 113" /&gt;&lt;p&gt;上一篇写到给开源项目提 PR 换外链，一条反链到手之后我尝到甜头了：既然外链是搜索引擎判断&amp;quot;这站靠不靠谱&amp;quot;的重要信号，那一条远远不够。&lt;/p&gt;
 &lt;p&gt;这次盯上的是&lt;strong&gt;博客大联盟&lt;/strong&gt;（bo.ke），一个中文独立博客的聚合站。它和其他导航站不太一样的地方在于，它有一套&lt;strong&gt;权重体系&lt;/strong&gt;：基础 50 分，加上互链 50 分、RSS 10 分、站内头像 3 分，最后乘在线率。权重越高，站内的展示排序越靠前。&lt;/p&gt;
 &lt;p&gt;说白了，它不只要收你，还要你&amp;quot;配合&amp;quot;——你把它的链接挂在自己站上，它给你更高的曝光。这是个很朴素的交换：我给你流量入口，你给我一条反链。&lt;/p&gt;
@@ -789,10 +789,10 @@
         </item>
         <item>
         <title>我的 Bing 收录折腾记</title>
-        <link>https://aiwan-blog.cc.cd/p/%E6%88%91%E7%9A%84-bing-%E6%94%B6%E5%BD%95%E6%8A%98%E8%85%BE%E8%AE%B0/</link>
+        <link>https://yrqspace.github.io/p/%E6%88%91%E7%9A%84-bing-%E6%94%B6%E5%BD%95%E6%8A%98%E8%85%BE%E8%AE%B0/</link>
         <pubDate>Fri, 16 Oct 2026 13:00:00 +0800</pubDate>
         
-        <guid>https://aiwan-blog.cc.cd/p/%E6%88%91%E7%9A%84-bing-%E6%94%B6%E5%BD%95%E6%8A%98%E8%85%BE%E8%AE%B0/</guid>
+        <guid>https://yrqspace.github.io/p/%E6%88%91%E7%9A%84-bing-%E6%94%B6%E5%BD%95%E6%8A%98%E8%85%BE%E8%AE%B0/</guid>
         <description>&lt;img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-16-cover.jpg" alt="Featured image of post 我的 Bing 收录折腾记" /&gt;&lt;p&gt;建站的时候满心欢喜：域名有了、主题换了、文章写了两篇，感觉自己马上就是个&amp;quot;有博客的人&amp;quot;了。结果打开 Bing 一搜，&lt;code&gt;site:yrqspace.github.io&lt;/code&gt;，啥也没有。&lt;/p&gt;
 &lt;p&gt;一开始我是不慌的，毕竟新站嘛，等就是了。等到第 5、6 天还是零结果，去 Bing Webmaster Tools 一看，状态写着——&amp;ldquo;已发现但未爬网&amp;rdquo;。&lt;/p&gt;
 &lt;p&gt;好家伙，意思就是：Bing 知道你在这，但就是不来你家看看。发现时间是 10 月 4 日，到 10 月 15 日已经 11 天了，连门都没敲一下。&lt;/p&gt;
@@ -864,10 +864,10 @@
         </item>
         <item>
         <title>给 Hugo 博客装上 Pagefind 站内搜索，中文分词和样式都踩了一遍</title>
-        <link>https://aiwan-blog.cc.cd/p/%E7%AB%99%E5%86%85%E6%90%9C%E7%B4%A2%E6%8A%98%E8%85%BE%E8%AE%B0/</link>
+        <link>https://yrqspace.github.io/p/%E7%AB%99%E5%86%85%E6%90%9C%E7%B4%A2%E6%8A%98%E8%85%BE%E8%AE%B0/</link>
         <pubDate>Sun, 27 Sep 2026 00:00:00 +0000</pubDate>
         
-        <guid>https://aiwan-blog.cc.cd/p/%E7%AB%99%E5%86%85%E6%90%9C%E7%B4%A2%E6%8A%98%E8%85%BE%E8%AE%B0/</guid>
+        <guid>https://yrqspace.github.io/p/%E7%AB%99%E5%86%85%E6%90%9C%E7%B4%A2%E6%8A%98%E8%85%BE%E8%AE%B0/</guid>
         <description>&lt;img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/09/2026-09-27-cover.jpg" alt="Featured image of post 给 Hugo 博客装上 Pagefind 站内搜索，中文分词和样式都踩了一遍" /&gt;&lt;h2 id=&#34;为什么不用那些现成的&#34;&gt;为什么不用那些现成的
 &lt;/h2&gt;&lt;p&gt;静态博客加搜索，常见三条路：&lt;/p&gt;
 &lt;table&gt;
@@ -1211,10 +1211,10 @@
         </item>
         <item>
         <title>给博客接上 Giscus 评论，结果栽在无刷新跳转上</title>
-        <link>https://aiwan-blog.cc.cd/p/%E5%8D%9A%E5%AE%A2%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%8A%98%E8%85%BE%E8%AE%B0/</link>
+        <link>https://yrqspace.github.io/p/%E5%8D%9A%E5%AE%A2%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%8A%98%E8%85%BE%E8%AE%B0/</link>
         <pubDate>Sat, 26 Sep 2026 00:00:00 +0000</pubDate>
         
-        <guid>https://aiwan-blog.cc.cd/p/%E5%8D%9A%E5%AE%A2%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%8A%98%E8%85%BE%E8%AE%B0/</guid>
+        <guid>https://yrqspace.github.io/p/%E5%8D%9A%E5%AE%A2%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%8A%98%E8%85%BE%E8%AE%B0/</guid>
         <description>&lt;img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/09/2026-09-26-cover.jpg" alt="Featured image of post 给博客接上 Giscus 评论，结果栽在无刷新跳转上" /&gt;&lt;h2 id=&#34;为什么选-giscus&#34;&gt;为什么选 Giscus
 &lt;/h2&gt;&lt;p&gt;纯静态博客没有后端，评论只能靠第三方。常见的几个方案我都看了一遍：&lt;/p&gt;
 &lt;table&gt;
@@ -1399,10 +1399,10 @@
         </item>
         <item>
         <title>人机验证折腾记</title>
-        <link>https://aiwan-blog.cc.cd/p/%E4%BA%BA%E6%9C%BA%E9%AA%8C%E8%AF%81%E6%8A%98%E8%85%BE%E8%AE%B0/</link>
+        <link>https://yrqspace.github.io/p/%E4%BA%BA%E6%9C%BA%E9%AA%8C%E8%AF%81%E6%8A%98%E8%85%BE%E8%AE%B0/</link>
         <pubDate>Fri, 25 Sep 2026 00:00:00 +0000</pubDate>
         
-        <guid>https://aiwan-blog.cc.cd/p/%E4%BA%BA%E6%9C%BA%E9%AA%8C%E8%AF%81%E6%8A%98%E8%85%BE%E8%AE%B0/</guid>
+        <guid>https://yrqspace.github.io/p/%E4%BA%BA%E6%9C%BA%E9%AA%8C%E8%AF%81%E6%8A%98%E8%85%BE%E8%AE%B0/</guid>
         <description>&lt;img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/09/2026-09-25-cover.jpg" alt="Featured image of post 人机验证折腾记" /&gt;&lt;p&gt;折腾了整整两天，终于给我的博客加上了一道像样的人机验证。这篇把全过程记下来，也给想在 GitHub Pages 上加验证的朋友一条现成的路。&lt;/p&gt;
 &lt;h2 id=&#34;为什么要加&#34;&gt;为什么要加
 &lt;/h2&gt;&lt;p&gt;我的博客是 Hugo + Stack 主题，托管在 GitHub Pages 上，纯静态、没有后端。访客进来先看到一段加载动画，动画结束后就可以直接访问——总觉得少了点仪式感，又怕被脚本刷，就想加一道人机验证，顺便让加载流程变得更有&amp;quot;设计感&amp;quot;。&lt;/p&gt;
@@ -1489,10 +1489,10 @@
         </item>
         <item>
         <title>你好,世界</title>
-        <link>https://aiwan-blog.cc.cd/p/%E4%BD%A0%E5%A5%BD%E4%B8%96%E7%95%8C/</link>
+        <link>https://yrqspace.github.io/p/%E4%BD%A0%E5%A5%BD%E4%B8%96%E7%95%8C/</link>
         <pubDate>Sat, 19 Sep 2026 00:00:00 +0000</pubDate>
         
-        <guid>https://aiwan-blog.cc.cd/p/%E4%BD%A0%E5%A5%BD%E4%B8%96%E7%95%8C/</guid>
+        <guid>https://yrqspace.github.io/p/%E4%BD%A0%E5%A5%BD%E4%B8%96%E7%95%8C/</guid>
         <description>&lt;img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/09/2026-09-18-cover.jpg" alt="Featured image of post 你好,世界" /&gt;&lt;h2 id=&#34;我人生中第一个博客兴奋&#34;&gt;😄我人生中第一个博客,兴奋!
 &lt;/h2&gt;&lt;p&gt;2026 年 9 月 19 日，这个站有了第一篇文章。&lt;/p&gt;
 &lt;p&gt;没有仪式，也没有倒计时——就是把 Hugo 跑通、本地地址能打开、文章卡片点得进去，然后顺手发了一条。发出来那一刻还是挺爽的，毕竟这是&amp;quot;我自己的网站&amp;quot;，而不是某个平台上的一个主页。&lt;/p&gt;

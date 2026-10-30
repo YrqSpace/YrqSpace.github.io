@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Giscus on 爱玩win11的me</title>
-        <link>https://aiwan-blog.cc.cd/tags/giscus/</link>
+        <link>https://yrqspace.github.io/tags/giscus/</link>
         <description>Recent content in Giscus on 爱玩win11的me</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>爱玩win11的me</copyright>
-        <lastBuildDate>Sat, 26 Sep 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://aiwan-blog.cc.cd/tags/giscus/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sat, 26 Sep 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://yrqspace.github.io/tags/giscus/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>给博客接上 Giscus 评论，结果栽在无刷新跳转上</title>
-        <link>https://aiwan-blog.cc.cd/p/%E5%8D%9A%E5%AE%A2%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%8A%98%E8%85%BE%E8%AE%B0/</link>
+        <link>https://yrqspace.github.io/p/%E5%8D%9A%E5%AE%A2%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%8A%98%E8%85%BE%E8%AE%B0/</link>
         <pubDate>Sat, 26 Sep 2026 00:00:00 +0000</pubDate>
         
-        <guid>https://aiwan-blog.cc.cd/p/%E5%8D%9A%E5%AE%A2%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%8A%98%E8%85%BE%E8%AE%B0/</guid>
+        <guid>https://yrqspace.github.io/p/%E5%8D%9A%E5%AE%A2%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%8A%98%E8%85%BE%E8%AE%B0/</guid>
         <description>&lt;img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/09/2026-09-26-cover.jpg" alt="Featured image of post 给博客接上 Giscus 评论，结果栽在无刷新跳转上" /&gt;&lt;h2 id=&#34;为什么选-giscus&#34;&gt;为什么选 Giscus
 &lt;/h2&gt;&lt;p&gt;纯静态博客没有后端，评论只能靠第三方。常见的几个方案我都看了一遍：&lt;/p&gt;
 &lt;table&gt;

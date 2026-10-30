@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Pagefind on 爱玩win11的me</title>
-        <link>https://aiwan-blog.cc.cd/tags/pagefind/</link>
+        <link>https://yrqspace.github.io/tags/pagefind/</link>
         <description>Recent content in Pagefind on 爱玩win11的me</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>爱玩win11的me</copyright>
-        <lastBuildDate>Sun, 27 Sep 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://aiwan-blog.cc.cd/tags/pagefind/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sun, 27 Sep 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://yrqspace.github.io/tags/pagefind/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>给 Hugo 博客装上 Pagefind 站内搜索，中文分词和样式都踩了一遍</title>
-        <link>https://aiwan-blog.cc.cd/p/%E7%AB%99%E5%86%85%E6%90%9C%E7%B4%A2%E6%8A%98%E8%85%BE%E8%AE%B0/</link>
+        <link>https://yrqspace.github.io/p/%E7%AB%99%E5%86%85%E6%90%9C%E7%B4%A2%E6%8A%98%E8%85%BE%E8%AE%B0/</link>
         <pubDate>Sun, 27 Sep 2026 00:00:00 +0000</pubDate>
         
-        <guid>https://aiwan-blog.cc.cd/p/%E7%AB%99%E5%86%85%E6%90%9C%E7%B4%A2%E6%8A%98%E8%85%BE%E8%AE%B0/</guid>
+        <guid>https://yrqspace.github.io/p/%E7%AB%99%E5%86%85%E6%90%9C%E7%B4%A2%E6%8A%98%E8%85%BE%E8%AE%B0/</guid>
         <description>&lt;img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/09/2026-09-27-cover.jpg" alt="Featured image of post 给 Hugo 博客装上 Pagefind 站内搜索，中文分词和样式都踩了一遍" /&gt;&lt;h2 id=&#34;为什么不用那些现成的&#34;&gt;为什么不用那些现成的
 &lt;/h2&gt;&lt;p&gt;静态博客加搜索，常见三条路：&lt;/p&gt;
 &lt;table&gt;

@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>IndexNow on 爱玩win11的me</title>
-        <link>https://aiwan-blog.cc.cd/tags/indexnow/</link>
+        <link>https://yrqspace.github.io/tags/indexnow/</link>
         <description>Recent content in IndexNow on 爱玩win11的me</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>爱玩win11的me</copyright>
-        <lastBuildDate>Mon, 26 Oct 2026 10:00:00 +0800</lastBuildDate><atom:link href="https://aiwan-blog.cc.cd/tags/indexnow/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Mon, 26 Oct 2026 10:00:00 +0800</lastBuildDate><atom:link href="https://yrqspace.github.io/tags/indexnow/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Bing 收录成功记</title>
-        <link>https://aiwan-blog.cc.cd/p/bing-%E6%94%B6%E5%BD%95%E6%88%90%E5%8A%9F%E8%AE%B0/</link>
+        <link>https://yrqspace.github.io/p/bing-%E6%94%B6%E5%BD%95%E6%88%90%E5%8A%9F%E8%AE%B0/</link>
         <pubDate>Mon, 26 Oct 2026 10:00:00 +0800</pubDate>
         
-        <guid>https://aiwan-blog.cc.cd/p/bing-%E6%94%B6%E5%BD%95%E6%88%90%E5%8A%9F%E8%AE%B0/</guid>
+        <guid>https://yrqspace.github.io/p/bing-%E6%94%B6%E5%BD%95%E6%88%90%E5%8A%9F%E8%AE%B0/</guid>
         <description>&lt;img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-26-cover.jpg" alt="Featured image of post Bing 收录成功记" /&gt;&lt;p&gt;上一篇《我的 Bing 收录折腾记》的结尾我写了句狠话：&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;等 Bing 来敲门的那天，我再写一篇《收录成功记》。&lt;/p&gt;
@@ -92,10 +92,10 @@
         </item>
         <item>
         <title>我的 Bing 收录折腾记</title>
-        <link>https://aiwan-blog.cc.cd/p/%E6%88%91%E7%9A%84-bing-%E6%94%B6%E5%BD%95%E6%8A%98%E8%85%BE%E8%AE%B0/</link>
+        <link>https://yrqspace.github.io/p/%E6%88%91%E7%9A%84-bing-%E6%94%B6%E5%BD%95%E6%8A%98%E8%85%BE%E8%AE%B0/</link>
         <pubDate>Fri, 16 Oct 2026 13:00:00 +0800</pubDate>
         
-        <guid>https://aiwan-blog.cc.cd/p/%E6%88%91%E7%9A%84-bing-%E6%94%B6%E5%BD%95%E6%8A%98%E8%85%BE%E8%AE%B0/</guid>
+        <guid>https://yrqspace.github.io/p/%E6%88%91%E7%9A%84-bing-%E6%94%B6%E5%BD%95%E6%8A%98%E8%85%BE%E8%AE%B0/</guid>
         <description>&lt;img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-16-cover.jpg" alt="Featured image of post 我的 Bing 收录折腾记" /&gt;&lt;p&gt;建站的时候满心欢喜：域名有了、主题换了、文章写了两篇，感觉自己马上就是个&amp;quot;有博客的人&amp;quot;了。结果打开 Bing 一搜，&lt;code&gt;site:yrqspace.github.io&lt;/code&gt;，啥也没有。&lt;/p&gt;
 &lt;p&gt;一开始我是不慌的，毕竟新站嘛，等就是了。等到第 5、6 天还是零结果，去 Bing Webmaster Tools 一看，状态写着——&amp;ldquo;已发现但未爬网&amp;rdquo;。&lt;/p&gt;
 &lt;p&gt;好家伙，意思就是：Bing 知道你在这，但就是不来你家看看。发现时间是 10 月 4 日，到 10 月 15 日已经 11 天了，连门都没敲一下。&lt;/p&gt;
