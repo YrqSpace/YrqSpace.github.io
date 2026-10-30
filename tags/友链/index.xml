@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>友链 on 爱玩win11的me</title>
-        <link>https://yrqspace.github.io/tags/%E5%8F%8B%E9%93%BE/</link>
+        <link>https://aiwan-blog.cc.cd/tags/%E5%8F%8B%E9%93%BE/</link>
         <description>Recent content in 友链 on 爱玩win11的me</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>爱玩win11的me</copyright>
-        <lastBuildDate>Mon, 26 Oct 2026 23:00:00 +0800</lastBuildDate><atom:link href="https://yrqspace.github.io/tags/%E5%8F%8B%E9%93%BE/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Mon, 26 Oct 2026 23:00:00 +0800</lastBuildDate><atom:link href="https://aiwan-blog.cc.cd/tags/%E5%8F%8B%E9%93%BE/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>友链页 DIY 记</title>
-        <link>https://yrqspace.github.io/p/%E5%8F%8B%E9%93%BE%E9%A1%B5-diy-%E8%AE%B0/</link>
+        <link>https://aiwan-blog.cc.cd/p/%E5%8F%8B%E9%93%BE%E9%A1%B5-diy-%E8%AE%B0/</link>
         <pubDate>Mon, 26 Oct 2026 23:00:00 +0800</pubDate>
         
-        <guid>https://yrqspace.github.io/p/%E5%8F%8B%E9%93%BE%E9%A1%B5-diy-%E8%AE%B0/</guid>
+        <guid>https://aiwan-blog.cc.cd/p/%E5%8F%8B%E9%93%BE%E9%A1%B5-diy-%E8%AE%B0/</guid>
         <description>&lt;img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-28-cover.jpg" alt="Featured image of post 友链页 DIY 记" /&gt;&lt;p&gt;友链页是独立博客的脸面之一，但我一开始只有一张孤零零的 GitHub 卡片。这篇记录我怎么把它改造成一个「自助交换站」：交换须知、本站信息一键复制、友链随机排序、按名字搜索。&lt;/p&gt;
 &lt;h2 id=&#34;起点一张孤零零的卡片&#34;&gt;起点：一张孤零零的卡片
 &lt;/h2&gt;&lt;p&gt;Stack 主题自带友链支持，只要在页面的 front matter 里写 &lt;code&gt;links:&lt;/code&gt; 数组，主题就会渲染成卡片列表。我最早的友链页就是这样：三条友链、一片空白，访客来了也不知道该不该申请、怎么申请。&lt;/p&gt;

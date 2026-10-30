@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>独立博客 on 爱玩win11的me</title>
-        <link>https://yrqspace.github.io/tags/%E7%8B%AC%E7%AB%8B%E5%8D%9A%E5%AE%A2/</link>
+        <link>https://aiwan-blog.cc.cd/tags/%E7%8B%AC%E7%AB%8B%E5%8D%9A%E5%AE%A2/</link>
         <description>Recent content in 独立博客 on 爱玩win11的me</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>爱玩win11的me</copyright>
-        <lastBuildDate>Fri, 30 Oct 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://yrqspace.github.io/tags/%E7%8B%AC%E7%AB%8B%E5%8D%9A%E5%AE%A2/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 30 Oct 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://aiwan-blog.cc.cd/tags/%E7%8B%AC%E7%AB%8B%E5%8D%9A%E5%AE%A2/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Waline 评论系统折腾记：自托管、字体和 PJAX 的三重坑</title>
-        <link>https://yrqspace.github.io/p/waline%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%8A%98%E8%85%BE%E8%AE%B0/</link>
+        <link>https://aiwan-blog.cc.cd/p/waline%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%8A%98%E8%85%BE%E8%AE%B0/</link>
         <pubDate>Fri, 30 Oct 2026 00:00:00 +0000</pubDate>
         
-        <guid>https://yrqspace.github.io/p/waline%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%8A%98%E8%85%BE%E8%AE%B0/</guid>
+        <guid>https://aiwan-blog.cc.cd/p/waline%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%8A%98%E8%85%BE%E8%AE%B0/</guid>
         <description>&lt;img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-30-waline-cover.jpg" alt="Featured image of post Waline 评论系统折腾记：自托管、字体和 PJAX 的三重坑" /&gt;&lt;h2 id=&#34;为什么从-giscus-换过来&#34;&gt;为什么从 Giscus 换过来
 &lt;/h2&gt;&lt;p&gt;上一篇写的是 Giscus，那篇文章结论还挺满意：评论存 GitHub Discussions，不用买服务器，数据在自家仓库里。&lt;/p&gt;
 &lt;p&gt;用了一段时间，问题慢慢浮出来——&lt;strong&gt;门槛全在读者那边&lt;/strong&gt;。想留句话，得先有 GitHub 账号，还得授权一个 App，中间但凡卡一步就放弃了。我自己拿手机试了一遍，光是登录那一段就想关掉页面。&lt;/p&gt;
@@ -289,10 +289,10 @@
         </item>
         <item>
         <title>友链页 DIY 记</title>
-        <link>https://yrqspace.github.io/p/%E5%8F%8B%E9%93%BE%E9%A1%B5-diy-%E8%AE%B0/</link>
+        <link>https://aiwan-blog.cc.cd/p/%E5%8F%8B%E9%93%BE%E9%A1%B5-diy-%E8%AE%B0/</link>
         <pubDate>Mon, 26 Oct 2026 23:00:00 +0800</pubDate>
         
-        <guid>https://yrqspace.github.io/p/%E5%8F%8B%E9%93%BE%E9%A1%B5-diy-%E8%AE%B0/</guid>
+        <guid>https://aiwan-blog.cc.cd/p/%E5%8F%8B%E9%93%BE%E9%A1%B5-diy-%E8%AE%B0/</guid>
         <description>&lt;img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-28-cover.jpg" alt="Featured image of post 友链页 DIY 记" /&gt;&lt;p&gt;友链页是独立博客的脸面之一，但我一开始只有一张孤零零的 GitHub 卡片。这篇记录我怎么把它改造成一个「自助交换站」：交换须知、本站信息一键复制、友链随机排序、按名字搜索。&lt;/p&gt;
 &lt;h2 id=&#34;起点一张孤零零的卡片&#34;&gt;起点：一张孤零零的卡片
 &lt;/h2&gt;&lt;p&gt;Stack 主题自带友链支持，只要在页面的 front matter 里写 &lt;code&gt;links:&lt;/code&gt; 数组，主题就会渲染成卡片列表。我最早的友链页就是这样：三条友链、一片空白，访客来了也不知道该不该申请、怎么申请。&lt;/p&gt;
@@ -425,10 +425,10 @@
         </item>
         <item>
         <title>给博客加上博客大联盟，把展示权重刷到 113</title>
-        <link>https://yrqspace.github.io/p/%E7%BB%99%E5%8D%9A%E5%AE%A2%E5%8A%A0%E4%B8%8A%E5%8D%9A%E5%AE%A2%E5%A4%A7%E8%81%94%E7%9B%9F%E6%8A%8A%E5%B1%95%E7%A4%BA%E6%9D%83%E9%87%8D%E5%88%B7%E5%88%B0-113/</link>
+        <link>https://aiwan-blog.cc.cd/p/%E7%BB%99%E5%8D%9A%E5%AE%A2%E5%8A%A0%E4%B8%8A%E5%8D%9A%E5%AE%A2%E5%A4%A7%E8%81%94%E7%9B%9F%E6%8A%8A%E5%B1%95%E7%A4%BA%E6%9D%83%E9%87%8D%E5%88%B7%E5%88%B0-113/</link>
         <pubDate>Fri, 23 Oct 2026 22:40:00 +0800</pubDate>
         
-        <guid>https://yrqspace.github.io/p/%E7%BB%99%E5%8D%9A%E5%AE%A2%E5%8A%A0%E4%B8%8A%E5%8D%9A%E5%AE%A2%E5%A4%A7%E8%81%94%E7%9B%9F%E6%8A%8A%E5%B1%95%E7%A4%BA%E6%9D%83%E9%87%8D%E5%88%B7%E5%88%B0-113/</guid>
+        <guid>https://aiwan-blog.cc.cd/p/%E7%BB%99%E5%8D%9A%E5%AE%A2%E5%8A%A0%E4%B8%8A%E5%8D%9A%E5%AE%A2%E5%A4%A7%E8%81%94%E7%9B%9F%E6%8A%8A%E5%B1%95%E7%A4%BA%E6%9D%83%E9%87%8D%E5%88%B7%E5%88%B0-113/</guid>
         <description>&lt;img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-23-cover.jpg" alt="Featured image of post 给博客加上博客大联盟，把展示权重刷到 113" /&gt;&lt;p&gt;上一篇写到给开源项目提 PR 换外链，一条反链到手之后我尝到甜头了：既然外链是搜索引擎判断&amp;quot;这站靠不靠谱&amp;quot;的重要信号，那一条远远不够。&lt;/p&gt;
 &lt;p&gt;这次盯上的是&lt;strong&gt;博客大联盟&lt;/strong&gt;（bo.ke），一个中文独立博客的聚合站。它和其他导航站不太一样的地方在于，它有一套&lt;strong&gt;权重体系&lt;/strong&gt;：基础 50 分，加上互链 50 分、RSS 10 分、站内头像 3 分，最后乘在线率。权重越高，站内的展示排序越靠前。&lt;/p&gt;
 &lt;p&gt;说白了，它不只要收你，还要你&amp;quot;配合&amp;quot;——你把它的链接挂在自己站上，它给你更高的曝光。这是个很朴素的交换：我给你流量入口，你给我一条反链。&lt;/p&gt;
@@ -580,10 +580,10 @@
         </item>
         <item>
         <title>第一次给开源项目提 PR</title>
-        <link>https://yrqspace.github.io/p/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%BB%99%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E6%8F%90-pr/</link>
+        <link>https://aiwan-blog.cc.cd/p/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%BB%99%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E6%8F%90-pr/</link>
         <pubDate>Thu, 22 Oct 2026 13:00:00 +0800</pubDate>
         
-        <guid>https://yrqspace.github.io/p/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%BB%99%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E6%8F%90-pr/</guid>
+        <guid>https://aiwan-blog.cc.cd/p/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%BB%99%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E6%8F%90-pr/</guid>
         <description>&lt;img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-22-cover.jpg" alt="Featured image of post 第一次给开源项目提 PR" /&gt;&lt;p&gt;建站半个月，Bing 迟迟不收录，查来查去发现我缺一个信号：&lt;strong&gt;外部链接&lt;/strong&gt;。搜索引擎发现一个网站靠四个信号——IndexNow、sitemap、站内链接、外链，前三个我都齐了，就缺最后一个。&lt;/p&gt;
 &lt;p&gt;于是我把目光投向了一个叫 &lt;a class=&#34;link&#34; href=&#34;https://github.com/timqian/chinese-independent-blogs&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;chinese-independent-blogs&lt;/a&gt; 的仓库：一个专门收集中文独立博客的列表，star 两万多。把我的博客加进去，就等于在一个高权威的页面上留了一条指向我网站的链接——这就是高质量外链。&lt;/p&gt;
@@ -643,10 +643,10 @@
         </item>
         <item>
         <title>给博客接上 Giscus 评论，结果栽在无刷新跳转上</title>
-        <link>https://yrqspace.github.io/p/%E5%8D%9A%E5%AE%A2%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%8A%98%E8%85%BE%E8%AE%B0/</link>
+        <link>https://aiwan-blog.cc.cd/p/%E5%8D%9A%E5%AE%A2%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%8A%98%E8%85%BE%E8%AE%B0/</link>
         <pubDate>Sat, 26 Sep 2026 00:00:00 +0000</pubDate>
         
-        <guid>https://yrqspace.github.io/p/%E5%8D%9A%E5%AE%A2%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%8A%98%E8%85%BE%E8%AE%B0/</guid>
+        <guid>https://aiwan-blog.cc.cd/p/%E5%8D%9A%E5%AE%A2%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%8A%98%E8%85%BE%E8%AE%B0/</guid>
         <description>&lt;img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/09/2026-09-26-cover.jpg" alt="Featured image of post 给博客接上 Giscus 评论，结果栽在无刷新跳转上" /&gt;&lt;h2 id=&#34;为什么选-giscus&#34;&gt;为什么选 Giscus
 &lt;/h2&gt;&lt;p&gt;纯静态博客没有后端，评论只能靠第三方。常见的几个方案我都看了一遍：&lt;/p&gt;
 &lt;table&gt;
