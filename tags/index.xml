@@ -7,12 +7,44 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>爱玩win11的me</copyright>
-        <lastBuildDate>Thu, 29 Oct 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://yrqspace.github.io/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 30 Oct 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://yrqspace.github.io/tags/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Hugo</title>
         <link>https://yrqspace.github.io/tags/hugo/</link>
-        <pubDate>Thu, 29 Oct 2026 00:00:00 +0000</pubDate>
+        <pubDate>Fri, 30 Oct 2026 00:00:00 +0000</pubDate>
         
         <guid>https://yrqspace.github.io/tags/hugo/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>PJAX</title>
+        <link>https://yrqspace.github.io/tags/pjax/</link>
+        <pubDate>Fri, 30 Oct 2026 00:00:00 +0000</pubDate>
+        
+        <guid>https://yrqspace.github.io/tags/pjax/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Waline</title>
+        <link>https://yrqspace.github.io/tags/waline/</link>
+        <pubDate>Fri, 30 Oct 2026 00:00:00 +0000</pubDate>
+        
+        <guid>https://yrqspace.github.io/tags/waline/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>独立博客</title>
+        <link>https://yrqspace.github.io/tags/%E7%8B%AC%E7%AB%8B%E5%8D%9A%E5%AE%A2/</link>
+        <pubDate>Fri, 30 Oct 2026 00:00:00 +0000</pubDate>
+        
+        <guid>https://yrqspace.github.io/tags/%E7%8B%AC%E7%AB%8B%E5%8D%9A%E5%AE%A2/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>评论系统</title>
+        <link>https://yrqspace.github.io/tags/%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F/</link>
+        <pubDate>Fri, 30 Oct 2026 00:00:00 +0000</pubDate>
+        
+        <guid>https://yrqspace.github.io/tags/%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F/</guid>
         <description></description>
         </item>
         <item>
@@ -29,14 +61,6 @@
         <pubDate>Thu, 29 Oct 2026 00:00:00 +0000</pubDate>
         
         <guid>https://yrqspace.github.io/tags/%E5%9B%BE%E5%BA%8A/</guid>
-        <description></description>
-        </item>
-        <item>
-        <title>独立博客</title>
-        <link>https://yrqspace.github.io/tags/%E7%8B%AC%E7%AB%8B%E5%8D%9A%E5%AE%A2/</link>
-        <pubDate>Mon, 26 Oct 2026 23:00:00 +0800</pubDate>
-        
-        <guid>https://yrqspace.github.io/tags/%E7%8B%AC%E7%AB%8B%E5%8D%9A%E5%AE%A2/</guid>
         <description></description>
         </item>
         <item>
@@ -189,14 +213,6 @@
         <pubDate>Sat, 26 Sep 2026 00:00:00 +0000</pubDate>
         
         <guid>https://yrqspace.github.io/tags/giscus/</guid>
-        <description></description>
-        </item>
-        <item>
-        <title>评论系统</title>
-        <link>https://yrqspace.github.io/tags/%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F/</link>
-        <pubDate>Sat, 26 Sep 2026 00:00:00 +0000</pubDate>
-        
-        <guid>https://yrqspace.github.io/tags/%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F/</guid>
         <description></description>
         </item>
         <item>
