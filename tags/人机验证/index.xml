@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
-        <title>人机验证 on 爱玩win11的me</title>
-        <link>https://yrqspace.github.io/tags/%E4%BA%BA%E6%9C%BA%E9%AA%8C%E8%AF%81/</link>
-        <description>Recent content in 人机验证 on 爱玩win11的me</description>
+        <title>人机验证 on Tinker Log</title>
+        <link>https://tinkerlog.dpdns.org/tags/%E4%BA%BA%E6%9C%BA%E9%AA%8C%E8%AF%81/</link>
+        <description>Recent content in 人机验证 on Tinker Log</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
-        <copyright>爱玩win11的me</copyright>
-        <lastBuildDate>Fri, 25 Sep 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://yrqspace.github.io/tags/%E4%BA%BA%E6%9C%BA%E9%AA%8C%E8%AF%81/index.xml" rel="self" type="application/rss+xml" /><item>
+        <copyright>Tinker Log</copyright>
+        <lastBuildDate>Fri, 25 Sep 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://tinkerlog.dpdns.org/tags/%E4%BA%BA%E6%9C%BA%E9%AA%8C%E8%AF%81/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>人机验证折腾记</title>
-        <link>https://yrqspace.github.io/p/%E4%BA%BA%E6%9C%BA%E9%AA%8C%E8%AF%81%E6%8A%98%E8%85%BE%E8%AE%B0/</link>
+        <link>https://tinkerlog.dpdns.org/p/%E4%BA%BA%E6%9C%BA%E9%AA%8C%E8%AF%81%E6%8A%98%E8%85%BE%E8%AE%B0/</link>
         <pubDate>Fri, 25 Sep 2026 00:00:00 +0000</pubDate>
         
-        <guid>https://yrqspace.github.io/p/%E4%BA%BA%E6%9C%BA%E9%AA%8C%E8%AF%81%E6%8A%98%E8%85%BE%E8%AE%B0/</guid>
+        <guid>https://tinkerlog.dpdns.org/p/%E4%BA%BA%E6%9C%BA%E9%AA%8C%E8%AF%81%E6%8A%98%E8%85%BE%E8%AE%B0/</guid>
         <description>&lt;img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/09/2026-09-25-cover.jpg" alt="Featured image of post 人机验证折腾记" /&gt;&lt;p&gt;折腾了整整两天，终于给我的博客加上了一道像样的人机验证。这篇把全过程记下来，也给想在 GitHub Pages 上加验证的朋友一条现成的路。&lt;/p&gt;
 &lt;h2 id=&#34;为什么要加&#34;&gt;为什么要加
 &lt;/h2&gt;&lt;p&gt;我的博客是 Hugo + Stack 主题，托管在 GitHub Pages 上，纯静态、没有后端。访客进来先看到一段加载动画，动画结束后就可以直接访问——总觉得少了点仪式感，又怕被脚本刷，就想加一道人机验证，顺便让加载流程变得更有&amp;quot;设计感&amp;quot;。&lt;/p&gt;

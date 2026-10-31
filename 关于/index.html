@@ -4,12 +4,12 @@
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="我是爱玩win11的me，一名热爱编程的学生。 这个博客是我记录生活搭的 GitHub 上的 yrqspace 是我折腾各种项目的地方，欢迎来看看。 如果你有想交流的话题，欢迎">
 <title>关于</title>
 
-<link rel='canonical' href='https://yrqspace.github.io/%E5%85%B3%E4%BA%8E/'>
+<link rel='canonical' href='https://tinkerlog.dpdns.org/%E5%85%B3%E4%BA%8E/'>
 
 <link rel="stylesheet" href="/scss/style.min.1b561fd2416d06f0c4c93d7104ded670f5158cb30558f6954381b97814d4b1f4.css"><meta property='og:title' content="关于">
 <meta property='og:description' content="我是爱玩win11的me，一名热爱编程的学生。 这个博客是我记录生活搭的 GitHub 上的 yrqspace 是我折腾各种项目的地方，欢迎来看看。 如果你有想交流的话题，欢迎">
-<meta property='og:url' content='https://yrqspace.github.io/%E5%85%B3%E4%BA%8E/'>
-<meta property='og:site_name' content='爱玩win11的me'>
+<meta property='og:url' content='https://tinkerlog.dpdns.org/%E5%85%B3%E4%BA%8E/'>
+<meta property='og:site_name' content='Tinker Log'>
 <meta property='og:type' content='article'><meta property='article:section' content='Page' />
 <meta name="twitter:title" content="关于">
 <meta name="twitter:description" content="我是爱玩win11的me，一名热爱编程的学生。 这个博客是我记录生活搭的 GitHub 上的 yrqspace 是我折腾各种项目的地方，欢迎来看看。 如果你有想交流的话题，欢迎">
@@ -412,7 +412,7 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">爱玩win11的me</a></h1>
+            <h1 class="site-name"><a href="/">Tinker Log</a></h1>
             <h2 class="site-description">欢迎来到我的博客</h2>
         </div>
     </header><ol class="menu-social">
@@ -676,30 +676,55 @@ GitHub 上的 yrqspace 是我折腾各种项目的地方，欢迎来看看。
      
     
         
-    <style>
-    .waline-container {
-        background-color: var(--card-background);
-        border-radius: var(--card-border-radius);
-        box-shadow: var(--shadow-l1);
-        padding: var(--card-padding);
-         
-        --waline-font-size: var(--article-font-size, 1.6rem);
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="YrqSpace/Giscus"
+    data-repo-id="R_kgDOUhG6JA"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOUhG6JM4DF78m"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="top"
+    data-theme="light"
+    data-lang="zh-CN"
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
     }
 
-     
-    .waline-container,
-    .waline-container input,
-    .waline-container textarea,
-    .waline-container button,
-    .waline-container select {
-        font-family: var(--article-font-family, var(--base-font-family));
-    }
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
 
-    .waline-container .wl-count {
-        color: var(--card-text-color-main);
-    }
-</style>
-<div id="waline" class="waline-container"></div>
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark');
+            }
+        }
+    })();
+</script>
 
     
 
@@ -709,7 +734,7 @@ GitHub 上的 yrqspace 是我折腾各种项目的地方，欢迎来看看。
         <span class="dot">·</span>
         <span>约 2.1 万字</span>
         <span class="dot">·</span>
-        <span>运行 41 天</span>
+        <span>运行 42 天</span>
     </section>
 
     <section class="copyright">
@@ -717,7 +742,7 @@ GitHub 上的 yrqspace 是我折腾各种项目的地方，欢迎来看看。
         
             2024 - 
         
-        2026 爱玩win11的me
+        2026 Tinker Log
     </section>
     
     <section class="powerby">
@@ -1060,7 +1085,7 @@ GitHub 上的 yrqspace 是我折腾各种项目的地方，欢迎来看看。
     <div id="aplayer"></div>
 
     <script>
-        const home = "https://yrqspace.github.io/"
+        const home = "https://tinkerlog.dpdns.org/"
         const ap = new APlayer({
             container: document.getElementById('aplayer'),
             fixed: true,
@@ -1429,7 +1454,7 @@ window.__walineCfg = {"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji"
         cursor: pointer;
         width: 30px;
         height: 30px;
-        background-image: url(https://yrqspace.github.io/icons/backTop.svg);
+        background-image: url(https://tinkerlog.dpdns.org/icons/backTop.svg);
     }
 </style>
 
@@ -1839,7 +1864,7 @@ if (!window.__pjaxPagefindFix) {
       
       let img = document.createElement('img');
       img.classList.add('code-more-img');
-      img.src = "https://yrqspace.github.io/icons/codeMore.png"
+      img.src = "https://tinkerlog.dpdns.org/icons/codeMore.png"
       
       codeMoreBtn.appendChild(img);
       codeMoreBox.appendChild(codeMoreBtn);

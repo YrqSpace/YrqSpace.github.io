@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
-        <title>PR on 爱玩win11的me</title>
-        <link>https://yrqspace.github.io/tags/pr/</link>
-        <description>Recent content in PR on 爱玩win11的me</description>
+        <title>PR on Tinker Log</title>
+        <link>https://tinkerlog.dpdns.org/tags/pr/</link>
+        <description>Recent content in PR on Tinker Log</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
-        <copyright>爱玩win11的me</copyright>
-        <lastBuildDate>Thu, 22 Oct 2026 13:00:00 +0800</lastBuildDate><atom:link href="https://yrqspace.github.io/tags/pr/index.xml" rel="self" type="application/rss+xml" /><item>
+        <copyright>Tinker Log</copyright>
+        <lastBuildDate>Thu, 22 Oct 2026 13:00:00 +0800</lastBuildDate><atom:link href="https://tinkerlog.dpdns.org/tags/pr/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>第一次给开源项目提 PR</title>
-        <link>https://yrqspace.github.io/p/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%BB%99%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E6%8F%90-pr/</link>
+        <link>https://tinkerlog.dpdns.org/p/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%BB%99%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E6%8F%90-pr/</link>
         <pubDate>Thu, 22 Oct 2026 13:00:00 +0800</pubDate>
         
-        <guid>https://yrqspace.github.io/p/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%BB%99%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E6%8F%90-pr/</guid>
+        <guid>https://tinkerlog.dpdns.org/p/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%BB%99%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E6%8F%90-pr/</guid>
         <description>&lt;img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/10/2026-10-22-cover.jpg" alt="Featured image of post 第一次给开源项目提 PR" /&gt;&lt;p&gt;建站半个月，Bing 迟迟不收录，查来查去发现我缺一个信号：&lt;strong&gt;外部链接&lt;/strong&gt;。搜索引擎发现一个网站靠四个信号——IndexNow、sitemap、站内链接、外链，前三个我都齐了，就缺最后一个。&lt;/p&gt;
 &lt;p&gt;于是我把目光投向了一个叫 &lt;a class=&#34;link&#34; href=&#34;https://github.com/timqian/chinese-independent-blogs&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;chinese-independent-blogs&lt;/a&gt; 的仓库：一个专门收集中文独立博客的列表，star 两万多。把我的博客加进去，就等于在一个高权威的页面上留了一条指向我网站的链接——这就是高质量外链。&lt;/p&gt;

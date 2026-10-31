@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
-        <title>建站 on 爱玩win11的me</title>
-        <link>https://yrqspace.github.io/tags/%E5%BB%BA%E7%AB%99/</link>
-        <description>Recent content in 建站 on 爱玩win11的me</description>
+        <title>建站 on Tinker Log</title>
+        <link>https://tinkerlog.dpdns.org/tags/%E5%BB%BA%E7%AB%99/</link>
+        <description>Recent content in 建站 on Tinker Log</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
-        <copyright>爱玩win11的me</copyright>
-        <lastBuildDate>Sat, 19 Sep 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://yrqspace.github.io/tags/%E5%BB%BA%E7%AB%99/index.xml" rel="self" type="application/rss+xml" /><item>
+        <copyright>Tinker Log</copyright>
+        <lastBuildDate>Sat, 19 Sep 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://tinkerlog.dpdns.org/tags/%E5%BB%BA%E7%AB%99/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>你好,世界</title>
-        <link>https://yrqspace.github.io/p/%E4%BD%A0%E5%A5%BD%E4%B8%96%E7%95%8C/</link>
+        <link>https://tinkerlog.dpdns.org/p/%E4%BD%A0%E5%A5%BD%E4%B8%96%E7%95%8C/</link>
         <pubDate>Sat, 19 Sep 2026 00:00:00 +0000</pubDate>
         
-        <guid>https://yrqspace.github.io/p/%E4%BD%A0%E5%A5%BD%E4%B8%96%E7%95%8C/</guid>
+        <guid>https://tinkerlog.dpdns.org/p/%E4%BD%A0%E5%A5%BD%E4%B8%96%E7%95%8C/</guid>
         <description>&lt;img src="https://gcore.jsdelivr.net/gh/YrqSpace/hugo-pic-bed@main/2026/09/2026-09-18-cover.jpg" alt="Featured image of post 你好,世界" /&gt;&lt;h2 id=&#34;我人生中第一个博客兴奋&#34;&gt;😄我人生中第一个博客,兴奋!
 &lt;/h2&gt;&lt;p&gt;2026 年 9 月 19 日，这个站有了第一篇文章。&lt;/p&gt;
 &lt;p&gt;没有仪式，也没有倒计时——就是把 Hugo 跑通、本地地址能打开、文章卡片点得进去，然后顺手发了一条。发出来那一刻还是挺爽的，毕竟这是&amp;quot;我自己的网站&amp;quot;，而不是某个平台上的一个主页。&lt;/p&gt;
