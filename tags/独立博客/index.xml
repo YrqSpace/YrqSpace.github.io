@@ -1,0 +1,646 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>独立博客 on Tinker Log</title>
+        <link>https://tinkerlog.dpdns.org/tags/%E7%8B%AC%E7%AB%8B%E5%8D%9A%E5%AE%A2/</link>
+        <description>Recent content in 独立博客 on Tinker Log</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Tinker Log</copyright>
+        <lastBuildDate>Fri, 30 Oct 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://tinkerlog.dpdns.org/tags/%E7%8B%AC%E7%AB%8B%E5%8D%9A%E5%AE%A2/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Waline 评论系统折腾记：自托管、字体和 PJAX 的三重坑</title>
+        <link>https://tinkerlog.dpdns.org/p/waline%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%8A%98%E8%85%BE%E8%AE%B0/</link>
+        <pubDate>Fri, 30 Oct 2026 00:00:00 +0000</pubDate>
+        
+        <guid>https://tinkerlog.dpdns.org/p/waline%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%8A%98%E8%85%BE%E8%AE%B0/</guid>
+        <description>&lt;img src="https://image.tinkerlog.dpdns.org/2026/10/2026-10-30-waline-cover.jpg" alt="Featured image of post Waline 评论系统折腾记：自托管、字体和 PJAX 的三重坑" /&gt;&lt;h2 id=&#34;为什么从-giscus-换过来&#34;&gt;为什么从 Giscus 换过来
+&lt;/h2&gt;&lt;p&gt;上一篇写的是 Giscus，那篇文章结论还挺满意：评论存 GitHub Discussions，不用买服务器，数据在自家仓库里。&lt;/p&gt;
+&lt;p&gt;用了一段时间，问题慢慢浮出来——&lt;strong&gt;门槛全在读者那边&lt;/strong&gt;。想留句话，得先有 GitHub 账号，还得授权一个 App，中间但凡卡一步就放弃了。我自己拿手机试了一遍，光是登录那一段就想关掉页面。&lt;/p&gt;
+&lt;p&gt;Waline 的路子不一样：评论存在自己的数据库里，访客只需要填个昵称，想匿名也行。代价是得有个后端，这对纯静态博客来说是笔额外开销，所以第一轮选型时我把它排掉了。&lt;/p&gt;
+&lt;p&gt;后来还是绕回来了。原因很朴素——&lt;strong&gt;评论区如果没人愿意留言，那它再&amp;quot;优雅&amp;quot;也没意义&lt;/strong&gt;。&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;对比项&lt;/th&gt;
+&lt;th&gt;Giscus&lt;/th&gt;
+&lt;th&gt;Waline&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;访客门槛&lt;/td&gt;
+&lt;td&gt;必须有 GitHub 账号&lt;/td&gt;
+&lt;td&gt;填昵称即可&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;数据在哪&lt;/td&gt;
+&lt;td&gt;GitHub Discussions&lt;/td&gt;
+&lt;td&gt;自己的数据库&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;要不要后端&lt;/td&gt;
+&lt;td&gt;不用&lt;/td&gt;
+&lt;td&gt;要（我用 Vercel）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;挂掉风险&lt;/td&gt;
+&lt;td&gt;跟 GitHub 共存亡&lt;/td&gt;
+&lt;td&gt;看自己维护&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&#34;第一步把服务端立起来&#34;&gt;第一步：把服务端立起来
+&lt;/h2&gt;&lt;p&gt;Waline 是前后端分离的，&lt;code&gt;@waline/client&lt;/code&gt; 只是那个评论框，真正存数据的是服务端 &lt;code&gt;@waline/vercel&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;部署本身没什么可说的，Vercel 一键模板导入，连上数据库，环境变量填完就起来了。我给它绑了个自己的域名，也就是现在配置里那个 &lt;code&gt;serverURL&lt;/code&gt;：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nt&#34;&gt;waline&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;serverURL&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;https://yrq1622.cc.cd&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;lang&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;zh-CN&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;这一步唯一想提醒的是：&lt;strong&gt;&lt;code&gt;serverURL&lt;/code&gt; 千万别带结尾斜杠&lt;/strong&gt;。带上了也能跑，但请求路径会拼出双斜杠，某些环境下会被 CDN 或反向代理吃掉，症状是评论能读、写不进去，排查起来非常折磨。&lt;/p&gt;
+&lt;p&gt;服务端起来之后，第一件事是用浏览器直接打开那个地址——正常的话会看到一个 Waline 自带的欢迎页，说明后端活着、数据库也连上了。&lt;strong&gt;先确认后端，再动前端&lt;/strong&gt;，这个顺序能省掉后面一大半的怀疑。&lt;/p&gt;
+&lt;h2 id=&#34;第二步客户端不引-cdn改成自托管&#34;&gt;第二步：客户端不引 CDN，改成自托管
+&lt;/h2&gt;&lt;p&gt;常规做法是在页面里引一段 CDN 的 &lt;code&gt;waline.js&lt;/code&gt;。我没这么做，原因是这站的评论区本来就依赖 JS 加载，如果 CDN 抽风，评论框就是一块空白，还不报错，用户只会以为&amp;quot;这站没评论功能&amp;quot;。&lt;/p&gt;
+&lt;p&gt;所以我把客户端整个搬进了站内：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;static/vendor/waline/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;├── waline.css   22 KB
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└── waline.js   257 KB
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;代价是仓库多了 280KB，好处是&lt;strong&gt;评论框的加载不再依赖任何第三方&lt;/strong&gt;，跟正文、样式同源同域，一次握手全解决。&lt;/p&gt;
+&lt;p&gt;引的时候用动态 &lt;code&gt;import()&lt;/code&gt; 而不是 &lt;code&gt;&amp;lt;script&amp;gt;&lt;/code&gt; 标签：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;window&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;__walineModulePromise&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;kr&#34;&gt;import&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;WALINE_URL&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;这一行的关键在于&lt;strong&gt;只初始化一次&lt;/strong&gt;。&lt;code&gt;import()&lt;/code&gt; 对同一 URL 是天然幂等的（模块只求值一次），把 Promise 存在全局，PJAX 换页时直接复用，既不会重复下载，也不会重复求值。&lt;/p&gt;
+&lt;h2 id=&#34;坑一评论字号只有-10px&#34;&gt;坑一：评论字号只有 10px
+&lt;/h2&gt;&lt;p&gt;这是最莫名其妙的一个。评论框装上去之后，正文是 16px，评论区却小得离谱，像浏览器缩放过一样。&lt;/p&gt;
+&lt;p&gt;原因藏在主题的 CSS 里：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-css&#34; data-lang=&#34;css&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nt&#34;&gt;html&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;font-size&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mf&#34;&gt;62.5&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;%&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;   &lt;span class=&#34;c&#34;&gt;/* 1rem = 10px */&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;主题为了好算尺寸，把根字号压到了 62.5%。而 Waline 的默认值是 &lt;code&gt;--waline-font-size: 1rem&lt;/code&gt;——于是评论字号老老实实跟着变成了 10px。&lt;/p&gt;
+&lt;p&gt;修法不是去改主题（改了就等着下次更新被覆盖），而是&lt;strong&gt;在评论容器上把变量重新指回正文的字号&lt;/strong&gt;：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-css&#34; data-lang=&#34;css&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nc&#34;&gt;waline-container&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nv&#34;&gt;--waline-font-size&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;var&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;--&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;article&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;font&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;size&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mf&#34;&gt;1.6&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;rem&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;code&gt;--article-font-size&lt;/code&gt; 是主题给正文用的变量，窄屏 16px、宽屏 17px，Waline 跟着它走，就再也不会脱节。&lt;/p&gt;
+&lt;p&gt;顺便说一句，我这里是&lt;strong&gt;用自己的 partial 覆盖主题模板&lt;/strong&gt;，而不是直接动 &lt;code&gt;themes/&lt;/code&gt; 里的文件。这个习惯很重要——主题一升级，所有改在 &lt;code&gt;themes/&lt;/code&gt; 里的东西都会被打回原形，而覆盖文件是站点的资产，不会被冲掉。&lt;/p&gt;
+&lt;h2 id=&#34;坑二输入框和按钮的字体不对&#34;&gt;坑二：输入框和按钮的字体不对
+&lt;/h2&gt;&lt;p&gt;字号修好之后，问题变成了&amp;quot;字体看着别扭&amp;quot;。&lt;/p&gt;
+&lt;p&gt;Waline 自身的 CSS 只给 &lt;code&gt;.wl-editor&lt;/code&gt;、&lt;code&gt;.wl-btn&lt;/code&gt; 这些配置了颜色和间距，&lt;strong&gt;没配 &lt;code&gt;font-family&lt;/code&gt;&lt;/strong&gt;。而 &lt;code&gt;&amp;lt;input&amp;gt;&lt;/code&gt;、&lt;code&gt;&amp;lt;textarea&amp;gt;&lt;/code&gt;、&lt;code&gt;&amp;lt;button&amp;gt;&lt;/code&gt;、&lt;code&gt;&amp;lt;select&amp;gt;&lt;/code&gt; 这类表单控件在浏览器里有个天然特性：&lt;strong&gt;它们不会从父元素继承字体&lt;/strong&gt;，不给就退回系统默认的 UI 字体。&lt;/p&gt;
+&lt;p&gt;于是正文是思源、输入框是系统 UI 字体，一眼就能看出是两套东西。&lt;/p&gt;
+&lt;p&gt;解法很土但有效，把这四类控件统一强制继承：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-css&#34; data-lang=&#34;css&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nc&#34;&gt;waline-container&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nc&#34;&gt;waline-container&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;input&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nc&#34;&gt;waline-container&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;textarea&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nc&#34;&gt;waline-container&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;button&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nc&#34;&gt;waline-container&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;select&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;font-family&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;var&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;--&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;article&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;font&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;family&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;var&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;--&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;base&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;font&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;family&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;));&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;code&gt;.waline-container&lt;/code&gt; 自己也要写上——因为评论内容区的正文是它渲染的。&lt;/p&gt;
+&lt;h2 id=&#34;坑三pjax-换页后评论框失踪&#34;&gt;坑三：PJAX 换页后评论框失踪
+&lt;/h2&gt;&lt;p&gt;这站开了 PJAX，点站内链接不整页刷新，只替换 &lt;code&gt;.main-container&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;对评论系统来说这是灾难：&lt;strong&gt;新页面的 HTML 里确实有 &lt;code&gt;&amp;lt;div id=&amp;quot;waline&amp;quot;&amp;gt;&lt;/code&gt;，但没有任何脚本去初始化它&lt;/strong&gt;。整页加载时走的 &lt;code&gt;DOMContentLoaded&lt;/code&gt; 早就过去了，PJAX 换页不会重新触发。结果就是——第一篇文章有评论框，点进第二篇就没了，必须手动刷新才回来。&lt;/p&gt;
+&lt;p&gt;修法是暴露一个幂等的启动函数，让它能在两个时机被调用：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;window&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;__walineBoot&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kd&#34;&gt;var&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;el&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;document&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;getElementById&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;waline&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;!&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;el&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;                          &lt;span class=&#34;c1&#34;&gt;// 容器还没来，先退出
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;el&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;dataset&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;wlMounted&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;===&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;// 已经挂过，别重复 init
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;p&#34;&gt;...&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;然后挂两个入口：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// 入口一：整页加载
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;document&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;addEventListener&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;DOMContentLoaded&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;window&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;__walineBoot&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;());&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// 入口二：PJAX 换页完成
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;document&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;addEventListener&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;pjax:complete&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;window&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;__walineBoot&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;());&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;坑四刷新之后评论框也不见了&#34;&gt;坑四：刷新之后评论框也不见了
+&lt;/h2&gt;&lt;p&gt;坑三修完，冒出一个更阴的：&lt;strong&gt;偶尔刷新页面，评论区空白&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;问题出在标记&amp;quot;已挂载&amp;quot;的时机。我最初写的是这样：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;el&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;dataset&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;wlMounting&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;loadModule&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;().&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;then&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nx&#34;&gt;init&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;cfg&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;});&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;标记在&lt;strong&gt;发起&lt;/strong&gt;时就打上了，&lt;code&gt;init&lt;/code&gt; 却要等模块下载完才真正执行。中间如果 PJAX 替换了 DOM、或者模块加载失败，那个&amp;quot;已挂载&amp;quot;的标记就永远留在了新元素上，后续所有 &lt;code&gt;__walineBoot&lt;/code&gt; 调用都会被这行 &lt;code&gt;return&lt;/code&gt; 挡回去——&lt;strong&gt;评论框等于被永久判了死刑，只能刷新重来&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;改法是把标记挪到 &lt;code&gt;init&lt;/code&gt; 成功之后，并且失败时把状态和缓存一起清干净：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;el&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;dataset&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;wlMounting&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;loadModule&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;().&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;then&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;m&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kd&#34;&gt;var&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;mountEl&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;document&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;getElementById&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;waline&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;// PJAX 可能已换 DOM，重取
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;!&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;mountEl&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;el&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;dataset&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;wlMounting&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nx&#34;&gt;mountEl&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;innerHTML&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nx&#34;&gt;m&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;init&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;window&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;__walineCfg&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nx&#34;&gt;mountEl&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;dataset&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;wlMounted&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;    &lt;span class=&#34;c1&#34;&gt;// 成功之后才标记
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;nx&#34;&gt;mountEl&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;dataset&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;wlMounting&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}).&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;catch&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nb&#34;&gt;window&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;__walineModulePromise&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;null&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;   &lt;span class=&#34;c1&#34;&gt;// 清缓存，下次能重试
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;nx&#34;&gt;el&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;dataset&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;wlMounting&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;});&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;两个细节值得单独说：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;init&lt;/code&gt; 之前要重新 &lt;code&gt;getElementById&lt;/code&gt; 一次&lt;/strong&gt;。PJAX 可能已经把整个容器换成了新的节点，手里那个 &lt;code&gt;el&lt;/code&gt; 是个已经脱离文档的孤儿，往它身上打标记没人看得见。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;容器不存在时要重试，别直接放弃&lt;/strong&gt;。PJAX 是异步替换的，&lt;code&gt;pjax:complete&lt;/code&gt; 触发的那一刻，评论区可能还在路上。我给了 40 次 × 200ms 的兜底重试，差不多 8 秒窗口，实际很少用到 3 次以上，但没有它就会偶发空白。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;表情包两个-cdn-就够&#34;&gt;表情包：两个 CDN 就够
+&lt;/h2&gt;&lt;p&gt;Waline 的表情包配置很轻量，&lt;code&gt;emoji&lt;/code&gt; 塞几个地址就行：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nt&#34;&gt;emoji&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;- &lt;span class=&#34;l&#34;&gt;https://unpkg.com/@waline/emojis@1.4.0/bmoji&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;- &lt;span class=&#34;l&#34;&gt;https://unpkg.com/@waline/emojis@1.4.0/bilibili&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;code&gt;bmoji&lt;/code&gt; 是 B 站那套小黄脸，&lt;code&gt;bilibili&lt;/code&gt; 是 B 站的大表情。两个加起来基本覆盖了日常表达，再多反而会让选择面板变得臃肿。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;记得锁版本号&lt;/strong&gt;。写成 &lt;code&gt;@latest&lt;/code&gt; 的话，上游哪天调整了目录结构或图片命名，你这边就会变成一排裂图，而且没有任何报错。&lt;/p&gt;
+&lt;h2 id=&#34;必填项我留了昵称邮箱网址&#34;&gt;必填项：我留了昵称、邮箱、网址
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nt&#34;&gt;requiredMeta&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;- &lt;span class=&#34;l&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;- &lt;span class=&#34;l&#34;&gt;email&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;- &lt;span class=&#34;l&#34;&gt;url&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;这三项我全设成了必填，但实际体验上有个取舍：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;昵称必填&lt;/strong&gt;，不然一堆匿名评论分不清谁是谁&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;邮箱必填但不会公开展示&lt;/strong&gt;，主要用来识别同一个人和收回复提醒&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;网址可选但设了必填&lt;/strong&gt;——这条我当时纠结过，因为强制要网址确实会劝退一部分人&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;真相是 Waline 的 &lt;code&gt;requiredMeta&lt;/code&gt; 里填 &lt;code&gt;url&lt;/code&gt; 并不会强制校验格式，留空也能提交，所以实际拦不住人，只是把输入框标成了必填样式。真正想降低门槛的话，把它从列表里删掉更干脆。&lt;/p&gt;
+&lt;h2 id=&#34;最后的感受&#34;&gt;最后的感受
+&lt;/h2&gt;&lt;p&gt;四个坑，三个都在&amp;quot;加载时机&amp;quot;上——字号是 CSS 变量没接上，字体是表单控件不继承，两个 PJAX 坑是挂载状态没管好。&lt;/p&gt;
+&lt;p&gt;回头看，最有价值的不是某个具体修法，而是那条原则：&lt;strong&gt;评论框的初始化必须是幂等的、可重入的&lt;/strong&gt;。因为在一个开了 PJAX 的站点里，你永远不知道这段代码会被执行几次、在什么时机执行、容器当时在不在。&lt;/p&gt;
+&lt;p&gt;只要保证&amp;quot;跑多少次结果都一样&amp;quot;，剩下的事就交给重试和标记去兜底。&lt;/p&gt;
+&lt;p&gt;（评论区就在下面，欢迎试试它到底通不通。）&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>友链页 DIY 记</title>
+        <link>https://tinkerlog.dpdns.org/p/%E5%8F%8B%E9%93%BE%E9%A1%B5-diy-%E8%AE%B0/</link>
+        <pubDate>Mon, 26 Oct 2026 23:00:00 +0800</pubDate>
+        
+        <guid>https://tinkerlog.dpdns.org/p/%E5%8F%8B%E9%93%BE%E9%A1%B5-diy-%E8%AE%B0/</guid>
+        <description>&lt;img src="https://image.tinkerlog.dpdns.org/2026/10/2026-10-28-cover.jpg" alt="Featured image of post 友链页 DIY 记" /&gt;&lt;p&gt;友链页是独立博客的脸面之一，但我一开始只有一张孤零零的 GitHub 卡片。这篇记录我怎么把它改造成一个「自助交换站」：交换须知、本站信息一键复制、友链随机排序、按名字搜索。&lt;/p&gt;
+&lt;h2 id=&#34;起点一张孤零零的卡片&#34;&gt;起点：一张孤零零的卡片
+&lt;/h2&gt;&lt;p&gt;Stack 主题自带友链支持，只要在页面的 front matter 里写 &lt;code&gt;links:&lt;/code&gt; 数组，主题就会渲染成卡片列表。我最早的友链页就是这样：三条友链、一片空白，访客来了也不知道该不该申请、怎么申请。&lt;/p&gt;
+&lt;h2 id=&#34;参考对象upxuu-的友链页&#34;&gt;参考对象：UpXuu 的友链页
+&lt;/h2&gt;&lt;p&gt;翻别人的博客时看到 UpXuu 的友链页，结构很清爽：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;顶部友链列表&lt;/li&gt;
+&lt;li&gt;下面一块交换须知和「本站信息」：站点名称、域名、头像、简介，每行都能单独复制&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这个结构的好处是——访客不用问你，自己就能把该复制的东西复制走、该走的流程走完。于是我照着这个思路重做了一版。&lt;/p&gt;
+&lt;h2 id=&#34;交换须知把规则写在明面上&#34;&gt;交换须知：把规则写在明面上
+&lt;/h2&gt;&lt;p&gt;须知部分列了五条要求，都用小勾号呈现，一眼能扫完：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;全站 HTTPS&lt;/li&gt;
+&lt;li&gt;内容健康，无采集&lt;/li&gt;
+&lt;li&gt;半年内有更新&lt;/li&gt;
+&lt;li&gt;独立域名可访问&lt;/li&gt;
+&lt;li&gt;先加本站友链，再提交申请&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;最后一条最关键——独立博客圈换友链是双向的，先把规则讲清楚，能省掉大量来回沟通。&lt;/p&gt;
+&lt;h2 id=&#34;本站信息一键复制&#34;&gt;本站信息：一键复制
+&lt;/h2&gt;&lt;p&gt;访客要加你的友链，得先知道你的站点名称、域名、头像地址、简介。以前这些信息要靠翻源码或者问你，现在做成了一张复制卡：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;项目&lt;/th&gt;
+&lt;th&gt;内容&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;站点名称&lt;/td&gt;
+&lt;td&gt;爱玩win11的me&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;站点域名&lt;/td&gt;
+&lt;td&gt;&lt;a class=&#34;link&#34; href=&#34;https://yrqspace.github.io&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://yrqspace.github.io&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;头像&lt;/td&gt;
+&lt;td&gt;&lt;a class=&#34;link&#34; href=&#34;https://yrqspace.github.io/img/avatar.png&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://yrqspace.github.io/img/avatar.png&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;站点简介&lt;/td&gt;
+&lt;td&gt;欢迎来到我的博客&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;每行右边一个「复制」按钮，最下面还有一个「一键复制本站信息 YAML」，点一下就把四行信息按 YAML 格式一次性拿到剪贴板——访客直接粘进自己的 front matter 就能用。&lt;/p&gt;
+&lt;h2 id=&#34;列表优化随机排序--按名称搜索&#34;&gt;列表优化：随机排序 + 按名称搜索
+&lt;/h2&gt;&lt;p&gt;友链一多，两个问题就冒出来了：&lt;strong&gt;凭什么我总排在最后&lt;/strong&gt;、&lt;strong&gt;访客怎么找到自己的站&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;解决办法是一段纯前端的脚本，不动 Markdown、不动主题：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;随机排序&lt;/strong&gt;，用 Fisher-Yates 洗牌，每次进入页面顺序都不一样：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;shuffle&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;arr&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;var&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;arr&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;length&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;--&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kd&#34;&gt;var&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;j&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;Math&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;floor&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;Math&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;random&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;));&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kd&#34;&gt;var&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;t&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;arr&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;];&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;arr&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;arr&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;j&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;];&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;arr&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;j&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;t&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;arr&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;shuffle&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;cards&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;forEach&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;card&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;list&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;appendChild&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;card&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;});&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;按名称搜索&lt;/strong&gt;，输入关键词即时过滤，还会显示「找到 3 / 8 个友链」：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;cards&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;forEach&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;card&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;kd&#34;&gt;var&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;hit&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;kw&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;||&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;card&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;dataset&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;name&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;||&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;indexOf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;kw&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!==&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;card&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;style&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;display&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;hit&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;?&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;none&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;});&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;因为站点开了 PJAX（切页不刷新），脚本挂在 &lt;code&gt;pjax:complete&lt;/code&gt; 上重新执行一次，切回来依然生效；同时用了个小标记防止重复插入第二个搜索框。&lt;/p&gt;
+&lt;h2 id=&#34;踩的坑搜索框太大&#34;&gt;踩的坑：搜索框太大
+&lt;/h2&gt;&lt;p&gt;第一版搜索框铺满整行，宽度拉满、字号偏大，看着特别笨重。改法是收窄到 &lt;code&gt;max-width: 22rem&lt;/code&gt;、字号降到 &lt;code&gt;1.2rem&lt;/code&gt;、内边距缩小，容器用 &lt;code&gt;align-items: flex-end&lt;/code&gt; 让它靠右——这样它像列表上方的一个小工具，而不是又一条横幅。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-css&#34; data-lang=&#34;css&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nc&#34;&gt;friend-search-wrap&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;k&#34;&gt;display&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;flex&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;k&#34;&gt;flex-direction&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;column&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;k&#34;&gt;align-items&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;flex-end&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nc&#34;&gt;friend-search-box&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;k&#34;&gt;position&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;relative&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;k&#34;&gt;width&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;100&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;%&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;k&#34;&gt;max-width&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;22&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;rem&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;小结&#34;&gt;小结
+&lt;/h2&gt;&lt;p&gt;现在这个友链页，访客进来能看懂规则、能一键复制本站信息、能搜到自己的站，友链顺序也不再固化。整套东西没有碰主题源码，样式和脚本都追加在页脚模板里，想改想删都很轻松。&lt;/p&gt;
+&lt;p&gt;友链交换的门槛，很多时候就卡在「对方不知道怎么申请」这一步。把这些做成页面，比在评论区来回解释高效多了。&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>给博客加上博客大联盟，把展示权重刷到 113</title>
+        <link>https://tinkerlog.dpdns.org/p/%E7%BB%99%E5%8D%9A%E5%AE%A2%E5%8A%A0%E4%B8%8A%E5%8D%9A%E5%AE%A2%E5%A4%A7%E8%81%94%E7%9B%9F%E6%8A%8A%E5%B1%95%E7%A4%BA%E6%9D%83%E9%87%8D%E5%88%B7%E5%88%B0-113/</link>
+        <pubDate>Fri, 23 Oct 2026 22:40:00 +0800</pubDate>
+        
+        <guid>https://tinkerlog.dpdns.org/p/%E7%BB%99%E5%8D%9A%E5%AE%A2%E5%8A%A0%E4%B8%8A%E5%8D%9A%E5%AE%A2%E5%A4%A7%E8%81%94%E7%9B%9F%E6%8A%8A%E5%B1%95%E7%A4%BA%E6%9D%83%E9%87%8D%E5%88%B7%E5%88%B0-113/</guid>
+        <description>&lt;img src="https://image.tinkerlog.dpdns.org/2026/10/2026-10-23-cover.jpg" alt="Featured image of post 给博客加上博客大联盟，把展示权重刷到 113" /&gt;&lt;p&gt;上一篇写到给开源项目提 PR 换外链，一条反链到手之后我尝到甜头了：既然外链是搜索引擎判断&amp;quot;这站靠不靠谱&amp;quot;的重要信号，那一条远远不够。&lt;/p&gt;
+&lt;p&gt;这次盯上的是&lt;strong&gt;博客大联盟&lt;/strong&gt;（bo.ke），一个中文独立博客的聚合站。它和其他导航站不太一样的地方在于，它有一套&lt;strong&gt;权重体系&lt;/strong&gt;：基础 50 分，加上互链 50 分、RSS 10 分、站内头像 3 分，最后乘在线率。权重越高，站内的展示排序越靠前。&lt;/p&gt;
+&lt;p&gt;说白了，它不只要收你，还要你&amp;quot;配合&amp;quot;——你把它的链接挂在自己站上，它给你更高的曝光。这是个很朴素的交换：我给你流量入口，你给我一条反链。&lt;/p&gt;
+&lt;p&gt;听起来简单，但我一路踩了三个坑。&lt;/p&gt;
+&lt;h2 id=&#34;第一回合提交和验证出乎意料的顺利&#34;&gt;第一回合：提交和验证，出乎意料的顺利
+&lt;/h2&gt;&lt;p&gt;提交表单要填博客名称、地址、简介、标签，还能选头像。填完它要求&lt;strong&gt;验证域名所有权&lt;/strong&gt;，给了三种方式：DNS TXT、CNAME、Meta 标签、还有文件验证。&lt;/p&gt;
+&lt;p&gt;我选了最笨也最直接的一种——&lt;strong&gt;文件验证&lt;/strong&gt;：它给一个字符串，你把它做成一个 txt 文件放到网站根目录，然后它来访问那个地址，能访问到就说明这站是你的。&lt;/p&gt;
+&lt;p&gt;关键是要放对地方。Hugo 有个很省心的特性：&lt;code&gt;static&lt;/code&gt; 目录里的东西会&lt;strong&gt;原样复制&lt;/strong&gt;到站点根目录。所以我把验证文件扔进 &lt;code&gt;static/&lt;/code&gt;，Hugo 构建时自动帮我搬到 &lt;code&gt;public/&lt;/code&gt; 根目录，一次搞定，不用每次手动维护。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;static/bo-ke-verify-a459a0fb84603936b64af154db0a5ce7.txt
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;部署后点&amp;quot;开始验证&amp;quot;，秒过。然后进入&amp;quot;待管理员审核&amp;quot;——人工审核，几天到一周。&lt;/p&gt;
+&lt;h2 id=&#34;第二回合审核过了权重只有-60&#34;&gt;第二回合：审核过了，权重只有 60
+&lt;/h2&gt;&lt;p&gt;过了两天再去看，状态变成&amp;quot;展示中&amp;quot;了，收录成功。但权重那一栏写着 &lt;strong&gt;60&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;我对照它的说明算了一下：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;项目&lt;/th&gt;
+&lt;th&gt;分数&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;基础&lt;/td&gt;
+&lt;td&gt;50&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;RSS&lt;/td&gt;
+&lt;td&gt;10&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;互链&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;头像&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;基础分和 RSS 分都拿满了，说明站本身没问题、RSS 抓取正常。缺的两块：互链 50 分、头像 3 分。&lt;/p&gt;
+&lt;h2 id=&#34;第三回合我在后台填了友情链接&#34;&gt;第三回合：我在后台填了「@友情链接」
+&lt;/h2&gt;&lt;p&gt;想拿互链分，得先去后台那把&amp;quot;放置本站链接的页面地址&amp;quot;填上。我当时正在和朋友聊这件事，顺手就把那个页面&amp;quot;引用&amp;quot;过来贴进了输入框——结果后台直接报错：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;友链页地址格式不正确，请填写以 http:// 或 https:// 开头的有效网址&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;我一看才明白，输入框里躺着的是 &lt;code&gt;@友情链接&lt;/code&gt; —— 那是聊天软件里的&lt;strong&gt;引用标记&lt;/strong&gt;，不是网址。这玩意儿粘到网页表单里当然过不去，它既没有协议头，也不是个合法 URL。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;教训一：网址就是网址，任何带 &lt;code&gt;@&lt;/code&gt; 的引用标记都不算数。&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&#34;第四回合填了首页地址可首页压根没链接&#34;&gt;第四回合：填了首页地址，可首页压根没链接
+&lt;/h2&gt;&lt;p&gt;改对了地址之后，我盯着&amp;quot;互链&amp;quot;那一栏，一直是&amp;quot;未检测到&amp;quot;。&lt;/p&gt;
+&lt;p&gt;我开始乱猜：是不是要等？是不是要重新保存？来回折腾了几轮，最后才反应过来问题的本质——&lt;/p&gt;
+&lt;p&gt;它那句提示写得很清楚：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;您可以在博客首页或其他页面添加指向 &lt;a class=&#34;link&#34; href=&#34;https://bo.ke/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://bo.ke/&lt;/a&gt; 的链接，并在此填写页面地址，方便系统检测。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;这句话有两个动作，我&lt;strong&gt;只做了一半&lt;/strong&gt;：我填了地址，但没在对应页面上真的放链接。更糟的是，我把地址填成了&lt;strong&gt;首页&lt;/strong&gt;，而首页上根本没有 bo.ke 的链接——我的链接放在友链页。&lt;/p&gt;
+&lt;p&gt;它拿着&amp;quot;首页&amp;quot;这个地址去抓，抓回来一看：没有。于是&amp;quot;未检测到&amp;quot;。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;教训二：填哪个地址，那个地址上就必须真的有链接。地址和链接必须对得上。&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&#34;第五回合中文路径爬虫抓不到&#34;&gt;第五回合：中文路径，爬虫抓不到
+&lt;/h2&gt;&lt;p&gt;把链接补到友链页之后，还是没通过。这时候我开始怀疑另一件事：&lt;strong&gt;地址里有中文&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;我的友链页地址是：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;https://yrqspace.github.io/友情链接/
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;中文出现在 URL 里，浏览器看着没问题，但爬虫拿到的是一串百分号编码。有些站点的检测逻辑处理不好这个，抓取就会失败或者对不上。&lt;/p&gt;
+&lt;p&gt;解决办法是不填中文，填它的 &lt;strong&gt;URL 编码形式&lt;/strong&gt;：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;https://yrqspace.github.io/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;这串东西浏览器打开会自动还原成&amp;quot;友情链接&amp;quot;，但交给爬虫的是纯 ASCII 字符，没有编码歧义。而且它还有个意外的好处：&lt;strong&gt;里面全是英文字母和百分号，粘贴的时候不会再被识别成 &lt;code&gt;@&lt;/code&gt; 引用&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;顺便把友链页也收拾了一下。这个主题的友链页是用 front matter 里的 &lt;code&gt;links&lt;/code&gt; 列表渲染成卡片的，加一条就多一张卡：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nt&#34;&gt;links&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;- &lt;span class=&#34;nt&#34;&gt;title&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;博客大联盟&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;description&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;发现中文独立博客，订阅喜欢的作者&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;website&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;https://bo.ke/&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;比手写 HTML 干净得多，样式也统一。&lt;/p&gt;
+&lt;h2 id=&#34;收尾113&#34;&gt;收尾：113
+&lt;/h2&gt;&lt;p&gt;改完地址、把头像也传了一个，保存。&lt;/p&gt;
+&lt;p&gt;不到半小时再刷新，权重变了：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;项目&lt;/th&gt;
+&lt;th&gt;分数&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;基础&lt;/td&gt;
+&lt;td&gt;50&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;互链&lt;/td&gt;
+&lt;td&gt;50&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;RSS&lt;/td&gt;
+&lt;td&gt;10&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;头像&lt;/td&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;合计&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;113&lt;/strong&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;互链那一栏从&amp;quot;未检测到&amp;quot;变成了&amp;quot;已互链&amp;quot;。&lt;/p&gt;
+&lt;h2 id=&#34;这轮学到的东西&#34;&gt;这轮学到的东西
+&lt;/h2&gt;&lt;p&gt;回头看，这个流程本身一点都不复杂，四次交互就完事了。卡住我的全是&lt;strong&gt;信息和动作对不上&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;我以为&amp;quot;填个地址&amp;quot;就够了，其实人家要的是&amp;quot;地址上真的有链接&amp;quot;&lt;/li&gt;
+&lt;li&gt;我以为中文路径浏览器能打开就万事大吉，其实爬虫看到的是另一串东西&lt;/li&gt;
+&lt;li&gt;我粘贴的时候被输入法或聊天软件的自动识别截了一道，把引用标记当成了网址&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;现在反链有两条了：一条来自中文独立博客列表的 PR，一条来自博客大联盟。以及顺手把 IndexNow 的自动提交修好了——每次部署完自动把新页面推给 Bing。&lt;/p&gt;
+&lt;p&gt;剩下的事就简单了，也很无聊：&lt;strong&gt;写下去&lt;/strong&gt;。外链能帮你被&amp;quot;发现&amp;quot;，但被发现了以后没有内容，人来了也是转身就走。&lt;/p&gt;
+&lt;p&gt;这件事没什么捷径，就是一篇一篇写。&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>第一次给开源项目提 PR</title>
+        <link>https://tinkerlog.dpdns.org/p/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%BB%99%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E6%8F%90-pr/</link>
+        <pubDate>Thu, 22 Oct 2026 13:00:00 +0800</pubDate>
+        
+        <guid>https://tinkerlog.dpdns.org/p/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%BB%99%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E6%8F%90-pr/</guid>
+        <description>&lt;img src="https://image.tinkerlog.dpdns.org/2026/10/2026-10-22-cover.jpg" alt="Featured image of post 第一次给开源项目提 PR" /&gt;&lt;p&gt;建站半个月，Bing 迟迟不收录，查来查去发现我缺一个信号：&lt;strong&gt;外部链接&lt;/strong&gt;。搜索引擎发现一个网站靠四个信号——IndexNow、sitemap、站内链接、外链，前三个我都齐了，就缺最后一个。&lt;/p&gt;
+&lt;p&gt;于是我把目光投向了一个叫 &lt;a class=&#34;link&#34; href=&#34;https://github.com/timqian/chinese-independent-blogs&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;chinese-independent-blogs&lt;/a&gt; 的仓库：一个专门收集中文独立博客的列表，star 两万多。把我的博客加进去，就等于在一个高权威的页面上留了一条指向我网站的链接——这就是高质量外链。&lt;/p&gt;
+&lt;p&gt;但问题来了：&lt;strong&gt;这个仓库不是我的，我没权限直接改它。&lt;/strong&gt; 这就得用上传说中的 PR（Pull Request，拉取请求）了。&lt;/p&gt;
+&lt;h2 id=&#34;第一回合fork-一份往-csv-里加一行&#34;&gt;第一回合：fork 一份，往 CSV 里加一行
+&lt;/h2&gt;&lt;p&gt;PR 的第一步是 &lt;strong&gt;fork&lt;/strong&gt;——把别人的仓库复制一份到自己的账号下，想怎么改都行。&lt;/p&gt;
+&lt;p&gt;Fork 完，我找到目标文件 &lt;code&gt;blogs-original.csv&lt;/code&gt;，这是个纯文本表格，每一行是一个博客的信息，格式是&amp;quot;名称, URL, RSS, 标签&amp;quot;。我模仿前面几条的格式，在末尾加了一行：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;爱玩win11的me, https://yrqspace.github.io, https://yrqspace.github.io/index.xml, 生活; 技术; 随笔
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;改完提交，GitHub 自动给我建了个新分支 &lt;code&gt;YrqSpace-patch-1&lt;/code&gt;，然后页面上出现了一个绿色的按钮——&lt;strong&gt;Compare &amp;amp; pull request&lt;/strong&gt;。我毫不犹豫就点了。&lt;/p&gt;
+&lt;h2 id=&#34;第二回合pr-投错地址了&#34;&gt;第二回合：PR 投错地址了
+&lt;/h2&gt;&lt;p&gt;点完进去，填了句&amp;quot;你好，这是我的个人博客，麻烦审核，谢谢&amp;quot;，又点了一下绿色按钮，PR 就这么发起了。&lt;/p&gt;
+&lt;p&gt;然后我仔细一看页面，总觉得哪里不对劲：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;我的头像旁边赫然标着 &lt;strong&gt;Owner&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;页面上居然有一个 &lt;strong&gt;Merge pull request&lt;/strong&gt;（合并）按钮&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;我反应过来了：&lt;strong&gt;这个 PR 开到了我自己的 fork 仓库里&lt;/strong&gt;（&lt;code&gt;YrqSpace/chinese-independent-blogs&lt;/code&gt;），而不是原仓库。等于我把信写好了，却投到了自己家门口。&lt;/p&gt;
+&lt;p&gt;原因也简单：GitHub 默认把对比的&amp;quot;目标仓库&amp;quot;设成了我 fork 的那份，而不是原作者那份。我没看清 base 是哪个仓库，就一路点了下去。&lt;/p&gt;
+&lt;h2 id=&#34;第三回合关掉重投&#34;&gt;第三回合：关掉重投
+&lt;/h2&gt;&lt;p&gt;搞清楚了就动手改：先点 &lt;strong&gt;Close pull request&lt;/strong&gt; 把投错的 PR 关掉，然后用跨仓库对比的直达链接重新发起：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;https://github.com/timqian/chinese-independent-blogs/compare/master...YrqSpace:YrqSpace-patch-1
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;这个链接的意思是：&lt;strong&gt;用我 fork 里的分支，向原仓库发起对比&lt;/strong&gt;。打开一看，base 显示的是 &lt;code&gt;timqian/chinese-independent-blogs&lt;/code&gt;，这回对了。确认、点绿色、再点绿色，PR 就到了原仓库，编号 &lt;strong&gt;#2287&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;这次我检查了三个&amp;quot;投对了&amp;quot;的迹象：标题是原仓库的名字、我的头像旁边没有 Owner、页面上没有合并按钮——因为我没权限合并别人的仓库，有那个按钮才奇怪。&lt;/p&gt;
+&lt;h2 id=&#34;第四回合等合并&#34;&gt;第四回合：等合并
+&lt;/h2&gt;&lt;p&gt;发起之后，仓库的自动检查跑了起来。几分钟后，页面上出现了我最想看到的一句话：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;All checks have passed · Lint blogs metadata / lint · Successful in 9s&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;那个 lint 是仓库的格式校验脚本，自动检查我加的那行数据合不合规——9 秒通过，意味着我那行 CSV 写得没问题。加上&amp;quot;No conflicts with base branch&amp;quot;，改动可以干净合并。&lt;/p&gt;
+&lt;p&gt;剩下的，就是等仓库维护者点一下合并按钮了。快则几小时，慢则一两周，GitHub 会通知我。&lt;/p&gt;
+&lt;h2 id=&#34;经验总结&#34;&gt;经验总结
+&lt;/h2&gt;&lt;p&gt;这次折腾下来，几个点挺值得记：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;PR 是&amp;quot;申请&amp;quot;，不是&amp;quot;推送&amp;quot;&lt;/strong&gt;。push 是往自己的仓库写，PR 是向别人的仓库提交修改申请，方向完全不同。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;提 PR 一定要看 base 仓库&lt;/strong&gt;。Compare 页面顶部会写清楚&amp;quot;从哪个分支对比到哪个仓库&amp;quot;，投错地址是新手最容易踩的坑。判断投没投对，看 PR 页面上有没有&amp;quot;Merge&amp;quot;按钮、头像旁有没有&amp;quot;Owner&amp;quot;标记就行。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;fork 不用删&lt;/strong&gt;。删了不影响已发起的 PR，但留着能随时同步原仓库、以后想再提交也方便。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;lint 是个好东西&lt;/strong&gt;。它自动帮你把关格式，过了就说明你改对了，省去了人工扯皮。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;外链也不是非得买&lt;/strong&gt;。把博客提交到各种独立博客列表、导航站、聚合平台，都是合法免费的外链来源，比买链接安全一万倍——至少不会被搜索引擎当垃圾。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;写到这，PR 还在等合并，Bing 的收录也还在排队。不过无所谓，该做的信号都做了，剩下的就是等。&lt;/p&gt;
+&lt;p&gt;等哪天 Bing 收录了我，我再写一篇《Bing 收录成功记》——那就真圆满了。&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
