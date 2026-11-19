@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>域名 on Tinker Log</title>
+        <link>https://tinkerlog.dpdns.org/tags/%E5%9F%9F%E5%90%8D/</link>
+        <description>Recent content in 域名 on Tinker Log</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Tinker Log</copyright>
+        <lastBuildDate>Mon, 02 Nov 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://tinkerlog.dpdns.org/tags/%E5%9F%9F%E5%90%8D/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>给博客换了四个域名：从 SNI 阻断到 eTLD</title>
+        <link>https://tinkerlog.dpdns.org/p/%E7%BB%99%E5%8D%9A%E5%AE%A2%E6%8D%A2%E4%BA%86%E5%9B%9B%E4%B8%AA%E5%9F%9F%E5%90%8D/</link>
+        <pubDate>Mon, 02 Nov 2026 00:00:00 +0000</pubDate>
+        
+        <guid>https://tinkerlog.dpdns.org/p/%E7%BB%99%E5%8D%9A%E5%AE%A2%E6%8D%A2%E4%BA%86%E5%9B%9B%E4%B8%AA%E5%9F%9F%E5%90%8D/</guid>
+        <description>&lt;img src="https://image.tinkerlog.dpdns.org/2026/11/2026-11-02-cover.jpg" alt="Featured image of post 给博客换了四个域名：从 SNI 阻断到 eTLD" /&gt;&lt;p&gt;&lt;code&gt;yrqspace.github.io&lt;/code&gt; 这个地址我用了两年。能用，但不好看，而且每次跟人说起自己有个博客，都得先解释一遍这不是 GitHub 主页。&lt;/p&gt;
+&lt;p&gt;于是就有了这趟折腾：一口气换了四个域名，前三个全废了，最后才落地。整个过程里最值的不是那个结果，而是搞清楚了一件平时很多人模糊的事——&lt;strong&gt;域名能不能用，跟它能不能解析，根本是两码事。&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&#34;起因为什么非要换&#34;&gt;起因：为什么非要换
+&lt;/h2&gt;&lt;p&gt;GitHub Pages 送的 &lt;code&gt;*.github.io&lt;/code&gt; 子域有两个毛病。&lt;/p&gt;
+&lt;p&gt;第一是归属感。那串 &lt;code&gt;yrqspace.github.io&lt;/code&gt; 里，&amp;ldquo;yrqspace&amp;rdquo; 是我的 GitHub 用户名，不是博客的名字。别人看到会以为这是某个账号的附属页面，而不是一个独立站点。&lt;/p&gt;
+&lt;p&gt;第二是它属于 &lt;code&gt;github.io&lt;/code&gt; 这个 eTLD。这个后缀下面挂着成千上万个站点，任何一个出问题被封，都可能连带影响整个后缀的信誉。浏览器和搜索引擎对待共享后缀下的站点，谨慎程度和独立域名是不一样的。&lt;/p&gt;
+&lt;p&gt;当然，还有个更实际的原因：&lt;strong&gt;这东西本来就是我一直在折腾的领域&lt;/strong&gt;。既然要写博客，那就把折腾过程本身变成内容。&lt;/p&gt;
+&lt;h2 id=&#34;第一站-cccd解析通了但握不上手&#34;&gt;第一站 cc.cd：解析通了，但握不上手
+&lt;/h2&gt;&lt;p&gt;第一个域名是 &lt;code&gt;.cc.cd&lt;/code&gt; 后缀下的免费子域。这类免费域名服务商不少，注册只要填个前缀，几分钟就能拿到 DNS 控制权。&lt;/p&gt;
+&lt;p&gt;配好 Cloudflare，加了两条 CNAME 指向 &lt;code&gt;yrqspace.github.io&lt;/code&gt;，&lt;code&gt;nslookup&lt;/code&gt; 一看，解析结果正确，&lt;code&gt;A&lt;/code&gt; 记录和 &lt;code&gt;CNAME&lt;/code&gt; 都对得上。看起来一切正常。&lt;/p&gt;
+&lt;p&gt;然后打开浏览器，转圈，最后：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;连接已重置&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;我以为是 CDN 没生效，等了一会儿再试，还是这样。换手机热点，还是这样。&lt;/p&gt;
+&lt;p&gt;于是上命令行：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;curl -Iv --max-time &lt;span class=&#34;m&#34;&gt;20&lt;/span&gt; https://iwan-blog.cc.cd
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;回显到 TLS 那一步就断了：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;* Connected to xxx.cc.cd (104.21.x.x) port 443
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;* TLSv1.3 (OUT), TLS handshake, Client hello (1):
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;* OpenSSL SSL_connect: Connection reset by peer in connection to xxx.cc.cd:443
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;curl: (35) OpenSSL SSL_connect: SSL_ERROR_SYSCALL
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;关键在这一行：&lt;strong&gt;已经连上 IP 了，443 端口也通了，握手发出去之后被掐断。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;这就排除了两个常见怀疑：DNS 没问题（IP 拿到了），服务器也没挂（端口能连）。断在 TLS 握手阶段，说明中间有设备在盯着 Client Hello 里的 SNI 字段，看到这个后缀就直接发 RST。&lt;/p&gt;
+&lt;p&gt;SNI 就是 TLS 握手时客户端告诉服务器&amp;quot;我要访问哪个域名&amp;quot;的字段。因为它必然是明文的（否则服务器不知道要返回哪张证书），所以任何中间设备都能读到。读到之后不想让你访问，最简单的做法就是伪造一个 TCP 重置包塞回来，连接立刻死掉，比 DNS 污染干净多了——DNS 污染你换个 DNS 就绕过去了，SNI 阻断绕不过。&lt;/p&gt;
+&lt;p&gt;这也解释了一个诡异现象：&lt;strong&gt;同一个域名，在某些网络上完全正常，在另一些网络上百分百失败。&lt;/strong&gt; 我当时在家里的移动宽带上一直失败，用手机热点（另一个运营商）偶尔能打开。这种情况最容易被误判成&amp;quot;服务器不稳定&amp;quot;，然后跑去重启服务、清缓存、换 CDN，全是白费。&lt;/p&gt;
+&lt;p&gt;判断方法很简单：&lt;strong&gt;换一个网络环境，如果结果完全翻转，问题就在链路中间，不在两端。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;cc.cd&lt;/code&gt; 就这么废了。&lt;/p&gt;
+&lt;h2 id=&#34;插一段etld-和-psl-到底是什么&#34;&gt;插一段：eTLD 和 PSL 到底是什么
+&lt;/h2&gt;&lt;p&gt;在被下一个域名坑到之前，得先把这两个名词理清，因为后面三次失败有两次都跟它有关。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;eTLD&lt;/strong&gt;（effective Top-Level Domain，有效顶级域）指的是&amp;quot;公共后缀&amp;quot;——也就是普通用户不能自己注册的那一层。比如 &lt;code&gt;example.com&lt;/code&gt; 里，&lt;code&gt;com&lt;/code&gt; 是 TLD；&lt;code&gt;example.co.uk&lt;/code&gt; 里，&lt;code&gt;co.uk&lt;/code&gt; 才是 eTLD，因为英国把这个后缀留给了商业机构，个人注册的是 &lt;code&gt;xxx.co.uk&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;问题在于，光看后缀是猜不出来的。&lt;code&gt;co.uk&lt;/code&gt; 是公共后缀，但 &lt;code&gt;uk.com&lt;/code&gt; 不是（它是一家公司的私有域名，被当成二级域名卖）。所以浏览器需要一个权威列表来判断，这个列表就是 &lt;strong&gt;PSL&lt;/strong&gt;（Public Suffix List），由 Mozilla 维护，所有主流浏览器、Cloudflare 这类平台都在用。&lt;/p&gt;
+&lt;p&gt;PSL 之所以重要，核心是 &lt;strong&gt;Cookie 隔离&lt;/strong&gt;。浏览器只允许把 Cookie 设置到 eTLD+1 这一层，也就是&amp;quot;公共后缀再往上一级&amp;quot;。如果 &lt;code&gt;co.uk&lt;/code&gt; 不在 PSL 里，那 &lt;code&gt;a.co.uk&lt;/code&gt; 就能给整个 &lt;code&gt;.co.uk&lt;/code&gt; 写 Cookie，&lt;code&gt;b.co.uk&lt;/code&gt; 也能读到——两个毫不相干的网站互相能看到对方的登录态，这是严重的安全问题。&lt;/p&gt;
+&lt;p&gt;所以 PSL 是一道&lt;strong&gt;安全边界&lt;/strong&gt;，而不仅仅是分类表。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;这就是关键&lt;/strong&gt;：一个后缀如果不在 PSL 里，Cloudflare 会直接拒绝把它加成站点。不是&amp;quot;有些功能受限&amp;quot;，是完全加不进来。理由正是上面说的：平台没法安全地给你分配 Cookie 作用域。&lt;/p&gt;
+&lt;p&gt;反过来，如果你用的是某个免费服务商提供的共享后缀，而这个后缀&lt;strong&gt;在&lt;/strong&gt; PSL 里，那你就能正常用 Cloudflare，但代价是：你和这个后缀下所有其他用户，共享同一条 eTLD 边界。别人被搜索引擎惩罚、被别人举报，可能顺带影响你。这是一笔必须自己认下的账。&lt;/p&gt;
+&lt;h2 id=&#34;第二站-kdnsfr被-cloudflare-挡在门外&#34;&gt;第二站 .kdns.fr：被 Cloudflare 挡在门外
+&lt;/h2&gt;&lt;p&gt;第二次挑了个 &lt;code&gt;.kdns.fr&lt;/code&gt; 后缀。名字短，看着还行，注册也很顺。&lt;/p&gt;
+&lt;p&gt;然后去 Cloudflare 添加站点，输入域名，回车：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;xxx.kdns.fr&lt;/code&gt; is not a registered domain.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;我一开始以为是 NS 还没生效，去查 WHOIS，注册信息在；查 DNS，NS 记录也确实指向了我设的服务器。再试，还是这句。&lt;/p&gt;
+&lt;p&gt;最后才反应过来：这句话不是在说&amp;quot;域名不存在&amp;quot;，而是在说&lt;strong&gt;这个后缀不在 PSL 里&lt;/strong&gt;。Cloudflare 需要根据 PSL 算出 eTLD+1 来决定给你分配多宽的 Cookie 作用域，算不出来就不让加。&lt;/p&gt;
+&lt;p&gt;验证这一步的方法很直接，直接查 PSL 源文件：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;curl -s https://publicsuffix.org/list/public_suffix_list.dat &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep -i &lt;span class=&#34;s2&#34;&gt;&amp;#34;kdns.fr&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;没有输出，就是没收录。换个后缀再测：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;curl -s https://publicsuffix.org/list/public_suffix_list.dat &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep -i &lt;span class=&#34;s2&#34;&gt;&amp;#34;dpdns.org&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;有输出，说明收录了。&lt;strong&gt;这一步比任何教程都靠谱&lt;/strong&gt;，因为 PSL 就是唯一的事实来源，Cloudflare 也是读它。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;.kdns.fr&lt;/code&gt; 也废了，废得比第一个还冤——域名本身一点问题没有，只是没进那张表。&lt;/p&gt;
+&lt;h2 id=&#34;第三站-uskg卡在实名&#34;&gt;第三站 us.kg：卡在实名
+&lt;/h2&gt;&lt;p&gt;第三个是 &lt;code&gt;.us.kg&lt;/code&gt; 后缀。这个后缀在 PSL 里，Cloudflare 能加，网络也没被拦。&lt;/p&gt;
+&lt;p&gt;结果卡在注册环节：要求做 KYC，上传证件、人脸核验。&lt;/p&gt;
+&lt;p&gt;到这一步我就停了。为了一个免费的博客域名去交身份证件，这个交换比不对——证件信息的价值和这个域名能带来的东西完全不成比例，而且这类免费服务哪天关停，你连个说理的地方都没有。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;免费域名最贵的不是钱，是它随时可能消失。&lt;/strong&gt; 这句后面还会再验证一次。&lt;/p&gt;
+&lt;h2 id=&#34;第四站-tinkerlogdpdnsorg终于全绿&#34;&gt;第四站 tinkerlog.dpdns.org：终于全绿
+&lt;/h2&gt;&lt;p&gt;第四个是 DigitalPlat 提供的 &lt;code&gt;.dpdns.org&lt;/code&gt; 后缀。挑它的理由，按顺序是这三条：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;在 PSL 里。&lt;/strong&gt; 先查表，查到了才往下走。这一条是硬门槛，不满足后面全是白费。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Cloudflare 能加。&lt;/strong&gt; 成功添加站点，NS 委派到 &lt;code&gt;daisy.ns.cloudflare.com&lt;/code&gt; 和 &lt;code&gt;fred.ns.cloudflare.com&lt;/code&gt;，SSL/TLS 模式设 Full。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;只要求 GitHub 账号授权。&lt;/strong&gt; 不要证件，不要人脸。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;然后测连通性：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;curl -sI --max-time &lt;span class=&#34;m&#34;&gt;20&lt;/span&gt; https://tinkerlog.dpdns.org
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;这次没断在握手阶段，返回的是正常的 HTTP 响应。到这一步才算真的可用。&lt;/p&gt;
+&lt;p&gt;补一句：早期测试时 curl 报过 &lt;code&gt;curl: (60) SSL certificate problem&lt;/code&gt;。这是 &lt;strong&gt;GitHub Pages 还没配上自定义域名&lt;/strong&gt;导致的——证书是按域名签发的，你在仓库设置里填了 Custom domain 之后 GitHub 才会去申请 Let&amp;rsquo;s Encrypt 证书，中间有几分钟到几十分钟的空窗期。这个报错不要当成&amp;quot;域名有问题&amp;quot;，它和 &lt;code&gt;(35)&lt;/code&gt; 是两个完全不同层面的错：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;错误码&lt;/th&gt;
+&lt;th&gt;含义&lt;/th&gt;
+&lt;th&gt;问题在哪&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;(28)&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;超时，连不上&lt;/td&gt;
+&lt;td&gt;网络或服务器&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;(35)&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;TLS 握手被中断&lt;/td&gt;
+&lt;td&gt;链路中间有阻断&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;(60)&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;证书校验失败&lt;/td&gt;
+&lt;td&gt;服务器证书没配好&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;(6)&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;域名解析失败&lt;/td&gt;
+&lt;td&gt;DNS 记录缺失&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;看 curl 的退出码，比看&amp;quot;打不开&amp;quot;这三个字有用得多。&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&#34;换完之后连带崩了三样东西&#34;&gt;换完之后，连带崩了三样东西
+&lt;/h2&gt;&lt;p&gt;域名一换，原来的配置全成了旧值。这次踩的坑是：&lt;strong&gt;改域名不是改一个地方，是改一串地方。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;第一样：sitemap 里还是旧域名。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;改完 &lt;code&gt;baseURL&lt;/code&gt; 重新构建，推上去，用 &lt;code&gt;grep&lt;/code&gt; 一查 &lt;code&gt;public/sitemap.xml&lt;/code&gt;，里面还是 &lt;code&gt;yrqspace.github.io&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;原因是构建产物没更新——&lt;code&gt;上传.bat&lt;/code&gt; 先 &lt;code&gt;hugo&lt;/code&gt; 生成 &lt;code&gt;public&lt;/code&gt;，再进 &lt;code&gt;public&lt;/code&gt; 目录 &lt;code&gt;git add . &amp;amp;&amp;amp; git commit &amp;amp;&amp;amp; git push&lt;/code&gt;。如果 &lt;code&gt;public&lt;/code&gt; 是上一次的残留（比如构建失败了但脚本继续往下走），推上去的就还是老内容。&lt;/p&gt;
+&lt;p&gt;后来在脚本里加了判断，&lt;code&gt;hugo&lt;/code&gt; 失败就直接 &lt;code&gt;exit /b 1&lt;/code&gt;，不让它带着旧产物往下推。这种&amp;quot;失败后继续执行&amp;quot;的脚本最坑，因为它不报错，你只会看到&amp;quot;推送成功&amp;quot;，然后过几天发现搜索引擎里全是旧链接。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;第二样：评论系统直接失联。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;原来跑在 Vercel 上的 Waline 服务端，换域名之后在这边的网络下连接超时。看响应头里是 &lt;code&gt;x-vercel-id: hnd1::xxxx&lt;/code&gt;，说明请求到了东京节点，然后卡住，28 秒后超时。&lt;/p&gt;
+&lt;p&gt;试了几次都一样。最后干脆换回 Giscus——评论数据存在 GitHub Discussions 里，不依赖任何自建后端，虽然功能少一些，但它不挑网络。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;第三样：Turnstile 白名单。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;人机验证组件是绑定域名的。换了新域名之后，验证组件的 iframe 加载不出来，卡在那里一直是&amp;quot;Checking your Browser…&amp;quot;。&lt;/p&gt;
+&lt;p&gt;这个坑很隐蔽：页面看起来是加载中，不像报错。要进 Cloudflare 控制台，在 Turnstile → Hostnames 里把 &lt;code&gt;tinkerlog.dpdns.org&lt;/code&gt; 和 &lt;code&gt;www.tinkerlog.dpdns.org&lt;/code&gt; 都加进去。&lt;/p&gt;
+&lt;h2 id=&#34;一张四层检查表&#34;&gt;一张四层检查表
+&lt;/h2&gt;&lt;p&gt;折腾完这四次，我把判断流程固定下来了。以后再有新域名，按这四层往下过，任何一层不过就直接放弃，不往下浪费时间。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;第一层：在不在 PSL 里？&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;curl -s https://publicsuffix.org/list/public_suffix_list.dat &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep -i &lt;span class=&#34;s2&#34;&gt;&amp;#34;your-suffix&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;没收录 → Cloudflare 加不了，Cookie 隔离边界不明确，直接淘汰。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;第二层：能不能解析？&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;nslookup your-domain.com
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;拿不到 IP → DNS 记录没配好，或者 NS 还没生效（通常要等几分钟到几小时）。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;第三层：能不能握手？&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;curl -Iv --max-time &lt;span class=&#34;m&#34;&gt;20&lt;/span&gt; https://your-domain.com
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;拿到 IP 但握手断了（&lt;code&gt;(35)&lt;/code&gt;）→ 链路中间有阻断，换域名。&lt;/li&gt;
+&lt;li&gt;走到 HTTP 但证书报错（&lt;code&gt;(60)&lt;/code&gt;）→ 服务器证书问题，可能是配置还没生效，等一会儿再试。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;第四层：平台让不让加？&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;去 Cloudflare 添加站点，能加进去基本就没问题了。这一步会同时验证 PSL 资格和 NS 委派。&lt;/p&gt;
+&lt;p&gt;四层全绿，才算这个域名真的能用。&lt;/p&gt;
+&lt;h2 id=&#34;一句提醒&#34;&gt;一句提醒
+&lt;/h2&gt;&lt;p&gt;现在这个 &lt;code&gt;tinkerlog.dpdns.org&lt;/code&gt; 是共享后缀，&lt;code&gt;dpdns.org&lt;/code&gt; 不是我买的，是服务商提供的。它有可能哪天停止服务，也有可能因为同后缀下别人乱来而受牵连。&lt;/p&gt;
+&lt;p&gt;这一点我在申请开往（一个独立博客导航项目）的时候，写了明明白白的免责声明：&lt;strong&gt;我知道自己用的是共享后缀、不是我买的、随时可能没有，我认这个风险。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;这不是客气话，是必须提前想清楚的事。免费的东西不欠你什么，你也不该对它抱长期期待。真要长期做下去，还是得自己买一个 &lt;code&gt;.com&lt;/code&gt;——一年几十块，省下的是这四次折腾的时间。&lt;/p&gt;
+&lt;p&gt;不过话说回来，如果一开始就买了域名，这四层检查我一个都不会懂。&lt;/p&gt;
+&lt;h2 id=&#34;顺带记一笔&#34;&gt;顺带记一笔
+&lt;/h2&gt;&lt;p&gt;这次换域名还留了两个待办：&lt;/p&gt;
+&lt;p&gt;一是老域名下的链接会 404。GitHub Pages 支持自定义 404 页面，但没法做服务端跳转，所以只能接受一部分外部链接失效。搜索引擎那边，靠 sitemap 重新提交和 IndexNow 主动推送来加速替换。&lt;/p&gt;
+&lt;p&gt;二是 IndexNow 的 key 文件是绑在根目录的，换域名之后要确认 &lt;code&gt;https://新域名/&amp;lt;key&amp;gt;.txt&lt;/code&gt; 能访问到，否则提交接口会返回 403。这个我在脚本里加了一步自检，不通过就跳过提交并打印提示，免得每次都去后台猜为什么没收录。&lt;/p&gt;
+&lt;p&gt;四次换域名，三次失败，最后一次成功了。听起来挺折腾，但 HSTS、SNI、PSL、eTLD 这些词，现在总算不是&amp;quot;见过&amp;quot;而是&amp;quot;用过&amp;quot;了。&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
